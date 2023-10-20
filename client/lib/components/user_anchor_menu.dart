@@ -1,3 +1,4 @@
+import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,7 @@ class UserAnchorMenu extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14),
             child: Text('Profile'),
           ),
-          // onPressed: () => Get.to(const UserProfileScreen()),
+          onPressed: () => Get.to(const UserProfileScreen()),
         ),
         MenuItemButton(
           child: const Padding(

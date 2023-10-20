@@ -1,3 +1,4 @@
+import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/models/dashboard_drawer_item.dart';
 import 'package:client/screens/admin_screen.dart';
 // import 'package:client/screens/dashboard_screen.dart';
@@ -13,10 +14,9 @@ final drawerItems = [
     // component: DashboardScreen(),
   ),
   const DashboardDrawerItem(
-    title: 'Admin Management',
-    icon: Icons.supervised_user_circle_outlined,
-     component: AdminScreen()
-  ),
+      title: 'Admin Management',
+      icon: Icons.supervised_user_circle_outlined,
+      component: AdminScreen()),
   const DashboardDrawerItem(
     title: 'Inventory',
     icon: Icons.inventory_2_rounded,
@@ -41,5 +41,5 @@ class DashboardScreenController extends GetxController {
   int get selectedPageIndex => _selectedPageIndex.value;
   set selectedPageIndex(int pageIndex) => _selectedPageIndex.value = pageIndex;
 
-  void findSelectedMenu() {}
+  final scaffoldActions = <Widget>[].obs;
 }

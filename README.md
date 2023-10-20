@@ -53,7 +53,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 
   - Inventory
 
-    - Create (Rama)
+    - Create (Rama) : ID, Nama, Jenis, Harga, Tipe
     - Detail Information (Rama)
     - Read + Delete (Galur)
     - Update (Galur)
