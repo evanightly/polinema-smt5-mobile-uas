@@ -67,76 +67,7 @@ class _AdminActions extends StatelessWidget {
   final Admin admin;
 
   void delete() {}
-
-  void openEditDialog(BuildContext context) {
-    var nameController = TextEditingController(text: admin.name);
-    var emailController = TextEditingController(text: admin.email);
-    var passwordController = TextEditingController();
-
-    void update() {}
-
-    Get.dialog(
-      Scaffold(
-        appBar: AppBar(
-          title: const Text('Edit Admin'),
-          actions: [
-            IconButton(onPressed: update, icon: const Icon(Icons.check))
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
-          child: Form(
-            child: Flex(
-              direction: Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    SizedBox(
-                      height: 60,
-                      width: 60,
-                      child: CircleAvatar(
-                        foregroundImage: AssetImage(admin.image!),
-                      ),
-                    ),
-                    const SizedBox(width: 24),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Change Image'),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: nameController,
-                  autocorrect: false,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(hintText: 'Name'),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: emailController,
-                  autocorrect: false,
-                  keyboardType: TextInputType.emailAddress,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(hintText: 'Email'),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: passwordController,
-                  autocorrect: false,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(hintText: 'Password'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  void update() {}
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +82,7 @@ class _AdminActions extends StatelessWidget {
             color: Colors.red.shade400,
           ),
           IconButton(
-            onPressed: () => openEditDialog(context),
+            onPressed: update,
             icon: const Icon(Icons.edit),
             color: Colors.blue.shade400,
           )

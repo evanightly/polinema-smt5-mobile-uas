@@ -1,5 +1,5 @@
 import 'package:client/models/dashboard_drawer_item.dart';
-// import 'package:client/screens/admin_screen.dart';
+ import 'package:client/screens/admin_screen.dart';
 // import 'package:client/screens/dashboard_screen.dart';
 // import 'package:client/screens/inventory_screen.dart';
 import 'package:client/screens/settings_screen.dart';
@@ -15,7 +15,7 @@ final drawerItems = [
   const DashboardDrawerItem(
     title: 'Admin Management',
     icon: Icons.supervised_user_circle_outlined,
-    // component: AdminScreen()
+     component: AdminScreen()
   ),
   const DashboardDrawerItem(
     title: 'Inventory',
