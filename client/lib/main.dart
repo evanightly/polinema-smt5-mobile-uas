@@ -75,25 +75,25 @@ void main() async {
       ),
       Admin(
         '2',
-        'Mike Adams',
-        'mike@gmail.com',
-        'mikeasms',
-        true,
+        'Edward',
+        'edward@gmail.com',
+        'edwardo',
+        false,
         'assets/images/person1.jpg',
       ),
       Admin(
         '3',
-        'Edward',
-        'edward@gmail.com',
-        'edwardo',
+        'Jason',
+        'jason@gmail.com',
+        'jasondc',
         false,
         'assets/images/person2.jpg',
       ),
       Admin(
         '4',
-        'Jason',
-        'jason@gmail.com',
-        'jasondc',
+        'Michael',
+        'michael@gmail.com',
+        'msjask',
         false,
         'assets/images/person3.jpg',
       ),
@@ -108,7 +108,6 @@ class App extends StatelessWidget {
 
   final authController = Get.put(AuthController());
   final dashboardScreenController = Get.put(DashboardScreenController());
-
 
   final selectedPageIndex = 0.obs;
 

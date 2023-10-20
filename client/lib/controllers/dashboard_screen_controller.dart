@@ -1,7 +1,6 @@
-import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/models/dashboard_drawer_item.dart';
 import 'package:client/screens/admin_screen.dart';
-// import 'package:client/screens/dashboard_screen.dart';
+import 'package:client/screens/dashboard_screen.dart';
 import 'package:client/screens/inventory_screen.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,11 @@ final drawerItems = [
   const DashboardDrawerItem(
     title: 'Dashboard',
     icon: Icons.dashboard,
-    // component: DashboardScreen(),
+    component: DashboardScreen(),
   ),
   const DashboardDrawerItem(
       title: 'Admin Management',
-      icon: Icons.supervised_user_circle_outlined,
+      icon: Icons.admin_panel_settings,
       component: AdminScreen()),
   const DashboardDrawerItem(
     title: 'Inventory',
