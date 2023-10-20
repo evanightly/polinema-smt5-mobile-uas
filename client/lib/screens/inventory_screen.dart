@@ -1,6 +1,6 @@
-import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/controllers/dashboard_screen_controller.dart';
 import 'package:client/controllers/item_controller.dart';
+import 'package:client/models/item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +10,51 @@ class InventoryScreen extends StatelessWidget {
   const InventoryScreen({super.key});
   static ItemController itemController = Get.find();
   static DashboardScreenController dashboardScreenController = Get.find();
+
+  void _showDetails(Item item) {
+    //     String? id;
+    // String title;
+    // String? description;
+    // num price;
+    // int qty;
+    // String? image;
+    // String? soldAt;
+    Get.dialog(
+      Scaffold(
+        appBar: AppBar(
+          title: Text(item.title),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ListView(
+            children: [
+              SizedBox(
+              width: double.infinity,
+              height: 150,
+              child: CircleAvatar(backgroundImage:
+                    item.image!.isNotEmpty ? AssetImage(item.image!) : null,),
+            ),
+              const SizedBox(height: 14),
+              Row(children: [const Text('Title : '), Text(item.title)]),
+              const SizedBox(height: 14),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text('Description : '),
+                item.description != null
+                    ? Text(item.description!)
+                    : const SizedBox.shrink()
+              ]),
+              const SizedBox(height: 14),
+              Row(children: [const Text('Price: '), Text(item.price.toString())]),
+              const SizedBox(height: 14),
+              Row(children: [const Text('QTY: '), Text(item.qty.toString())]),
+              const SizedBox(height: 14),
+              Row(children: [const Text('Sold At: '), Text(item.title)]),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   void update() {}
   void delete() {}
@@ -56,57 +101,60 @@ class InventoryScreen extends StatelessWidget {
                   ),
                 ),
                 key: Key(item.title),
-                child: Card(
-                  surfaceTintColor: Theme.of(context)
-                      .colorScheme
-                      .inverseSurface
-                      .withOpacity(.08),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(_circularRadius),
-                      right: Radius.circular(_circularRadius),
+                child: InkWell(
+                  onTap: () => _showDetails(item),
+                  child: Card(
+                    surfaceTintColor: Theme.of(context)
+                        .colorScheme
+                        .inverseSurface
+                        .withOpacity(.08),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(_circularRadius),
+                        right: Radius.circular(_circularRadius),
+                      ),
                     ),
-                  ),
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      _ItemImage(item.image!),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.title),
-                          const SizedBox(height: 4),
-                          Text('\$ ${item.price}'),
-                        ],
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        height: 80,
-                        width: 40,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .inverseSurface
-                                .withOpacity(.05),
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(_circularRadius),
-                              bottomRight: Radius.circular(_circularRadius),
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        _ItemImage(item.image!),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.title),
+                            const SizedBox(height: 4),
+                            Text('\$ ${item.price}'),
+                          ],
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 80,
+                          width: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .inverseSurface
+                                  .withOpacity(.05),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(_circularRadius),
+                                bottomRight: Radius.circular(_circularRadius),
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              "${item.qty}",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            "${item.qty}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );
