@@ -99,7 +99,7 @@ void main() async {
       ),
     ],
   );
-  
+
   runApp(App());
 }
 
@@ -107,11 +107,14 @@ class App extends StatelessWidget {
   App({super.key});
 
   final authController = Get.put(AuthController());
+  final dashboardScreenController = Get.put(DashboardScreenController());
+
 
   final selectedPageIndex = 0.obs;
 
   @override
   Widget build(BuildContext context) {
+   dashboardScreenController.scaffoldActions.value = [const DashboardAppBarUser()];
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -126,7 +129,7 @@ class App extends StatelessWidget {
       home: Scaffold(
           appBar: DashboardAppBar(
             appBar: AppBar(),
-            actions: const [DashboardAppBarUser()],
+            actions: dashboardScreenController.scaffoldActions,
           ),
           drawer: const DashboardDrawerMenu(),
           body: MainContent()),
