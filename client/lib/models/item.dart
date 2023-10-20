@@ -5,6 +5,7 @@ class Item {
   num price;
   int qty;
   String? image;
+  String? soldAt;
 
   Item({
     this.id,
@@ -13,5 +14,6 @@ class Item {
     required this.price,
     required this.qty,
     this.image,
+    this.soldAt,
   });
 }
