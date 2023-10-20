@@ -1,5 +1,4 @@
 import 'package:client/components/dashboard_appbar.dart';
-import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/components/dashboard_drawer_menu.dart';
 import 'package:client/config/custom_theme.dart';
 import 'package:client/controllers/admin_controller.dart';
@@ -8,6 +7,7 @@ import 'package:client/controllers/dashboard_screen_controller.dart';
 import 'package:client/controllers/item_controller.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/models/item.dart';
+import 'package:client/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -15,18 +15,8 @@ import 'package:get_storage/get_storage.dart';
 void main() async {
   await GetStorage.init();
 
-  final authController = Get.put(AuthController());
   final itemController = Get.put(ItemController());
   final adminController = Get.put(AdminController());
-
-  authController.loggedUser = Admin(
-    '1',
-    'Ruby Nicholas',
-    'a@gmail.com',
-    'nicholasN',
-    true,
-    'assets/images/dog.jpg',
-  );
 
   itemController.items = RxList(
     [
@@ -109,11 +99,8 @@ class App extends StatelessWidget {
   final authController = Get.put(AuthController());
   final dashboardScreenController = Get.put(DashboardScreenController());
 
-  final selectedPageIndex = 0.obs;
-
   @override
   Widget build(BuildContext context) {
-   dashboardScreenController.scaffoldActions.value = [const DashboardAppBarUser()];
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -125,13 +112,22 @@ class App extends StatelessWidget {
         colorScheme: darkColorScheme,
         brightness: Brightness.dark,
       ),
-      home: Scaffold(
-          appBar: DashboardAppBar(
-            appBar: AppBar(),
-            actions: dashboardScreenController.scaffoldActions,
-          ),
-          drawer: const DashboardDrawerMenu(),
-          body: MainContent()),
+      home: Obx(() {
+        Widget content = const LoginScreen();
+
+        if (authController.isLogged) {
+          content = Scaffold(
+            appBar: DashboardAppBar(
+              appBar: AppBar(),
+              actions: dashboardScreenController.scaffoldActions,
+            ),
+            drawer: const DashboardDrawerMenu(),
+            body: MainContent(),
+          );
+        }
+
+        return content;
+      }),
     );
   }
 }

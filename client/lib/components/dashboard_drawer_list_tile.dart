@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class DashboardDrawerListTile extends StatelessWidget {
-  const DashboardDrawerListTile(
-      {required this.icon,
-      required this.title,
-      this.isSelected = false,
-      this.onTap,
-      super.key});
+  const DashboardDrawerListTile({
+    required this.icon,
+    required this.title,
+    this.isSelected = false,
+    this.onTap,
+    super.key,
+  });
 
   final bool isSelected;
   final IconData icon;

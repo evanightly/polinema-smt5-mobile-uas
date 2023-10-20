@@ -1,13 +1,14 @@
+import 'package:client/controllers/auth_controller.dart';
 import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserAnchorMenu extends StatelessWidget {
   const UserAnchorMenu({required this.icon, super.key});
-
   final Widget icon;
   @override
   Widget build(BuildContext context) {
+    AuthController authController = Get.find();
     return MenuAnchor(
       menuChildren: [
         MenuItemButton(
@@ -18,11 +19,11 @@ class UserAnchorMenu extends StatelessWidget {
           onPressed: () => Get.to(const UserProfileScreen()),
         ),
         MenuItemButton(
+          onPressed: authController.logout,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 14),
             child: Text('Logout'),
           ),
-          onPressed: () {},
         ),
       ],
       builder: (context, controller, child) {

@@ -1,3 +1,4 @@
+import 'package:client/controllers/auth_controller.dart';
 import 'package:client/models/dashboard_drawer_item.dart';
 import 'package:client/screens/admin_screen.dart';
 import 'package:client/screens/dashboard_screen.dart';
@@ -5,6 +6,8 @@ import 'package:client/screens/inventory_screen.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+AuthController authController = Get.find();
 
 final drawerItems = [
   const DashboardDrawerItem(
@@ -26,9 +29,10 @@ final drawerItems = [
     icon: Icons.settings,
     component: SettingsScreen(),
   ),
-  const DashboardDrawerItem(
+  DashboardDrawerItem(
     title: 'Logout',
     icon: Icons.logout,
+    onTap: authController.logout,
   ),
 ];
 

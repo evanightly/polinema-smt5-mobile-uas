@@ -19,71 +19,6 @@ class DashboardDrawerMenu extends StatelessWidget {
       Get.back();
     }
 
-    // ignore: non_constant_identifier_names, unused_local_variable
-    DrawerHeader DrawerSolution1 = DrawerHeader(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/dashboard_drawer.jpg'),
-          colorFilter: ColorFilter.mode(Colors.black54, BlendMode.multiply),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 12),
-            child: Text(
-              'Car Inventory',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onInverseSurface
-                        .withOpacity(.85),
-                  ),
-            ),
-          )
-        ],
-      ),
-    );
-
-    // ignore: non_constant_identifier_names
-    DrawerHeader DrawerSolution2 = DrawerHeader(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(authController.loggedUser.image!),
-            radius: 28,
-          ),
-          const SizedBox(height: 14),
-          Text(
-            authController.loggedUser.name,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  authController.loggedUser.email,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
-                const UserAnchorMenu(
-                  icon: Icon(Icons.arrow_drop_down),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-
     return Drawer(
       child: Column(
         children: [
@@ -91,7 +26,7 @@ class DashboardDrawerMenu extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                DrawerSolution2,
+                const _DrawerHeader(),
                 for (final (index, drawerItem) in drawerItems.indexed)
                   if (index <
                       drawerItems.length -
@@ -128,9 +63,53 @@ class DashboardDrawerMenu extends StatelessWidget {
                         isSelected:
                             dashboardScreenController.selectedPageIndex ==
                                 index,
-                        onTap: () => changePage(index),
+                        onTap: () => drawerItem.onTap != null
+                            ? drawerItem.onTap!()
+                            : changePage(index),
                       ),
                     ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _DrawerHeader extends StatelessWidget {
+  const _DrawerHeader();
+  @override
+  Widget build(BuildContext context) {
+    return DrawerHeader(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            backgroundImage: AssetImage(authController.loggedUser.image!),
+            radius: 28,
+          ),
+          const SizedBox(height: 14),
+          Text(
+            authController.loggedUser.name,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  authController.loggedUser.email,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                ),
+                const UserAnchorMenu(
+                  icon: Icon(Icons.arrow_drop_down),
+                )
               ],
             ),
           )
