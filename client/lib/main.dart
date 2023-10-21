@@ -97,51 +97,46 @@ class App extends StatelessWidget {
   App({super.key});
 
   final authController = Get.put(AuthController());
-  final dashboardScreenController = Get.put(DashboardScreenController());
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: lightColorScheme,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
+      home: Obx(
+        () => authController.isLogged ? _MainContent() : const LoginScreen(),
       ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: darkColorScheme,
-        brightness: Brightness.dark,
-      ),
-      home: Obx(() {
-        Widget content = const LoginScreen();
-
-        if (authController.isLogged) {
-          content = Scaffold(
-            appBar: DashboardAppBar(
-              appBar: AppBar(),
-              actions: dashboardScreenController.scaffoldActions,
-            ),
-            drawer: const DashboardDrawerMenu(),
-            body: MainContent(),
-          );
-        }
-
-        return content;
-      }),
     );
   }
 }
 
-class MainContent extends StatelessWidget {
-  MainContent({super.key});
+class _MainContent extends StatelessWidget {
   final dashboardScreenController = Get.put(DashboardScreenController());
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      int pageIndex = dashboardScreenController.selectedPageIndex;
-      return drawerItems[pageIndex].component ??
-          const Center(child: Text('No Component\'s Yet'));
-    });
+    return Scaffold(
+      appBar: DashboardAppBar(
+        appBar: AppBar(),
+        actions: dashboardScreenController.scaffoldActions,
+      ),
+      drawer: const DashboardDrawerMenu(),
+      body: Obx(
+        () {
+          int pageIndex = dashboardScreenController.selectedPageIndex;
+
+          // If theres no screen component show text only
+          Widget content = const Center(child: Text('No Component\'s Yet'));
+
+          // Show menu screen
+          if (drawerItems[pageIndex].component != null) {
+            content = drawerItems[pageIndex].component!;
+          }
+
+          return content;
+        },
+      ),
+    );
   }
 }

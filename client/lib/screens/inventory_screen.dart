@@ -167,6 +167,7 @@ class InventoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dashboardScreenController.scaffoldActions.value = [const _AddInventory()];
+    
     Widget content = const Center(child: Text('No Items Yet'));
     if (itemController.items.isNotEmpty) {
       content = Obx(
@@ -287,8 +288,8 @@ class _AddInventory extends StatelessWidget {
   static TextEditingController descriptionController = TextEditingController();
   static TextEditingController priceController = TextEditingController();
   static TextEditingController qtyController = TextEditingController();
-  static TextEditingController imageController = TextEditingController();
-  static TextEditingController soldAtController = TextEditingController();
+  // static TextEditingController imageController = TextEditingController();
+  // static TextEditingController soldAtController = TextEditingController();
 
   void _showDatePicker() {}
   void _selectImage() {}

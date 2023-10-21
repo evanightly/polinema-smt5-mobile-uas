@@ -29,3 +29,14 @@ const ColorScheme darkColorScheme = ColorScheme(
   onError: Color(0xFFFFFFFF),
   brightness: Brightness.dark,
 );
+
+final ThemeData lightThemeData = ThemeData(
+  useMaterial3: true,
+  colorScheme: lightColorScheme,
+);
+
+final ThemeData darkThemeData = ThemeData(
+  useMaterial3: true,
+  colorScheme: darkColorScheme,
+  brightness: Brightness.dark,
+);
