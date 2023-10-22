@@ -90,32 +90,33 @@ void main() async {
     ],
   );
 
-  runApp(App());
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
-  App({super.key});
-
-  final authController = Get.put(AuthController());
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.put(AuthController());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightThemeData,
       darkTheme: darkThemeData,
       home: Obx(
-        () => authController.isLogged ? _MainContent() : const LoginScreen(),
+        () => authController.isLogged
+            ? const _MainContent()
+            : const LoginScreen(),
       ),
     );
   }
 }
 
 class _MainContent extends StatelessWidget {
-  final dashboardScreenController = Get.put(DashboardScreenController());
-
+  const _MainContent();
   @override
   Widget build(BuildContext context) {
+    final dashboardScreenController = Get.put(DashboardScreenController());
     return Scaffold(
       appBar: DashboardAppBar(
         appBar: AppBar(),

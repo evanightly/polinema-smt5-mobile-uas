@@ -27,9 +27,7 @@ class AuthController extends GetxController {
 
     isLogged = true;
 
-    dashboardScreenController.scaffoldActions.value = [
-      const DashboardAppBarUser()
-    ];
+    dashboardScreenController.scaffoldActions = [const DashboardAppBarUser()];
   }
 
   void logout() {

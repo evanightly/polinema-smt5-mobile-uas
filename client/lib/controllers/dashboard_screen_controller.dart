@@ -1,3 +1,4 @@
+import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/controllers/auth_controller.dart';
 import 'package:client/models/dashboard_drawer_item.dart';
 import 'package:client/screens/admin_screen.dart';
@@ -24,7 +25,7 @@ final drawerItems = [
     icon: Icons.inventory_2_rounded,
     component: InventoryScreen(),
   ),
-  DashboardDrawerItem(
+  const DashboardDrawerItem(
     title: 'Settings',
     icon: Icons.settings,
     component: SettingsScreen(),
@@ -42,7 +43,17 @@ class DashboardScreenController extends GetxController {
       2; // item <= drawerItems.length - 2 (Push Settings and Logout drawer item to bottom), used in dashboard_drawer_menu
 
   int get selectedPageIndex => _selectedPageIndex.value;
-  set selectedPageIndex(int pageIndex) => _selectedPageIndex.value = pageIndex;
+  set selectedPageIndex(int pageIndex) {
+    _selectedPageIndex.value = pageIndex;
 
-  final scaffoldActions = <Widget>[].obs;
+    // Set default scaffold Actions when screen change
+    _scaffoldInit();
+  }
+
+  final _scaffoldActions = <Widget>[].obs;
+
+  List<Widget> get scaffoldActions => _scaffoldActions;
+  set scaffoldActions(List<Widget> widgets) => _scaffoldActions.value = widgets;
+
+  void _scaffoldInit() => _scaffoldActions.value = [const DashboardAppBarUser()];
 }

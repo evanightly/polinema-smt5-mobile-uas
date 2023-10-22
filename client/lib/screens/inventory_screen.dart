@@ -6,10 +6,8 @@ import 'package:get/get.dart';
 
 const double _circularRadius = 6;
 
-class InventoryScreen extends StatelessWidget {
+class InventoryScreen extends GetView<ItemController> {
   const InventoryScreen({super.key});
-  static ItemController itemController = Get.find();
-  static DashboardScreenController dashboardScreenController = Get.find();
 
   void _showDetails(Item item) {
     Get.dialog(
@@ -166,15 +164,17 @@ class InventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dashboardScreenController.scaffoldActions.value = [const _AddInventory()];
-    
+    final DashboardScreenController dashboardScreenController = Get.find();
+
+    dashboardScreenController.scaffoldActions = [const _AddInventory()];
+
     Widget content = const Center(child: Text('No Items Yet'));
-    if (itemController.items.isNotEmpty) {
+    if (controller.items.isNotEmpty) {
       content = Obx(
         () => ListView.builder(
-            itemCount: itemController.items.length,
+            itemCount: controller.items.length,
             itemBuilder: (ctx, index) {
-              final item = itemController.items[index];
+              final item = controller.items[index];
               return Dismissible(
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.endToStart) {

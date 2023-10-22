@@ -5,8 +5,74 @@ import 'package:get/get.dart';
 
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({super.key});
-  static AuthController authController = Get.find();
-  static Admin loggedUser = authController.loggedUser; // Need Observeable?
+
+  @override
+  Widget build(BuildContext context) {
+    final AuthController authController = Get.find();
+    final Admin loggedUser = authController.loggedUser; // Need Observeable?
+    
+    return Scaffold(
+      appBar: AppBar(
+        actions: [_EditProfile(loggedUser)],
+      ),
+      body: Flex(
+        direction: Axis.vertical,
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 150,
+            child: CircleAvatar(foregroundImage: AssetImage(loggedUser.image!)),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: const [
+                    .2,
+                    .87
+                  ],
+                  colors: [
+                    if (loggedUser.isSuperAdmin) ...[
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.primary.withOpacity(.5)
+                    ] else ...[
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.secondary.withOpacity(.5)
+                    ]
+                  ]),
+              color: loggedUser.isSuperAdmin
+                  ? Theme.of(context).colorScheme.error
+                  : Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Text(
+              loggedUser.isSuperAdmin ? 'Super Admin' : 'Admin',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: loggedUser.isSuperAdmin
+                        ? Theme.of(context).colorScheme.onError
+                        : Theme.of(context).colorScheme.onSecondary,
+                  ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          Text(loggedUser.name,
+              style: Theme.of(context).textTheme.headlineMedium),
+          const SizedBox(height: 6),
+          Text(loggedUser.email, style: Theme.of(context).textTheme.bodyMedium)
+        ],
+      ),
+    );
+  }
+}
+
+class _EditProfile extends StatelessWidget {
+  const _EditProfile(this.loggedUser);
+
+  final Admin loggedUser;
+
   void openEditDialog(BuildContext context) {
     var emailController = TextEditingController(text: loggedUser.email);
     var nameController = TextEditingController(text: loggedUser.name);
@@ -79,63 +145,9 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () => openEditDialog(context),
-              icon: const Icon(Icons.edit))
-        ],
-      ),
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 150,
-            child: CircleAvatar(foregroundImage: AssetImage(loggedUser.image!)),
-          ),
-          const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: const [
-                    .2,
-                    .87
-                  ],
-                  colors: [
-                    if (loggedUser.isSuperAdmin) ...[
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.primary.withOpacity(.5)
-                    ] else ...[
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.secondary.withOpacity(.5)
-                    ]
-                  ]),
-              color: loggedUser.isSuperAdmin
-                  ? Theme.of(context).colorScheme.error
-                  : Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Text(
-              loggedUser.isSuperAdmin ? 'Super Admin' : 'Admin',
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: loggedUser.isSuperAdmin
-                        ? Theme.of(context).colorScheme.onError
-                        : Theme.of(context).colorScheme.onSecondary,
-                  ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          Text(loggedUser.name,
-              style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: 6),
-          Text(loggedUser.email, style: Theme.of(context).textTheme.bodyMedium)
-        ],
-      ),
+    return IconButton(
+      onPressed: () => openEditDialog(context),
+      icon: const Icon(Icons.edit),
     );
   }
 }

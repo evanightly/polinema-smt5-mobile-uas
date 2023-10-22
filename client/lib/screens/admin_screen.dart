@@ -3,21 +3,20 @@ import 'package:client/models/admin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AdminScreen extends StatelessWidget {
+class AdminScreen extends GetView<AdminController> {
   const AdminScreen({super.key});
-  static AdminController adminController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     Widget content = const Center(child: Text('No Items Yet'));
-    if (adminController.admins.isNotEmpty) {
+    if (controller.admins.isNotEmpty) {
       content = Obx(
         () => Padding(
           padding: const EdgeInsets.all(4),
           child: ListView.builder(
-            itemCount: adminController.admins.length,
+            itemCount: controller.admins.length,
             itemBuilder: (ctx, index) {
-              final item = adminController.admins[index];
+              final item = controller.admins[index];
               return ListTile(
                 leading: _AdminAvatar(item),
                 title: Text(
