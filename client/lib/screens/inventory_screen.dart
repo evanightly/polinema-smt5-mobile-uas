@@ -141,6 +141,7 @@ class InventoryScreen extends GetView<ItemController> {
 
   Future<bool> delete(BuildContext context) async {
     return await showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         void destroy() {
