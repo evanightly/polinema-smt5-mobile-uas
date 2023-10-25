@@ -33,11 +33,11 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 
 ## Anggota Kelompok
 
-1. Diva Gracia
-2. Galur Arasy L
-3. M. Ariesta
-4. Rama Wijaya
-5. Selly Amelia
+1. [Diva Gracia](https://github.com/diva-gsc)
+2. [Galur Arasy L](https://github.com/evanightly)
+3. [M. Ariesta](https://github.com/EvosMan)
+4. [Rama Wijaya](https://github.com/ramawijaya1)
+5. [Selly Amelia](https://github.com/sellyamelia)
 
 ## Pembagian Tugas
 
