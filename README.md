@@ -41,27 +41,27 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 
 ## Pembagian Tugas
 
-- Login + Logout (Selly)
+- Register + Login + Logout (Selly)
 
 - Dashboard
+  - User
+    - Filter Barang
+    - Transaksi Barang  
 
   - Admin
-
-    - Create (Super Admin) (Ariesta)
-    - Read + Delete (Ariesta)
-    - Update (Super Admin) (Diva)
-
-  - Inventory
-
-    - Create (Rama) : ID, Nama, Jenis, Harga, Tipe
-    - Detail Information (Rama)
-    - Read + Delete (Galur)
-    - Update (Galur)
-
-  - Settings
-
-    - DarkMode (Galur)
-
-  - Profile
+    - Admin Management
+      - Create (Super Admin) (Ariesta)
+      - Read + Delete (Ariesta)
+      - Update (Super Admin) (Diva)
   
-    - Update Profile (Diva)
+    - Inventory
+      - Create (Rama) : ID, Nama, Jenis, Harga, Tipe
+      - Detail Information (Rama)
+      - Read + Delete (Galur)
+      - Update (Galur)
+  
+    - Settings
+      - DarkMode (Galur)
+  
+    - Profile
+      - Update Profile (Diva)
