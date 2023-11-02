@@ -1,4 +1,5 @@
 import 'package:client/controllers/auth_controller.dart';
+import 'package:client/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -156,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () => Get.to(() => const RegisterScreen()),
                             child: const Text(
                               'Sign Up',
                               style: TextStyle(
