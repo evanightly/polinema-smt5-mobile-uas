@@ -33,7 +33,7 @@ const ColorScheme darkColorScheme = ColorScheme(
 
 InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) {
   return InputDecorationTheme(
-    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
     focusedBorder: OutlineInputBorder(
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       borderSide: BorderSide(width: 1, color: colorScheme.primary),

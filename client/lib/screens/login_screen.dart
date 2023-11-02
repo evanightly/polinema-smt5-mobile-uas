@@ -1,10 +1,11 @@
 import 'package:client/controllers/auth_controller.dart';
-import 'package:client/screens/register_screen.dart';
+import 'package:client/screens/user/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -21,6 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     obscureText = true;
   }
+
+  void navigateToUserLogin() => Get.to(() => const RegisterScreen());
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Card(
+              color: Colors.white,
               elevation: 12,
               child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -65,65 +69,68 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         children: [
-                          Material(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            elevation: 2,
-                            child: AspectRatio(
-                              aspectRatio: 7 / 1,
-                              child: Center(
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                      hintText: 'Email',
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.all(8)),
-                                  controller: emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                ),
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
                               ),
+                            ),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                hintStyle: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                                hintText: 'Email',
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.all(8),
+                              ),
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
                             ),
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 16),
-                            child: Material(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
                               ),
-                              elevation: 2,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: AspectRatio(
-                                        aspectRatio: 7 / 1,
-                                        child: Center(
-                                            child: TextFormField(
-                                          decoration: const InputDecoration(
-                                            hintText: 'Password',
-                                            border: InputBorder.none,
-                                            contentPadding: EdgeInsets.all(8),
-                                          ),
-                                          controller: passwordController,
-                                          obscureText: obscureText,
-                                        ))),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.remove_red_eye,
-                                      color: !obscureText
-                                          ? Colors.black.withOpacity(0.3)
-                                          : Colors.black,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      hintText: 'Password',
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.all(8),
                                     ),
-                                    onPressed: () {
-                                      setState(() {
-                                        obscureText = !obscureText;
-                                      });
-                                    },
-                                  )
-                                ],
-                              ),
+                                    controller: passwordController,
+                                    obscureText: obscureText,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.remove_red_eye,
+                                    color: !obscureText
+                                        ? Colors.black.withOpacity(0.3)
+                                        : Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                )
+                              ],
                             ),
                           ),
                           Container(
@@ -157,9 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () => Get.to(() => const RegisterScreen()),
+                            onTap: navigateToUserLogin,
                             child: const Text(
-                              'Sign Up',
+                              'Login as user',
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.black87,
