@@ -1,14 +1,14 @@
-import 'dart:convert';
-
 import 'package:client/config/custom_theme.dart';
-import 'package:client/screens/admin/login_screen.dart';
+import 'package:client/screens/admin/admin_login_screen.dart';
+import 'package:client/screens/user/user_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UserLoginScreen extends StatelessWidget {
   const UserLoginScreen({super.key});
 
-  void navigateToLoginAdmin() => Get.to(() => const AdminLoginScreen());
+  void navigateToRegisterUser() => Get.to(const UserRegisterScreen());
+  void navigateToLoginAdmin() => Get.to(const AdminLoginScreen());
   void registerUser() {}
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class UserLoginScreen extends StatelessWidget {
           const Text('Don\'t have account?'),
           const SizedBox(width: 20),
           ElevatedButton(
-            onPressed: navigateToLoginAdmin,
+            onPressed: navigateToRegisterUser,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: lightThemeData.colorScheme.primary,
@@ -60,10 +60,11 @@ class UserLoginScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       'Sign in',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -136,7 +137,10 @@ class UserLoginScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 20),
-                            Text("OR"),
+                            Text(
+                              "OR",
+                              style: TextStyle(color: Colors.black38),
+                            ),
                             SizedBox(width: 20),
                             Expanded(
                               child: Divider(
@@ -161,7 +165,7 @@ class UserLoginScreen extends StatelessWidget {
                             child: TextButton(
                               style: TextButton.styleFrom(
                                   backgroundColor: Colors.transparent),
-                              onPressed: registerUser,
+                              onPressed: navigateToLoginAdmin,
                               child: const Text(
                                 'Login as Admin',
                                 style: TextStyle(

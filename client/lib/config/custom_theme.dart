@@ -46,14 +46,16 @@ InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) {
 }
 
 final ThemeData lightThemeData = ThemeData(
-    useMaterial3: true,
-    colorScheme: lightColorScheme,
-    textTheme: GoogleFonts.latoTextTheme(),
-    inputDecorationTheme: inputDecorationTheme(lightColorScheme));
+  useMaterial3: true,
+  colorScheme: lightColorScheme,
+  textTheme: GoogleFonts.latoTextTheme(ThemeData.light().textTheme),
+  inputDecorationTheme: inputDecorationTheme(lightColorScheme),
+);
 
 final ThemeData darkThemeData = ThemeData(
-    useMaterial3: true,
-    colorScheme: darkColorScheme,
-    brightness: Brightness.dark,
-    textTheme: GoogleFonts.latoTextTheme(),
-    inputDecorationTheme: inputDecorationTheme(darkColorScheme));
+  useMaterial3: true,
+  colorScheme: darkColorScheme,
+  brightness: Brightness.dark,
+  textTheme: GoogleFonts.latoTextTheme(ThemeData.dark().textTheme),
+  inputDecorationTheme: inputDecorationTheme(darkColorScheme),
+);

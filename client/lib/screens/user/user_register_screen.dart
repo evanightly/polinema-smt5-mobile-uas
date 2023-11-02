@@ -3,8 +3,8 @@ import 'package:client/screens/user/user_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class UserRegisterScreen extends StatelessWidget {
+  const UserRegisterScreen({super.key});
 
   void navigateToLogin() => Get.to(() => const UserLoginScreen());
   void registerUser() {}
@@ -58,10 +58,11 @@ class RegisterScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       'Create your account',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall!
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
                     ),
                     const SizedBox(height: 20),
                     Text(

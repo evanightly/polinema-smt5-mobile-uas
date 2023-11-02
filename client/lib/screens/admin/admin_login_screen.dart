@@ -1,5 +1,5 @@
 import 'package:client/controllers/auth_controller.dart';
-import 'package:client/screens/user/user_register_screen.dart';
+import 'package:client/screens/user/user_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +11,6 @@ class AdminLoginScreen extends StatefulWidget {
 }
 
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
-  final authController = Get.put(AuthController());
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   late bool obscureText;
@@ -23,10 +22,12 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     obscureText = true;
   }
 
-  void navigateToUserLogin() => Get.to(() => const RegisterScreen());
-
   @override
   Widget build(BuildContext context) {
+    AuthController authController = Get.find();
+
+    void navigateToUserLogin() => Get.to(() => const UserLoginScreen());
+
     return Scaffold(
       key: scaffoldKey,
       body: Container(
@@ -137,7 +138,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                             margin: const EdgeInsets.only(top: 30),
                             width: MediaQuery.of(context).size.width,
                             child: MaterialButton(
-                              onPressed: authController.login,
+                              onPressed: authController.loginAdmin,
                               color: const Color(0xFFF58634),
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -148,9 +149,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                               child: const Text(
                                 "Login",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),

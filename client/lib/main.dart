@@ -7,7 +7,7 @@ import 'package:client/controllers/dashboard_screen_controller.dart';
 import 'package:client/controllers/item_controller.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/models/item.dart';
-import 'package:client/screens/admin/login_screen.dart';
+import 'package:client/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -103,17 +103,19 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightThemeData,
       darkTheme: darkThemeData,
-      home: Obx(
-        () => authController.isLogged
-            ? const _MainContent()
-            : const AdminLoginScreen(),
-      ),
+      home: Obx(() {
+        if (authController.isLogged) {
+          return const MainContent();
+        } else {
+          return const HomeScreen();
+        }
+      }),
     );
   }
 }
 
-class _MainContent extends StatelessWidget {
-  const _MainContent();
+class MainContent extends StatelessWidget {
+  const MainContent({super.key});
   @override
   Widget build(BuildContext context) {
     final dashboardScreenController = Get.put(DashboardScreenController());
