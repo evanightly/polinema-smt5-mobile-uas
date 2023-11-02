@@ -7,7 +7,7 @@ import 'package:client/controllers/dashboard_screen_controller.dart';
 import 'package:client/controllers/item_controller.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/models/item.dart';
-import 'package:client/screens/login_screen.dart';
+import 'package:client/screens/admin/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -106,7 +106,7 @@ class App extends StatelessWidget {
       home: Obx(
         () => authController.isLogged
             ? const _MainContent()
-            : const LoginScreen(),
+            : const AdminLoginScreen(),
       ),
     );
   }

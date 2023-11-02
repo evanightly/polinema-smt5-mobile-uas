@@ -1,16 +1,16 @@
 import 'package:client/controllers/auth_controller.dart';
-import 'package:client/screens/user/register_screen.dart';
+import 'package:client/screens/user/user_register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class AdminLoginScreen extends StatefulWidget {
+  const AdminLoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<AdminLoginScreen> createState() => _AdminLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _AdminLoginScreenState extends State<AdminLoginScreen> {
   final authController = Get.put(AuthController());
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
