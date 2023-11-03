@@ -37,6 +37,7 @@ dependencies:
   get: ^4.6.6
   dio: ^5.3.3
   get_storage: ^2.1.1
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
     - assets/images/person1.jpg
     - assets/images/person2.jpg
     - assets/images/person3.jpg
+    - assets/images/undraw_electric_car.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

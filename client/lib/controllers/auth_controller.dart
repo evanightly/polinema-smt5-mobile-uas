@@ -1,5 +1,6 @@
 import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/controllers/dashboard_screen_controller.dart';
+import 'package:client/main.dart';
 import 'package:client/models/admin.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class AuthController extends GetxController {
   bool get isLogged => _isLogged.value;
   set isLogged(bool value) => _isLogged.value = value;
 
-  void login() {
+  void loginAdmin() {
     _loggedUser.value = Admin(
       '1',
       'Ruby Nicholas',
@@ -25,9 +26,11 @@ class AuthController extends GetxController {
       'assets/images/dog.jpg',
     );
 
-    isLogged = true;
+    _isLogged.value = true;
 
     dashboardScreenController.scaffoldActions = [const DashboardAppBarUser()];
+    Get.to(() => const MainContent());
+    refresh();
   }
 
   void logout() {

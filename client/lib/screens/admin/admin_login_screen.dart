@@ -1,15 +1,16 @@
 import 'package:client/controllers/auth_controller.dart';
+import 'package:client/screens/user/user_login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class AdminLoginScreen extends StatefulWidget {
+  const AdminLoginScreen({super.key});
+
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<AdminLoginScreen> createState() => _AdminLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final authController = Get.put(AuthController());
+class _AdminLoginScreenState extends State<AdminLoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   late bool obscureText;
@@ -23,6 +24,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthController authController = Get.find();
+
+    void navigateToUserLogin() => Get.to(() => const UserLoginScreen());
+
     return Scaffold(
       key: scaffoldKey,
       body: Container(
@@ -39,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Card(
+              color: Colors.white,
               elevation: 12,
               child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -64,72 +70,75 @@ class _LoginScreenState extends State<LoginScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(
                         children: [
-                          Material(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                            elevation: 2,
-                            child: AspectRatio(
-                              aspectRatio: 7 / 1,
-                              child: Center(
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                      hintText: 'Email',
-                                      border: InputBorder.none,
-                                      contentPadding: EdgeInsets.all(8)),
-                                  controller: emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                ),
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
                               ),
+                            ),
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                hintStyle: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                                hintText: 'Email',
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.all(8),
+                              ),
+                              controller: emailController,
+                              keyboardType: TextInputType.emailAddress,
                             ),
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 16),
-                            child: Material(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(20),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
                               ),
-                              elevation: 2,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: AspectRatio(
-                                        aspectRatio: 7 / 1,
-                                        child: Center(
-                                            child: TextFormField(
-                                          decoration: const InputDecoration(
-                                            hintText: 'Password',
-                                            border: InputBorder.none,
-                                            contentPadding: EdgeInsets.all(8),
-                                          ),
-                                          controller: passwordController,
-                                          obscureText: obscureText,
-                                        ))),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.remove_red_eye,
-                                      color: !obscureText
-                                          ? Colors.black.withOpacity(0.3)
-                                          : Colors.black,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      hintText: 'Password',
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54,
+                                      ),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.all(8),
                                     ),
-                                    onPressed: () {
-                                      setState(() {
-                                        obscureText = !obscureText;
-                                      });
-                                    },
-                                  )
-                                ],
-                              ),
+                                    controller: passwordController,
+                                    obscureText: obscureText,
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.remove_red_eye,
+                                    color: !obscureText
+                                        ? Colors.black.withOpacity(0.3)
+                                        : Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      obscureText = !obscureText;
+                                    });
+                                  },
+                                )
+                              ],
                             ),
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 30),
                             width: MediaQuery.of(context).size.width,
                             child: MaterialButton(
-                              onPressed: authController.login,
+                              onPressed: authController.loginAdmin,
                               color: const Color(0xFFF58634),
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -140,9 +149,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: const Text(
                                 "Login",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),
@@ -156,9 +166,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: navigateToUserLogin,
                             child: const Text(
-                              'Sign Up',
+                              'Login as user',
                               style: TextStyle(
                                 fontSize: 15,
                                 color: Colors.black87,

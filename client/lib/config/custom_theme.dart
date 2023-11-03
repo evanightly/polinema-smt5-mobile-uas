@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const Color customColorSeed = Color(0xFFCF6679);
 
@@ -30,13 +31,31 @@ const ColorScheme darkColorScheme = ColorScheme(
   brightness: Brightness.dark,
 );
 
+InputDecorationTheme inputDecorationTheme(ColorScheme colorScheme) {
+  return InputDecorationTheme(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(width: 1, color: colorScheme.primary),
+    ),
+    enabledBorder: const OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderSide: BorderSide(width: 1, color: Colors.grey),
+    ),
+  );
+}
+
 final ThemeData lightThemeData = ThemeData(
   useMaterial3: true,
   colorScheme: lightColorScheme,
+  textTheme: GoogleFonts.latoTextTheme(ThemeData.light().textTheme),
+  inputDecorationTheme: inputDecorationTheme(lightColorScheme),
 );
 
 final ThemeData darkThemeData = ThemeData(
   useMaterial3: true,
   colorScheme: darkColorScheme,
   brightness: Brightness.dark,
+  textTheme: GoogleFonts.latoTextTheme(ThemeData.dark().textTheme),
+  inputDecorationTheme: inputDecorationTheme(darkColorScheme),
 );
