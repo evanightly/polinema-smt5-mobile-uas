@@ -53,7 +53,11 @@ class DashboardScreenController extends GetxController {
   final _scaffoldActions = <Widget>[].obs;
 
   List<Widget> get scaffoldActions => _scaffoldActions;
-  set scaffoldActions(List<Widget> widgets) => _scaffoldActions.value = widgets;
+  set scaffoldActions(List<Widget> widgets) {
+    print('Changed to $widgets');
+    _scaffoldActions.value = widgets;
+  }
 
-  void _scaffoldInit() => _scaffoldActions.value = [const DashboardAppBarUser()];
+  void _scaffoldInit() =>
+      _scaffoldActions.value = [const DashboardAppBarUser()];
 }

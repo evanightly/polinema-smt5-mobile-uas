@@ -2,6 +2,7 @@ import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:client/controllers/dashboard_screen_controller.dart';
 import 'package:client/main.dart';
 import 'package:client/models/admin.dart';
+import 'package:client/screens/home_screen.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
@@ -30,10 +31,10 @@ class AuthController extends GetxController {
 
     dashboardScreenController.scaffoldActions = [const DashboardAppBarUser()];
     Get.to(() => const MainContent());
-    refresh();
   }
 
   void logout() {
     isLogged = false;
+    Get.offAll(() => const HomeScreen());
   }
 }
