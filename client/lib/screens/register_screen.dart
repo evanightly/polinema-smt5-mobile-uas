@@ -1,13 +1,12 @@
 import 'package:client/config/custom_theme.dart';
-import 'package:client/screens/user/user_login_screen.dart';
+import 'package:client/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class UserRegisterScreen extends StatelessWidget {
-  const UserRegisterScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
-
-  void navigateToLogin() => Get.to(() => const UserLoginScreen());
+  void navigateToLogin() => Get.to(() => const LoginScreen());
   void registerUser() {}
   @override
   Widget build(BuildContext context) {
@@ -59,11 +58,10 @@ class UserRegisterScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       'Create your account',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -153,4 +151,3 @@ class UserRegisterScreen extends StatelessWidget {
     );
   }
 }
-
