@@ -1,25 +1,24 @@
-import 'package:client/controllers/auth_controller.dart';
-import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserAnchorMenu extends StatelessWidget {
+class UserAnchorMenu extends ConsumerWidget {
   const UserAnchorMenu({required this.icon, super.key});
   final Widget icon;
   @override
-  Widget build(BuildContext context) {
-    AuthController authController = Get.find();
+  Widget build(BuildContext context, WidgetRef ref) {
+    navigateToUserProfile() => Navigator.pushNamed(context, '/profile');
+
     return MenuAnchor(
       menuChildren: [
         MenuItemButton(
+          onPressed: navigateToUserProfile,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 14),
             child: Text('Profile'),
           ),
-          onPressed: () => Get.to(const UserProfileScreen()),
         ),
         MenuItemButton(
-          onPressed: authController.logout,
+          // onPressed: authController.logout,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 14),
             child: Text('Logout'),

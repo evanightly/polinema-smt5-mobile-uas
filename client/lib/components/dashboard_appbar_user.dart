@@ -1,23 +1,20 @@
 import 'package:client/components/user_anchor_menu.dart';
-import 'package:client/controllers/auth_controller.dart';
+import 'package:client/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DashboardAppBarUser extends StatelessWidget {
+class DashboardAppBarUser extends ConsumerWidget {
   const DashboardAppBarUser({super.key});
-  static AuthController authController = Get.find();
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loggedUser = ref.watch(authProvider);
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: UserAnchorMenu(
         icon: Stack(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage(
-                authController.loggedUser.image!,
-              ),
+              backgroundImage: AssetImage(loggedUser!.image!),
               radius: 20,
             ),
             Positioned(

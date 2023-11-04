@@ -1,13 +1,12 @@
 import 'package:client/config/custom_theme.dart';
-import 'package:client/screens/user/user_login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class UserRegisterScreen extends StatelessWidget {
   const UserRegisterScreen({super.key});
 
-
-  void navigateToLogin() => Get.to(() => const UserLoginScreen());
+  void navigateToLogin() {
+    // Get.to(() => const UserLoginScreen());
+  }
   void registerUser() {}
   @override
   Widget build(BuildContext context) {
@@ -153,4 +152,3 @@ class UserRegisterScreen extends StatelessWidget {
     );
   }
 }
-

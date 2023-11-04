@@ -1,28 +1,23 @@
-import 'package:client/controllers/settings_controller.dart';
+import 'package:client/providers/settings_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final settingsController = Get.put(SettingsController());
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settingsNotifier = ref.read(settingsProvider.notifier);
+    final settings = ref.watch(settingsProvider);
 
-    void toggleDarkMode(bool switchTo) {
-      settingsController.isDarkMode = switchTo;
-    }
-
-    return Obx(
-      () => Column(
-        children: [
-          SwitchListTile.adaptive(
-            title: const Text('Dark Mode'),
-            value: settingsController.isDarkMode,
-            onChanged: toggleDarkMode,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        SwitchListTile.adaptive(
+          title: const Text('Dark Mode'),
+          value: settings.darkMode,
+          onChanged: (changeTo) => settingsNotifier.toggleDarkMode(changeTo),
+        ),
+      ],
     );
   }
 }
