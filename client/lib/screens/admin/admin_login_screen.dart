@@ -1,16 +1,15 @@
-import 'package:client/controllers/auth_controller.dart';
-import 'package:client/screens/user/user_login_screen.dart';
+import 'package:client/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AdminLoginScreen extends StatefulWidget {
+class AdminLoginScreen extends ConsumerStatefulWidget {
   const AdminLoginScreen({super.key});
 
   @override
-  State<AdminLoginScreen> createState() => _AdminLoginScreenState();
+  ConsumerState<AdminLoginScreen> createState() => _AdminLoginScreenState();
 }
 
-class _AdminLoginScreenState extends State<AdminLoginScreen> {
+class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   late bool obscureText;
@@ -24,9 +23,15 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AuthController authController = Get.find();
+    final authController = ref.read(authProvider.notifier);
+    void navigateToUserLogin() {
+      // Get.to(() => const UserLoginScreen())
+      Navigator.pushReplacementNamed(context, '/user/login');
+    }
 
-    void navigateToUserLogin() => Get.to(() => const UserLoginScreen());
+    void login() {
+      authController.login(context);
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -138,7 +143,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                             margin: const EdgeInsets.only(top: 30),
                             width: MediaQuery.of(context).size.width,
                             child: MaterialButton(
-                              onPressed: authController.loginAdmin,
+                              onPressed: login,
                               color: const Color(0xFFF58634),
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(

@@ -1,16 +1,19 @@
 import 'package:client/config/custom_theme.dart';
-import 'package:client/screens/admin/admin_login_screen.dart';
-import 'package:client/screens/user/user_login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    void navigateToLoginUser() => Get.to(() => const UserLoginScreen());
-    void navigateToLoginAdmin() => Get.to(() => const AdminLoginScreen());
+    void navigateToLoginUser() {
+      Navigator.pushNamed(context, '/user/login');
+    }
+
+    void navigateToLoginAdmin() {
+      Navigator.pushNamed(context, '/admin/login');
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
