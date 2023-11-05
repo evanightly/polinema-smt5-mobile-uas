@@ -37,9 +37,7 @@ dependencies:
   dio: ^5.3.3
   google_fonts: ^6.1.0
   flutter_riverpod: ^2.4.5
-  riverpod_annotation: ^2.3.0
   shared_preferences: ^2.2.2
-  shared_preferences_riverpod: ^0.3.0
 
 dev_dependencies:
   flutter_test:
