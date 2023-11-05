@@ -2,16 +2,18 @@ import 'package:client/components/dashboard_appbar_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AdminDashboardActionsProviderNotifier
-    extends StateNotifier<List<Widget>> {
-  AdminDashboardActionsProviderNotifier() : super([]);
-
+class AdminDashboardActionsProviderNotifier extends Notifier<List<Widget>> {
   void reset() => state = [const DashboardAppBarUser()];
 
   void setActions(List<Widget> widgets) => state = widgets;
+
+  @override
+  List<Widget> build() {
+    return [];
+  }
 }
 
 final adminDashboardActionsProvider =
-    StateNotifierProvider<AdminDashboardActionsProviderNotifier, List<Widget>>(
-  (ref) => AdminDashboardActionsProviderNotifier(),
+    NotifierProvider<AdminDashboardActionsProviderNotifier, List<Widget>>(
+  () => AdminDashboardActionsProviderNotifier(),
 );

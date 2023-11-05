@@ -1,24 +1,14 @@
 import 'package:client/components/dashboard_drawer_list_tile.dart';
 import 'package:client/components/user_anchor_menu.dart';
-import 'package:client/providers/admin_dashboard_provider.dart';
+import 'package:client/models/dashboard_drawer_menu.dart';
+import 'package:client/providers/admin_dashboard_actions_provider.dart';
 import 'package:client/providers/auth_provider.dart';
-import 'package:client/screens/admin/ui/admin_inventory_screen.dart';
-import 'package:client/screens/admin/ui/admin_main_screen.dart';
-import 'package:client/screens/admin/ui/admin_management_screen.dart';
+import 'package:client/screens/admin/sub_screens/admin_inventory_screen.dart';
+import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
+import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-enum PagePosition { top, bottom }
-
-class Page {
-  final IconData icon;
-  final String title;
-  final Widget? page;
-  final void Function()? onTap;
-
-  const Page({required this.title, required this.icon, this.page, this.onTap});
-}
 
 class AdminDashboardScreen extends ConsumerStatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -30,31 +20,32 @@ class AdminDashboardScreen extends ConsumerStatefulWidget {
 
 class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
   String _selectedPage = 'Dashboard';
-  late final Map<PagePosition, Map<String, Page>> _drawerMenu = {
-    PagePosition.top: {
-      'Dashboard': const Page(
+  late final Map<DashboardDrawerMenuPosition, Map<String, DashboardDrawerMenu>>
+      _drawerMenu = {
+    DashboardDrawerMenuPosition.top: {
+      'Dashboard': const DashboardDrawerMenu(
         title: 'Dashboard',
         icon: Icons.dashboard,
         page: AdminMainScreen(),
       ),
-      'Admin Management': const Page(
+      'Admin Management': const DashboardDrawerMenu(
         title: 'Admin Management',
         icon: Icons.supervised_user_circle,
         page: AdminManagementScreen(),
       ),
-      'Inventory': const Page(
+      'Inventory': const DashboardDrawerMenu(
         title: 'Inventory',
         icon: Icons.inventory,
         page: AdminInventoryScreen(),
       ),
     },
-    PagePosition.bottom: {
-      'Settings': const Page(
+    DashboardDrawerMenuPosition.bottom: {
+      'Settings': const DashboardDrawerMenu(
         icon: Icons.settings,
         title: 'Settings',
         page: SettingsScreen(),
       ),
-      'Logout': Page(
+      'Logout': DashboardDrawerMenu(
         icon: Icons.logout,
         title: 'Logout',
         onTap: logout,
@@ -73,8 +64,6 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
       _selectedPage = page;
     });
 
-    print(_selectedPage);
-
     // Close drawer after selecting menu
     Navigator.pop(context);
 
@@ -83,8 +72,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
   }
 
   Widget? get _dashboardContent {
-    return _drawerMenu[PagePosition.top]?[_selectedPage]?.page ??
-        _drawerMenu[PagePosition.bottom]?[_selectedPage]?.page;
+    return _drawerMenu[DashboardDrawerMenuPosition.top]?[_selectedPage]?.page ??
+        _drawerMenu[DashboardDrawerMenuPosition.bottom]?[_selectedPage]?.page;
   }
 
   @override
@@ -104,20 +93,13 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final loggedUser = ref.read(authProvider);
-    final auth = ref.read(authProvider.notifier);
     final dashboardActions = ref.watch(adminDashboardActionsProvider);
 
     Widget content = const SizedBox.shrink();
 
-    void navigateToSettings() {
-      Navigator.pushNamed(context, '/settings');
-    }
-
     if (loggedUser != null) {
       content = Scaffold(
-        appBar: AppBar(
-          actions: dashboardActions,
-        ),
+        appBar: AppBar(actions: dashboardActions),
         drawer: Drawer(
           child: Column(
             children: [
@@ -169,7 +151,9 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                         ],
                       ),
                     ),
-                    for (var page in _drawerMenu[PagePosition.top]!.entries)
+                    for (var page
+                        in _drawerMenu[DashboardDrawerMenuPosition.top]!
+                            .entries)
                       DashboardDrawerListTile(
                         isSelected: _selectedPage == page.key,
                         icon: page.value.icon,
@@ -186,7 +170,9 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                 child: Column(
                   children: [
                     const Divider(),
-                    for (var page in _drawerMenu[PagePosition.bottom]!.entries)
+                    for (var page
+                        in _drawerMenu[DashboardDrawerMenuPosition.bottom]!
+                            .entries)
                       DashboardDrawerListTile(
                         isSelected: _selectedPage == page.key,
                         icon: page.value.icon,

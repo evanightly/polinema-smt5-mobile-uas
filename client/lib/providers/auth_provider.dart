@@ -2,9 +2,7 @@ import 'package:client/models/admin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AuthProviderNotifier extends StateNotifier<Admin?> {
-  AuthProviderNotifier() : super(null);
-
+class AuthProviderNotifier extends Notifier<Admin?> {
   void login(BuildContext context) {
     state = Admin(
       '1',
@@ -27,8 +25,12 @@ class AuthProviderNotifier extends StateNotifier<Admin?> {
       Navigator.pushReplacementNamed(context, '/admin/login');
     }
   }
+
+  @override
+  Admin? build() {
+    return null;
+  }
 }
 
-final authProvider = StateNotifierProvider<AuthProviderNotifier, Admin?>((ref) {
-  return AuthProviderNotifier();
-});
+final authProvider = NotifierProvider<AuthProviderNotifier, Admin?>(
+    () => AuthProviderNotifier());

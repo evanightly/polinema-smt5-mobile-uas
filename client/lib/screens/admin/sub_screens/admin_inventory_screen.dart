@@ -1,5 +1,5 @@
 import 'package:client/models/item.dart';
-import 'package:client/providers/admin_dashboard_provider.dart';
+import 'package:client/providers/admin_dashboard_actions_provider.dart';
 import 'package:client/providers/items_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

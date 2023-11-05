@@ -1,3 +1,4 @@
+import 'package:client/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,7 +19,7 @@ class UserAnchorMenu extends ConsumerWidget {
           ),
         ),
         MenuItemButton(
-          // onPressed: authController.logout,
+          onPressed: () => ref.read(authProvider.notifier).logout(),
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 14),
             child: Text('Logout'),
