@@ -1,7 +1,12 @@
-import 'package:client/models/item.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:developer';
 
-class ItemProviderNotifier extends Notifier<List<Item>> {
+import 'package:client/models/item.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'items.g.dart';
+
+@Riverpod(keepAlive: true)
+class Items extends _$Items {
   @override
   List<Item> build() {
     return [
@@ -37,7 +42,17 @@ class ItemProviderNotifier extends Notifier<List<Item>> {
       ),
     ];
   }
-}
 
-final itemsProvider = NotifierProvider<ItemProviderNotifier, List<Item>>(
-    () => ItemProviderNotifier());
+  void addItem(Item item) {
+    log('Item Added');
+    state = [...state, item];
+  }
+
+  void removeItem(String title) {
+    log('Item Removed');
+    state = [
+      for (final item in state)
+        if (item.title != title) item,
+    ];
+  }
+}

@@ -19,4 +19,15 @@ class Admin {
       : id = null,
         isSuperAdmin = false,
         image = null;
+
+  factory Admin.fromJson(Map<String, dynamic> json) {
+    return Admin(
+      json['_id'],
+      json['name'],
+      json['email'],
+      json['password'],
+      json['isSuperAdmin'],
+      json['image'],
+    );
+  }
 }

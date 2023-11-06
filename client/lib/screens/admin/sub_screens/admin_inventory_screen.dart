@@ -1,6 +1,6 @@
 import 'package:client/models/item.dart';
-import 'package:client/providers/admin_dashboard_actions_provider.dart';
-import 'package:client/providers/items_provider.dart';
+import 'package:client/providers/admin_dashboard_actions.dart';
+import 'package:client/providers/items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -197,7 +197,11 @@ class AdminInventoryScreen extends ConsumerWidget {
                 edit(item);
                 return false;
               } else {
-                return await delete(context);
+                final isConfirmed = await delete(context);
+                if (isConfirmed) {
+                  ref.read(itemsProvider.notifier).removeItem(item.title);
+                }
+                return false;
               }
             },
             background: Container(

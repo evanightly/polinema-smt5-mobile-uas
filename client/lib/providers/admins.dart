@@ -1,7 +1,10 @@
 import 'package:client/models/admin.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AdminProviderNotifier extends Notifier<List<Admin>> {
+part 'admins.g.dart';
+
+@Riverpod(keepAlive: true)
+class Admins extends _$Admins {
   @override
   List<Admin> build() {
     return [
@@ -40,6 +43,3 @@ class AdminProviderNotifier extends Notifier<List<Admin>> {
     ];
   }
 }
-
-final adminsProvider = NotifierProvider<AdminProviderNotifier, List<Admin>>(
-    () => AdminProviderNotifier());

@@ -1,6 +1,6 @@
 import 'package:client/config/custom_theme.dart';
-import 'package:client/providers/settings_provider.dart';
-import 'package:client/providers/shared_preference_provider.dart';
+import 'package:client/providers/settings.dart';
+import 'package:client/providers/shared_preference.dart';
 import 'package:client/screens/admin/admin_dashboard_screen.dart';
 import 'package:client/screens/admin/admin_login_screen.dart';
 import 'package:client/screens/home_screen.dart';
@@ -17,12 +17,6 @@ void main() async {
 
   runApp(ProviderScope(child: App(prefs)));
 }
-
-// final themeProvider = createPrefProvider<bool>(
-//   prefs: (_) => prefs,
-//   prefKey: "darkMode",
-//   defaultValue: false,
-// );
 
 class App extends ConsumerWidget {
   final SharedPreferences prefs;

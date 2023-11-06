@@ -1,8 +1,8 @@
 import 'package:client/components/dashboard_drawer_list_tile.dart';
 import 'package:client/components/user_anchor_menu.dart';
 import 'package:client/models/dashboard_drawer_menu.dart';
-import 'package:client/providers/admin_dashboard_actions_provider.dart';
-import 'package:client/providers/auth_provider.dart';
+import 'package:client/providers/admin_dashboard_actions.dart';
+import 'package:client/providers/auth.dart';
 import 'package:client/screens/admin/sub_screens/admin_inventory_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
@@ -54,7 +54,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
   };
 
   void logout() {
-    ref.read(authProvider.notifier).logout();
+    ref.read(authProvider.notifier).logout(context);
   }
 
   void _setSelectedIndex(String page) {
@@ -178,7 +178,11 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                         icon: page.value.icon,
                         title: page.value.title,
                         onTap: () {
-                          page.value.onTap ?? _setSelectedIndex(page.key);
+                          if (page.value.onTap != null) {
+                            page.value.onTap!();
+                          } else {
+                            _setSelectedIndex(page.key);
+                          }
                         },
                       ),
                   ],

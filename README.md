@@ -27,6 +27,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 2. Masuk pada direktori `client`
 3. Jalankan perintah `flutter pub get`
 4. Jalankan perintah `flutter run`
+5. Jalankan perintah `dart run build_runner watch -d`
 <!-- 5. Masuk pada direktori `server`
 5. Jalankan perintah `npm install`
 6. Jalankan perintah `npm start` -->

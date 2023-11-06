@@ -1,8 +1,14 @@
-import 'package:client/models/admin.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:developer';
 
-class AuthProviderNotifier extends Notifier<Admin?> {
+import 'package:client/models/admin.dart';
+import 'package:client/providers/admin_dashboard_actions.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'auth.g.dart';
+
+@Riverpod(keepAlive: true)
+class Auth extends _$Auth {
   void login(BuildContext context) {
     state = Admin(
       '1',
@@ -16,8 +22,11 @@ class AuthProviderNotifier extends Notifier<Admin?> {
     Navigator.pushReplacementNamed(context, '/admin');
   }
 
-  void logout() {
+  void logout(BuildContext context) {
     state = null;
+    ref.read(adminDashboardActionsProvider.notifier).empty();
+    log('Logout');
+    Navigator.pushReplacementNamed(context, '/');
   }
 
   void redirectIfNotLogged(BuildContext context) {
@@ -31,6 +40,3 @@ class AuthProviderNotifier extends Notifier<Admin?> {
     return null;
   }
 }
-
-final authProvider = NotifierProvider<AuthProviderNotifier, Admin?>(
-    () => AuthProviderNotifier());
