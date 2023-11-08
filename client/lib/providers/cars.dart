@@ -1,40 +1,40 @@
 import 'dart:developer';
 
-import 'package:client/models/item.dart';
+import 'package:client/models/car.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'items.g.dart';
+part 'cars.g.dart';
 
 @Riverpod(keepAlive: true)
-class Items extends _$Items {
+class Cars extends _$Cars {
   @override
-  List<Item> build() {
+  List<Car> build() {
     return [
-      Item(
+      Car(
         title: 'Mustang GT',
         price: 120.000,
         image: 'assets/images/car1_MustangGT.jpg',
         qty: 12,
       ),
-      Item(
+      Car(
         title: 'Porsche',
         price: 180.000,
         image: 'assets/images/car2_Porsche.jpg',
         qty: 7,
       ),
-      Item(
+      Car(
         title: 'Lamborghini',
         price: 240.000,
         image: 'assets/images/car3_Lamborghini.jpg',
         qty: 2,
       ),
-      Item(
+      Car(
         title: 'BMW M4',
         price: 100.000,
         image: 'assets/images/car4_M4.jpg',
         qty: 31,
       ),
-      Item(
+      Car(
         title: 'F-Type Jaguar',
         price: 190.000,
         image: 'assets/images/car5_FTypeJaguar.jpg',
@@ -43,7 +43,7 @@ class Items extends _$Items {
     ];
   }
 
-  void addItem(Item item) {
+  void addItem(Car item) {
     log('Item Added');
     state = [...state, item];
   }

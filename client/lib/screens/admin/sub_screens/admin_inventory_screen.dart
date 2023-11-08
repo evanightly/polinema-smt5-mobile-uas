@@ -1,6 +1,6 @@
-import 'package:client/models/item.dart';
+import 'package:client/models/car.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
-import 'package:client/providers/items.dart';
+import 'package:client/providers/cars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,7 +11,7 @@ class AdminInventoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final items = ref.watch(itemsProvider);
+    final items = ref.watch(carsProvider);
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -20,7 +20,7 @@ class AdminInventoryScreen extends ConsumerWidget {
         dashboardActions.setActions([const _AddInventory()]);
       },
     );
-    void showDetails(Item item) {
+    void showDetails(Car item) {
       showDialog(
         context: context,
         builder: (ctx) {
@@ -72,7 +72,7 @@ class AdminInventoryScreen extends ConsumerWidget {
       );
     }
 
-    void edit(Item item) {
+    void edit(Car item) {
       // Controller must be disposed!
       TextEditingController titleController = TextEditingController();
       TextEditingController descriptionController = TextEditingController();
@@ -199,7 +199,7 @@ class AdminInventoryScreen extends ConsumerWidget {
               } else {
                 final isConfirmed = await delete(context);
                 if (isConfirmed) {
-                  ref.read(itemsProvider.notifier).removeItem(item.title);
+                  ref.read(carsProvider.notifier).removeItem(item.title);
                 }
                 return false;
               }

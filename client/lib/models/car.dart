@@ -1,4 +1,4 @@
-class Item {
+class Car {
   String? id;
   String title;
   String? description;
@@ -7,7 +7,7 @@ class Item {
   String? image;
   String? soldAt;
 
-  Item({
+  Car({
     this.id,
     required this.title,
     this.description,
