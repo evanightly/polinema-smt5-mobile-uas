@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
@@ -17,11 +18,11 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->email(),
-            'password' => $this->faker->password(),
-            'isSuperAdmin' => $this->faker->boolean(),
-            'image' => $this->faker->imageUrl(),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->email(),
+            'password' => Hash::make('admin'),
+            'isSuperAdmin' => fake()->randomElement([false]),
+            'image' => fake()->imageUrl(),
         ];
     }
 }

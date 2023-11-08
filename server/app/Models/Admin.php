@@ -11,11 +11,17 @@ class Admin extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $name;
-    protected $email;
-    protected $password;
-    protected $isSuperAdmin;
-    protected $image;
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'image',
+        'isSuperAdmin'
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
 
     protected $keyType = 'string';
     public $incrementing = false;

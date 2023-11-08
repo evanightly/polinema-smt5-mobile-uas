@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
 class AdminSeeder extends Seeder
 {
@@ -12,6 +13,14 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Admin::factory()->count(10)->create();
+        \App\Models\Admin::factory(15)->create();
+
+        \App\Models\Admin::factory()->create([
+            'id' => Uuid::uuid4(),
+            'name' => 'Evan Henderson',
+            'email' => 'evan@gmail.com',
+            'password' => Hash::make('admin'),
+            'isSuperAdmin' => true,
+        ]);
     }
 }

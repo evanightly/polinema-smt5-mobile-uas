@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->default(false);
+
+            // Restrict to one super admin only, (defined in DatabaseSeeder.php)
+            $table->boolean("isSuperAdmin")->default(false); 
+            
             $table->string('image')->nullable();
             $table->timestamps();
         });
