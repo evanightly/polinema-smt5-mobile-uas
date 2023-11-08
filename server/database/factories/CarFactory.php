@@ -18,12 +18,12 @@ class CarFactory extends Factory
     {
         return [
             'name' => fake()->lastName(),
-            'brand' => fake()->randomElement(['Toyota', 'Honda', 'Suzuki', 'Mitsubishi', 'Daihatsu', 'Mazda', 'Nissan', 'Mercedes-Benz', 'BMW', 'Audi', 'Lexus', 'Isuzu']),
-            'body_type' => fake()->randomElement(['SUV', 'Sedan', 'Hatchback', 'MPV', 'Wagon']),
+            'brand_id' => fake()->numberBetween(1, 10),
+            'body_type_id' => fake()->numberBetween(1, 5),
             'year' => fake()->year,
             'km_min' => fake()->numberBetween(0, 100000),
             'km_max' => fake()->numberBetween(100000, 200000),
-            'fuel' => fake()->randomElement(['Pertamax', 'Solar']),
+            'fuel_id' => fake()->numberBetween(1, 8),
             'price' => fake()->numberBetween(100000000, 200000000),
             'image' => fake()->imageUrl(),
             'description' => fake()->text,

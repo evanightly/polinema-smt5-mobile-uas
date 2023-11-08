@@ -3,6 +3,7 @@ import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/cars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 const double _circularRadius = 6;
 
@@ -11,7 +12,8 @@ class AdminInventoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final items = ref.watch(carsProvider);
+    final NumberFormat numberFormat = NumberFormat.decimalPattern();
+    final cars = ref.watch(carsProvider);
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
@@ -20,13 +22,14 @@ class AdminInventoryScreen extends ConsumerWidget {
         dashboardActions.setActions([const _AddInventory()]);
       },
     );
-    void showDetails(Car item) {
+
+    void showDetails(Car car) {
       showDialog(
         context: context,
         builder: (ctx) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(item.title),
+              title: Text(car.name),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16),
@@ -36,34 +39,42 @@ class AdminInventoryScreen extends ConsumerWidget {
                     width: double.infinity,
                     height: 150,
                     child: CircleAvatar(
-                      backgroundImage: item.image!.isNotEmpty
-                          ? AssetImage(item.image!)
-                          : null,
+                      backgroundImage:
+                          car.image.isNotEmpty ? AssetImage(car.image) : null,
                     ),
                   ),
                   const SizedBox(height: 14),
-                  Row(children: [const Text('Title : '), Text(item.title)]),
+                  Row(children: [const Text('Name : '), Text(car.name)]),
                   const SizedBox(height: 14),
                   Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Description : '),
-                        item.description != null
-                            ? Text(item.description!)
-                            : const SizedBox.shrink()
-                      ]),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Description : '),
+                      car.description != null
+                          ? Text(car.description!)
+                          : const SizedBox.shrink()
+                    ],
+                  ),
                   const SizedBox(height: 14),
-                  Row(children: [
-                    const Text('Price: '),
-                    Text(item.price.toString())
-                  ]),
+                  Text('Price: ${numberFormat.format(car.price)}'),
                   const SizedBox(height: 14),
-                  Row(children: [
-                    const Text('QTY: '),
-                    Text(item.qty.toString())
-                  ]),
+                  Text('Brand: ${car.brand}'),
                   const SizedBox(height: 14),
-                  Row(children: [const Text('Sold At: '), Text(item.title)]),
+                  Text('Body Type: ${car.body_type}'),
+                  const SizedBox(height: 14),
+                  Text('Production Year: ${car.year}'),
+                  const SizedBox(height: 14),
+                  Text(
+                    'Kilometer: ${numberFormat.format(car.km_min)} - ${numberFormat.format(car.km_max)}km',
+                  ),
+                  const SizedBox(height: 14),
+                  Text('Fuel: ${car.fuel}'),
+                  const SizedBox(height: 14),
+                  Text('Condition: ${car.condition.name}'),
+                  const SizedBox(height: 14),
+                  Text('Transmission: ${car.transmission.name}'),
+                  const SizedBox(height: 14),
+                  Text('Status: ${car.status.name}'),
                 ],
               ),
             ),
@@ -72,31 +83,31 @@ class AdminInventoryScreen extends ConsumerWidget {
       );
     }
 
-    void edit(Car item) {
+    void edit(Car car) {
       // Controller must be disposed!
       TextEditingController titleController = TextEditingController();
       TextEditingController descriptionController = TextEditingController();
       TextEditingController priceController = TextEditingController();
       TextEditingController qtyController = TextEditingController();
       TextEditingController imageController = TextEditingController();
-      TextEditingController soldAtController = TextEditingController();
+      // TextEditingController soldAtController = TextEditingController();
 
       void showDatePicker() {}
       void selectImage() {}
       void update() {}
 
-      titleController.text = item.title;
-      descriptionController.text = item.description ?? '';
-      priceController.text = item.price.toString();
-      qtyController.text = item.qty.toString();
-      imageController.text = item.image ?? '';
-      soldAtController.text = item.soldAt ?? '0';
+      titleController.text = car.name;
+      descriptionController.text = car.description ?? '';
+      priceController.text = car.price.toString();
+      // qtyController.text = item.qty.toString();
+      imageController.text = car.image;
+      // soldAtController.text = item.soldAt ?? '0';
 
       showDialog(
         context: context,
         builder: (ctx) {
           return Scaffold(
-            appBar: AppBar(title: Text('Update ${item.title}')),
+            appBar: AppBar(title: Text('Update ${car.name}')),
             body: Padding(
               padding: const EdgeInsets.all(16),
               child: Form(
@@ -184,22 +195,41 @@ class AdminInventoryScreen extends ConsumerWidget {
       );
     }
 
-    Widget content = const Center(child: Text('No Items Yet'));
-
-    if (items.isNotEmpty) {
-      content = ListView.builder(
-        itemCount: items.length,
+    return cars.when(data: (data) {
+      return ListView.builder(
+        itemCount: data.length,
         itemBuilder: (ctx, index) {
-          final item = items[index];
+          final car = data[index];
+
           return Dismissible(
             confirmDismiss: (direction) async {
               if (direction == DismissDirection.endToStart) {
-                edit(item);
+                edit(car);
                 return false;
               } else {
                 final isConfirmed = await delete(context);
                 if (isConfirmed) {
-                  ref.read(carsProvider.notifier).removeItem(item.title);
+                  final isDeleted =
+                      await ref.read(carsProvider.notifier).delete(car.id!);
+                  if (isDeleted) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${car.name} deleted'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Failed to delete ${car.name}'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  }
                 }
                 return false;
               }
@@ -230,11 +260,11 @@ class AdminInventoryScreen extends ConsumerWidget {
               ),
               child: const Icon(Icons.edit),
             ),
-            key: Key(item.title),
+            key: Key(car.name),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
-                onTap: () => showDetails(item),
+                onTap: () => showDetails(car),
                 child: Card(
                   margin: const EdgeInsets.all(0),
                   surfaceTintColor: Theme.of(context)
@@ -250,16 +280,16 @@ class AdminInventoryScreen extends ConsumerWidget {
                   child: Flex(
                     direction: Axis.horizontal,
                     children: [
-                      _ItemImage(item.image!),
+                      _ItemImage(car.image),
                       const SizedBox(
                         width: 16,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.title),
+                          Text(car.name),
                           const SizedBox(height: 4),
-                          Text('\$ ${item.price}'),
+                          Text('\$ ${numberFormat.format(car.price)}'),
                         ],
                       ),
                       const Spacer(),
@@ -280,7 +310,7 @@ class AdminInventoryScreen extends ConsumerWidget {
                           alignment: Alignment.center,
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Text(
-                            "${item.qty}",
+                            "12",
                             style: Theme.of(context).textTheme.bodyMedium,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -294,9 +324,20 @@ class AdminInventoryScreen extends ConsumerWidget {
           );
         },
       );
-    }
-
-    return content;
+    }, error: (_, error) {
+      return Center(child: Text(error.toString()));
+    }, loading: () {
+      return const Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 16),
+            Text('Please Wait...'),
+          ],
+        ),
+      );
+    });
   }
 }
 
@@ -406,7 +447,7 @@ class _ItemImage extends StatelessWidget {
           topLeft: Radius.circular(_circularRadius),
           bottomLeft: Radius.circular(_circularRadius),
         ),
-        child: Image.asset(
+        child: Image.network(
           imageUrl,
           fit: BoxFit.cover,
           width: 120,

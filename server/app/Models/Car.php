@@ -9,6 +9,21 @@ class Car extends Model
 {
     use HasFactory;
 
+    public function brand()
+    {
+        return $this->hasOne(CarBrand::class, 'id', 'brand');
+    }
+
+    public function bodyType()
+    {
+        return $this->hasOne(CarBodyType::class, 'id', 'body_type');
+    }
+
+    public function fuel()
+    {
+        return $this->hasOne(CarFuel::class, 'id', 'fuel');
+    }
+
     // implement carmudi car data model
     protected $fillable = [
         'name',

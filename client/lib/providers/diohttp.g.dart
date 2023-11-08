@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cars.dart';
+part of 'diohttp.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$carsHash() => r'3fbbfeaebee6f33fdfa1f3e0a90e7727a31eb09c';
+String _$dioHttpHash() => r'5c1fe253c6633e1e04614b6f86fea22a163d722f';
 
-/// See also [Cars].
-@ProviderFor(Cars)
-final carsProvider = AsyncNotifierProvider<Cars, List<Car>>.internal(
-  Cars.new,
-  name: r'carsProvider',
+/// See also [DioHttp].
+@ProviderFor(DioHttp)
+final dioHttpProvider = NotifierProvider<DioHttp, Dio>.internal(
+  DioHttp.new,
+  name: r'dioHttpProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$carsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$dioHttpHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Cars = AsyncNotifier<List<Car>>;
+typedef _$DioHttp = Notifier<Dio>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

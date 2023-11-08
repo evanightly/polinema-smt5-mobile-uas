@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Car;
-use App\Http\Requests\StoreCarRequest;
-use App\Http\Requests\UpdateCarRequest;
+use App\Models\CarBrand;
+use App\Http\Requests\StoreCarBrandRequest;
+use App\Http\Requests\UpdateCarBrandRequest;
 
-class CarController extends Controller
+class CarBrandController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Display all available cars
-        return Car::all()->where('status', 'Available');
+        //
     }
 
     /**
@@ -28,7 +27,7 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCarRequest $request)
+    public function store(StoreCarBrandRequest $request)
     {
         //
     }
@@ -36,7 +35,7 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Car $car)
+    public function show(CarBrand $carBrand)
     {
         //
     }
@@ -44,7 +43,7 @@ class CarController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Car $car)
+    public function edit(CarBrand $carBrand)
     {
         //
     }
@@ -52,7 +51,7 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCarRequest $request, Car $car)
+    public function update(UpdateCarBrandRequest $request, CarBrand $carBrand)
     {
         //
     }
@@ -60,8 +59,8 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Car $car)
+    public function destroy(CarBrand $carBrand)
     {
-        return Car::destroy($car->id);
+        //
     }
 }

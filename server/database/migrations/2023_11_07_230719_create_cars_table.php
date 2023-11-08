@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('brand', ['Toyota', 'Honda', 'Suzuki', 'Mitsubishi', 'Daihatsu', 'Mazda', 'Nissan', 'Mercedes-Benz', 'BMW', 'Audi', 'Lexus', 'Isuzu']);
-            $table->enum('body_type', ['SUV', 'Sedan', 'Hatchback', 'MPV', 'Wagon']);
+            $table->foreignId('brand_id')->constrained('car_brands');
+            $table->foreignId('body_type_id')->constrained('car_body_types');
             $table->integer('year');
             $table->integer('km_min'); // 'km_min' and 'km_max' are used to determine the range of km
             $table->integer('km_max');
-            $table->enum('fuel', ['Pertamax', 'Solar']);
+            $table->foreignId('fuel_id')->constrained('car_fuels');
             $table->integer('price');
             $table->string('image');
             $table->enum('condition', ['Used', 'New']);
