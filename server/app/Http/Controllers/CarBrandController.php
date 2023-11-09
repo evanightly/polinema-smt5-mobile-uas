@@ -13,7 +13,7 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        //
+        return CarBrand::all();
     }
 
     /**

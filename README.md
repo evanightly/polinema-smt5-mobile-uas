@@ -28,9 +28,17 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 3. Jalankan perintah `flutter pub get`
 4. Jalankan perintah `flutter run`
 5. Jalankan perintah `dart run build_runner watch -d`
-<!-- 5. Masuk pada direktori `server`
-5. Jalankan perintah `npm install`
-6. Jalankan perintah `npm start` -->
+
+<!-- Server Laravel -->
+6. Masuk pada direktori `server`
+7. Jalankan perintah `composer install`
+8. Jalankan perintah `php artisan key:generate`
+9. Jalankan perintah `php artisan storage:link`
+10. Jalankan perintah `php artisan serve`
+
+
+
+
 
 ## Anggota Kelompok
 

@@ -1,5 +1,6 @@
 import 'package:client/models/car.dart';
 import 'package:client/providers/diohttp.dart';
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cars.g.dart';
@@ -25,14 +26,40 @@ class Cars extends _$Cars {
     return cars;
   }
 
-  void refresh() async {
+  Future<void> refresh() async {
     state = const AsyncValue.loading();
-    state = AsyncValue.data(await get());
+    state = await AsyncValue.guard(() => get());
   }
 
-  void addItem(Car item) {
-    // print('Item Added');
-    // state = [...state, item];
+  void add(Car car) async {
+    try {
+      final dio = ref.read(dioHttpProvider);
+      final formData = FormData.fromMap({
+        'name': car.name,
+        'brand_id': car.brand.id,
+        'body_type_id': car.body_type.id,
+        'year': car.year,
+        'km_min': car.km_min,
+        'km_max': car.km_max,
+        'fuel_id': car.fuel.id,
+        'price': car.price,
+        'description': car.description,
+        'condition': car.condition.name,
+        'transmission': car.transmission.name,
+        'status': car.status.name,
+        'image': await MultipartFile.fromFile(car.uploadImage!.path),
+      });
+
+      final response = await dio.post('/cars', data: formData);
+      if (response.statusCode == 200) {
+        await Future.delayed(const Duration(seconds: 3));
+        refresh();
+      } else {
+        state = AsyncValue.error('Failed to add cars', StackTrace.current);
+      }
+    } catch (e) {
+      state = AsyncValue.error('Failed to add car', StackTrace.current);
+    }
   }
 
   Future<bool> delete(String id) async {
@@ -44,35 +71,4 @@ class Cars extends _$Cars {
     }
     return false;
   }
-} 
-
-// Car(
-//         title: 'Mustang GT',
-//         price: 120.000,
-//         image: 'assets/images/car1_MustangGT.jpg',
-//         qty: 12,
-//       ),
-//       Car(
-//         title: 'Porsche',
-//         price: 180.000,
-//         image: 'assets/images/car2_Porsche.jpg',
-//         qty: 7,
-//       ),
-//       Car(
-//         title: 'Lamborghini',
-//         price: 240.000,
-//         image: 'assets/images/car3_Lamborghini.jpg',
-//         qty: 2,
-//       ),
-//       Car(
-//         title: 'BMW M4',
-//         price: 100.000,
-//         image: 'assets/images/car4_M4.jpg',
-//         qty: 31,
-//       ),
-//       Car(
-//         title: 'F-Type Jaguar',
-//         price: 190.000,
-//         image: 'assets/images/car5_FTypeJaguar.jpg',
-//         qty: 5,
-//       ),
+}

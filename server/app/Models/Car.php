@@ -14,12 +14,12 @@ class Car extends Model
 
     protected $fillable = [
         'name',
-        'brand', // ['Toyota', 'Honda', 'Suzuki', 'Mitsubishi', 'Daihatsu', 'Mazda', 'Nissan', 'Mercedes-Benz', 'BMW', 'Audi', 'Lexus', 'Isuzu']
-        'body_type', // ['SUV', 'Sedan', 'Hatchback', 'MPV', 'Wagon']
+        'brand_id', // ['Toyota', 'Honda', 'Suzuki', 'Mitsubishi', 'Daihatsu', 'Mazda', 'Nissan', 'Mercedes-Benz', 'BMW', 'Audi', 'Lexus', 'Isuzu']
+        'body_type_id', // ['SUV', 'Sedan', 'Hatchback', 'MPV', 'Wagon']
         'year',
         'km_min', // 'km_min' and 'km_max' are used to determine the range of km
         'km_max',
-        'fuel', // ['Pertamax', 'Solar']
+        'fuel_id', // ['Pertamax', 'Solar']
         'price',
         'image',
         'description',

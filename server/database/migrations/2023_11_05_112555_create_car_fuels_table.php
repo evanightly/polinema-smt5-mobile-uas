@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('car_fuels', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable(false)->unique();
             $table->timestamps();
         });
     }

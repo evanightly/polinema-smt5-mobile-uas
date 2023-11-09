@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable(false);
             $table->foreignId('brand_id')->constrained('car_brands');
             $table->foreignId('body_type_id')->constrained('car_body_types');
-            $table->integer('year');
-            $table->integer('km_min'); // 'km_min' and 'km_max' are used to determine the range of km
-            $table->integer('km_max');
+            $table->integer('year')->nullable(false);
+            $table->integer('km_min')->nullable(false); // 'km_min' and 'km_max' are used to determine the range of km
+            $table->integer('km_max')->nullable(false);
             $table->foreignId('fuel_id')->constrained('car_fuels');
-            $table->integer('price');
+            $table->integer('price')->nullable(false);
             $table->string('image');
-            $table->enum('condition', ['Used', 'New']);
-            $table->enum('transmission', ['Automatic', 'Manual']);
-            $table->enum('status', ['Available', 'Sold']);
+            $table->enum('condition', ['Used', 'New'])->nullable(false);
+            $table->enum('transmission', ['Automatic', 'Manual'])->nullable(false);
+            $table->enum('status', ['Available', 'Sold'])->nullable(false);
             $table->text('description');
             $table->timestamps();
         });

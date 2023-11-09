@@ -1,26 +1,33 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
-enum Transmission { Automatic, Manual }
+import 'dart:io';
 
-enum Status { Available, Sold }
+import 'package:client/models/car_body_type.dart';
+import 'package:client/models/car_brand.dart';
+import 'package:client/models/car_fuel.dart';
 
-enum Condition { New, Used }
+enum CarTransmission { Automatic, Manual }
+
+enum CarStatus { Available, Sold }
+
+enum CarCondition { New, Used }
 
 class Car {
   String? id;
   String name;
-  String brand;
-  String body_type;
+  CarBrand brand;
+  CarBodyType body_type;
   String year;
   num km_min;
   num km_max;
-  String fuel;
+  CarFuel fuel;
   num price;
-  String image;
+  String? imagePath;
+  File? uploadImage;
   String? description;
-  Condition condition;
-  Transmission transmission;
-  Status status;
+  CarCondition condition;
+  CarTransmission transmission;
+  CarStatus status;
 
   // constructor using named parameter
   Car({
@@ -33,30 +40,36 @@ class Car {
     required this.km_max,
     required this.fuel,
     required this.price,
-    required this.image,
+    this.imagePath,
+    this.uploadImage,
     this.description,
     required this.condition,
     required this.transmission,
     required this.status,
   });
 
+  String get brandName => brand.name;
+  String get fuelName => fuel.name;
+  String get bodyTypeName => body_type.name;
+
   // convert json to object
   factory Car.fromJson(Map<String, dynamic> json) {
+    print(json);
     final id = json['id'].toString();
     final name = json['name'].toString();
-    final brand = json['brand']['name'].toString();
-    final body_type = json['body_type']['name'].toString();
+    final brand = CarBrand.fromJson(json['brand']);
+    final body_type = CarBodyType.fromJson(json['body_type']);
     final year = json['year'].toString();
     final km_min = num.parse(json['km_min'].toString());
     final km_max = num.parse(json['km_max'].toString());
-    final fuel = json['fuel']['name'].toString();
+    final fuel = CarFuel.fromJson(json['fuel']);
     final price = num.parse(json['price'].toString());
     final image = json['image'].toString();
     final description = json['description'].toString();
     final transmission =
-        Transmission.values.byName(json['transmission'].toString());
-    final status = Status.values.byName(json['status']);
-    final condition = Condition.values.byName(json['condition']);
+        CarTransmission.values.byName(json['transmission'].toString());
+    final status = CarStatus.values.byName(json['status']);
+    final condition = CarCondition.values.byName(json['condition']);
 
     return Car(
       id: id,
@@ -68,11 +81,31 @@ class Car {
       km_max: km_max,
       fuel: fuel,
       price: price,
-      image: image,
+      imagePath: image,
       description: description,
       condition: condition,
       transmission: transmission,
       status: status,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    print(this.imagePath);
+    return {
+      'id': id,
+      'name': name,
+      'brand': brandName,
+      'body_type': bodyTypeName,
+      'year': year,
+      'km_min': km_min,
+      'km_max': km_max,
+      'fuel': fuelName,
+      'price': price,
+      'image': imagePath,
+      'description': description,
+      'condition': condition.toString(),
+      'transmission': transmission.toString(),
+      'status': status.toString(),
+    };
   }
 }

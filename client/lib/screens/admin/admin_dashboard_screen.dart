@@ -30,8 +30,13 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
       ),
       'Admin Management': const DashboardDrawerMenu(
         title: 'Admin Management',
-        icon: Icons.supervised_user_circle,
+        icon: Icons.supervisor_account,
         page: AdminManagementScreen(),
+      ),
+      'User Management': const DashboardDrawerMenu(
+        title: 'User Management',
+        icon: Icons.people,
+        // page: AdminInventoryScreen(),
       ),
       'Inventory': const DashboardDrawerMenu(
         title: 'Inventory',
