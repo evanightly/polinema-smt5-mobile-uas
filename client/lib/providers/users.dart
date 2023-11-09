@@ -9,7 +9,6 @@ part 'users.g.dart';
 class Users extends _$Users {
   @override
   Future<List<User>> build() async {
-    print('build');
     return await get();
   }
 
@@ -28,7 +27,6 @@ class Users extends _$Users {
   }
 
   Future<void> refresh() async {
-    print('refresh');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
   }

@@ -27,7 +27,6 @@ class Cars extends _$Cars {
   }
 
   Future<void> refresh() async {
-    print('refresh');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
   }
