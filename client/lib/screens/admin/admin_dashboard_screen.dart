@@ -38,6 +38,11 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
         icon: Icons.inventory,
         page: AdminInventoryScreen(),
       ),
+      'Transaction': const DashboardDrawerMenu(
+        title: 'Transaction',
+        icon: Icons.attach_money,
+        // page: AdminInventoryScreen(),
+      ),
     },
     DashboardDrawerMenuPosition.bottom: {
       'Settings': const DashboardDrawerMenu(
@@ -99,7 +104,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
 
     if (loggedUser != null) {
       content = Scaffold(
-        appBar: AppBar(actions: dashboardActions),
+        appBar: AppBar(title: Text(_selectedPage), actions: dashboardActions),
         drawer: Drawer(
           child: Column(
             children: [

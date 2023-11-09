@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
+        $samplePortion = 5;
+        $sampleUsers = User::all()->pluck('id')->splice(0, $samplePortion);
+
         return [
-            'user_id' => fake()->numberBetween(1, 10),
+            'user_id' => fake()->randomElement($sampleUsers),
             'car_id' => fake()->numberBetween(1, 10),
             'payment_method' => fake()->randomElement(['Cash', 'Credit Card', 'Debit Card']),
             'payment_proof' => fake()->imageUrl(),

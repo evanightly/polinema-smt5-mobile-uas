@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('car_id')->constrained('cars')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('payment_method', ['Cash', 'Credit Card', 'Debit Card']);
             $table->string('payment_proof');
             $table->date('payment_date');

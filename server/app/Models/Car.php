@@ -4,27 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CarBrand;
+use App\Models\CarBodyType;
+use App\Models\CarFuel;
 
 class Car extends Model
 {
     use HasFactory;
 
-    public function brand()
-    {
-        return $this->hasOne(CarBrand::class, 'id', 'brand');
-    }
-
-    public function bodyType()
-    {
-        return $this->hasOne(CarBodyType::class, 'id', 'body_type');
-    }
-
-    public function fuel()
-    {
-        return $this->hasOne(CarFuel::class, 'id', 'fuel');
-    }
-
-    // implement carmudi car data model
     protected $fillable = [
         'name',
         'brand', // ['Toyota', 'Honda', 'Suzuki', 'Mitsubishi', 'Daihatsu', 'Mazda', 'Nissan', 'Mercedes-Benz', 'BMW', 'Audi', 'Lexus', 'Isuzu']
@@ -40,4 +27,19 @@ class Car extends Model
         'transmission', // ['Automatic', 'Manual']
         'status' // ['Available', 'Sold']
     ];
+
+    public function brand()
+    {
+        return $this->hasOne(CarBrand::class, 'id', 'brand_id');
+    }
+
+    public function bodyType()
+    {
+        return $this->hasOne(CarBodyType::class, 'id', 'body_type_id');
+    }
+
+    public function fuel()
+    {
+        return $this->hasOne(CarFuel::class, 'id', 'fuel_id');
+    }
 }

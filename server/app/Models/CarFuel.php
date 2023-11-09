@@ -15,6 +15,7 @@ class CarFuel extends Model
 
     public function cars()
     {
-        return $this->hasMany(Car::class, 'fuel', 'id');
+        return $this->hasMany(Car::class);
     }
+    
 }
