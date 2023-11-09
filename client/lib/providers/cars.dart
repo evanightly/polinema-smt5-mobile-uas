@@ -27,6 +27,7 @@ class Cars extends _$Cars {
   }
 
   Future<void> refresh() async {
+    print('refresh');
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
   }
@@ -55,7 +56,9 @@ class Cars extends _$Cars {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
       } else {
-        state = AsyncValue.error('Failed to add cars', StackTrace.current);
+        // state = AsyncValue.error('Failed to add cars', StackTrace.current);
+        // Force reload data
+        refresh();
       }
     } catch (e) {
       state = AsyncValue.error('Failed to add car', StackTrace.current);

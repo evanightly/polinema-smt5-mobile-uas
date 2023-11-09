@@ -353,7 +353,7 @@ class AdminInventoryScreen extends ConsumerWidget {
         },
       );
     }, error: (_, error) {
-      return Center(child: Text(error.toString()));
+      return Center(child: Text(_.toString()));
     }, loading: () {
       return const Center(
         child: Row(
@@ -707,8 +707,6 @@ class _AddInventoryState extends ConsumerState<_AddInventory> {
                                 : null;
                           },
                           onChanged: (newValue) {
-                            print(newValue);
-                            print(num.tryParse(newValue));
                             setState(() => _kmMin = num.tryParse(newValue)!);
                           },
                         ),

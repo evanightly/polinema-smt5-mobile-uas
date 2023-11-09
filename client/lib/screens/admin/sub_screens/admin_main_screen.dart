@@ -1,11 +1,14 @@
+import 'package:client/providers/admins.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AdminMainScreen extends StatelessWidget {
+class AdminMainScreen extends ConsumerWidget {
   const AdminMainScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final admins = ref.watch(adminsProvider);
     return ListView(
       itemExtent: 200,
       shrinkWrap: true,
@@ -91,6 +94,133 @@ class AdminMainScreen extends StatelessWidget {
             ],
           ),
         ),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 140,
+                alignment: Alignment.bottomCenter,
+                margin: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.secondary,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.supervised_user_circle,
+                            size: 35,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            admins.length.toString(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Total Admins',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 140,
+                alignment: Alignment.bottomCenter,
+                margin: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.secondary,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(12),
+                      bottomRight: Radius.circular(12),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.people,
+                            size: 35,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            admins.length.toString(),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Total Users',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+
         // Container(
         //   height: 140,
         //   alignment: Alignment.bottomCenter,

@@ -54,7 +54,6 @@ class Car {
 
   // convert json to object
   factory Car.fromJson(Map<String, dynamic> json) {
-    print(json);
     final id = json['id'].toString();
     final name = json['name'].toString();
     final brand = CarBrand.fromJson(json['brand']);
@@ -90,7 +89,6 @@ class Car {
   }
 
   Map<String, dynamic> toJson() {
-    print(this.imagePath);
     return {
       'id': id,
       'name': name,

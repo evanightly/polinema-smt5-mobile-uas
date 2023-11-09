@@ -43,8 +43,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
         icon: Icons.inventory,
         page: AdminInventoryScreen(),
       ),
-      'Transaction': const DashboardDrawerMenu(
-        title: 'Transaction',
+      'Transactions': const DashboardDrawerMenu(
+        title: 'Transactions',
         icon: Icons.attach_money,
         // page: AdminInventoryScreen(),
       ),
@@ -153,7 +153,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                                       ),
                                 ),
                                 const UserAnchorMenu(
-                                  icon: Icon(Icons.arrow_drop_down),
+                                  icon: Icon(Icons.keyboard_arrow_down),
                                 )
                               ],
                             ),
