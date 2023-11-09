@@ -64,13 +64,15 @@ class AdminInventoryScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: ListView(
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 150,
-                    child: CircleAvatar(
-                      backgroundImage: car.imagePath!.isNotEmpty
-                          ? AssetImage(car.imagePath!)
-                          : null,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(_circularRadius),
+                    child: Image.network(
+                      car.imagePath!.startsWith('http')
+                          ? car.imagePath!
+                          : 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/${car.imagePath!}',
+                      fit: BoxFit.cover,
+                      width: 120,
+                      height: 200,
                     ),
                   ),
                   const SizedBox(height: 14),
