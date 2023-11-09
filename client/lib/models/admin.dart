@@ -15,11 +15,6 @@ class Admin {
     this.image,
   );
 
-  Admin.create(this.name, this.email, this.password)
-      : id = null,
-        isSuperAdmin = false,
-        image = null;
-
   factory Admin.fromJson(Map<String, dynamic> json) {
     return Admin(
       json['_id'],

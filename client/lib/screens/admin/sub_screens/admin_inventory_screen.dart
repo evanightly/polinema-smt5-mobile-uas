@@ -225,149 +225,153 @@ class AdminInventoryScreen extends ConsumerWidget {
       );
     }
 
-    return cars.when(data: (data) {
-      return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (ctx, index) {
-          final car = data[index];
+    return cars.when(
+      data: (data) {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (ctx, index) {
+            final car = data[index];
 
-          return Dismissible(
-            confirmDismiss: (direction) async {
-              if (direction == DismissDirection.endToStart) {
-                edit(car);
-                return false;
-              } else {
-                final isConfirmed = await delete(context);
-                if (isConfirmed) {
-                  final isDeleted =
-                      await ref.read(carsProvider.notifier).delete(car.id!);
-                  if (isDeleted) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${car.name} deleted'),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    }
-                  } else {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Failed to delete ${car.name}'),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
+            return Dismissible(
+              confirmDismiss: (direction) async {
+                if (direction == DismissDirection.endToStart) {
+                  edit(car);
+                  return false;
+                } else {
+                  final isConfirmed = await delete(context);
+                  if (isConfirmed) {
+                    final isDeleted =
+                        await ref.read(carsProvider.notifier).delete(car.id!);
+                    if (isDeleted) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${car.name} deleted'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    } else {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Failed to delete ${car.name}'),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
                     }
                   }
+                  return false;
                 }
-                return false;
-              }
-            },
-            background: Container(
-              padding: const EdgeInsets.only(left: 20),
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.red.withOpacity(.2),
-                    Colors.red,
-                  ],
-                ),
-              ),
-              child: const Icon(Icons.delete),
-            ),
-            secondaryBackground: Container(
-              padding: const EdgeInsets.only(right: 20),
-              alignment: Alignment.centerRight,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blue,
-                    Colors.blue.withOpacity(.2),
-                  ],
-                ),
-              ),
-              child: const Icon(Icons.edit),
-            ),
-            key: Key(car.name),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: () => showDetails(car),
-                child: Card(
-                  margin: const EdgeInsets.all(0),
-                  surfaceTintColor: Theme.of(context)
-                      .colorScheme
-                      .inverseSurface
-                      .withOpacity(.08),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.horizontal(
-                      left: Radius.circular(_circularRadius),
-                      right: Radius.circular(_circularRadius),
-                    ),
-                  ),
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      _ItemImage(car.imagePath!),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(car.name),
-                          const SizedBox(height: 4),
-                          Text('\$ ${numberFormat.format(car.price)}'),
-                        ],
-                      ),
-                      const Spacer(),
-                      SizedBox(
-                        height: 80,
-                        width: 40,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .inverseSurface
-                                .withOpacity(.05),
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(_circularRadius),
-                              bottomRight: Radius.circular(_circularRadius),
-                            ),
-                          ),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(
-                            "12",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      )
+              },
+              background: Container(
+                padding: const EdgeInsets.only(left: 20),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.red.withOpacity(.2),
+                      Colors.red,
                     ],
                   ),
                 ),
+                child: const Icon(Icons.delete),
               ),
-            ),
-          );
-        },
-      );
-    }, error: (_, error) {
-      return Center(child: Text(_.toString()));
-    }, loading: () {
-      return const Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(width: 16),
-            Text('Please Wait...'),
-          ],
-        ),
-      );
-    });
+              secondaryBackground: Container(
+                padding: const EdgeInsets.only(right: 20),
+                alignment: Alignment.centerRight,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.blue,
+                      Colors.blue.withOpacity(.2),
+                    ],
+                  ),
+                ),
+                child: const Icon(Icons.edit),
+              ),
+              key: Key(car.name),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => showDetails(car),
+                  child: Card(
+                    margin: const EdgeInsets.all(0),
+                    surfaceTintColor: Theme.of(context)
+                        .colorScheme
+                        .inverseSurface
+                        .withOpacity(.08),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(_circularRadius),
+                        right: Radius.circular(_circularRadius),
+                      ),
+                    ),
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        _ItemImage(car.imagePath!),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(car.name),
+                            const SizedBox(height: 4),
+                            Text('\$ ${numberFormat.format(car.price)}'),
+                          ],
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          height: 80,
+                          width: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .inverseSurface
+                                  .withOpacity(.05),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(_circularRadius),
+                                bottomRight: Radius.circular(_circularRadius),
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Text(
+                              "12",
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+      error: (_, error) {
+        return Center(child: Text(_.toString()));
+      },
+      loading: () {
+        return const Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 16),
+              Text('Please Wait...'),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 

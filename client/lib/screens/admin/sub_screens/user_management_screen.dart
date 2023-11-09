@@ -1,75 +1,80 @@
-import 'package:client/models/admin.dart';
-import 'package:client/providers/admins.dart';
+import 'package:client/models/user.dart';
+import 'package:client/providers/users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AdminManagementScreen extends ConsumerWidget {
-  const AdminManagementScreen({super.key});
+class UserManagementScreen extends ConsumerWidget {
+  const UserManagementScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget content = const Center(child: Text('No Items Yet'));
-    final admins = ref.watch(usersProvider);
+    final users = ref.watch(usersProvider);
 
-    if (admins.isNotEmpty) {
-      content = content = Padding(
-        padding: const EdgeInsets.all(4),
-        child: ListView.builder(
-          itemCount: admins.length,
-          itemBuilder: (ctx, index) {
-            final item = admins[index];
-            return ListTile(
-              leading: _AdminAvatar(item),
-              title: Text(
-                item.name,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+    return users.when(
+      data: (data) {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(4),
+              child: ListTile(
+                leading: _UserAvatar(data[index]),
+                title: Text(
+                  data[index].name,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                ),
+                trailing: _UserActions(data[index]),
               ),
-              subtitle: Text(
-                item.isSuperAdmin ? 'Super Admin' : 'Admin',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: item.isSuperAdmin
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.secondary,
-                    ),
-              ),
-              trailing: _AdminActions(item),
             );
           },
-        ),
-      );
-    }
-
-    return content;
+        );
+      },
+      error: (_, error) {
+        return Center(child: Text(_.toString()));
+      },
+      loading: () {
+        return const Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 16),
+              Text('Please Wait...'),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
-class _AdminAvatar extends StatelessWidget {
-  const _AdminAvatar(this.admin);
-  final Admin admin;
+class _UserAvatar extends StatelessWidget {
+  const _UserAvatar(this.user);
+  final User user;
 
   @override
   Widget build(BuildContext context) {
     Widget image = const SizedBox.shrink();
-    if (admin.image!.isNotEmpty) {
+    if (user.image!.isNotEmpty) {
       image = CircleAvatar(
-        backgroundImage: AssetImage(admin.image!),
+        backgroundImage: NetworkImage(user.image!),
       );
     }
     return image;
   }
 }
 
-class _AdminActions extends StatelessWidget {
-  const _AdminActions(this.admin);
-  final Admin admin;
+class _UserActions extends ConsumerWidget {
+  const _UserActions(this.user);
+  final User user;
 
   void delete() {}
 
   void openEditDialog(BuildContext context) {
-    var nameController = TextEditingController(text: admin.name);
-    var emailController = TextEditingController(text: admin.email);
+    var nameController = TextEditingController(text: user.name);
+    var emailController = TextEditingController(text: user.email);
     var passwordController = TextEditingController();
 
     void update() {}
@@ -78,7 +83,7 @@ class _AdminActions extends StatelessWidget {
       builder: (ctx) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Edit Admin'),
+            title: const Text('Edit User'),
             actions: [
               IconButton(onPressed: update, icon: const Icon(Icons.check))
             ],
@@ -96,7 +101,7 @@ class _AdminActions extends StatelessWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: AssetImage(admin.image!),
+                          foregroundImage: NetworkImage(user.image!),
                         ),
                       ),
                       const SizedBox(width: 24),
@@ -140,25 +145,21 @@ class _AdminActions extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Widget actions = const SizedBox.shrink();
-    if (!admin.isSuperAdmin) {
-      actions = Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            onPressed: delete,
-            icon: const Icon(Icons.delete),
-            color: Colors.red.shade400,
-          ),
-          IconButton(
-            onPressed: () => openEditDialog(context),
-            icon: const Icon(Icons.edit),
-            color: Colors.blue.shade400,
-          )
-        ],
-      );
-    }
-    return actions;
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          onPressed: delete,
+          icon: const Icon(Icons.delete),
+          color: Colors.red.shade400,
+        ),
+        IconButton(
+          onPressed: () => openEditDialog(context),
+          icon: const Icon(Icons.edit),
+          color: Colors.blue.shade400,
+        )
+      ],
+    );
   }
 }

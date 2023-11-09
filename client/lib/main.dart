@@ -8,9 +8,9 @@ import 'package:client/screens/user/user_dashboard_screen.dart';
 import 'package:client/screens/user/user_login_screen.dart';
 import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(sharedPreferenceProvider.notifier).init(prefs);
     return MaterialApp(
-      title: 'Named Routes Demo',
+      title: 'Mein App',
       initialRoute: '/',
       debugShowCheckedModeBanner: false,
       theme:

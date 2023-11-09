@@ -10,7 +10,7 @@ String _$adminsHash() => r'a84791844be10556c9a3c8faa124f02345474a51';
 
 /// See also [Admins].
 @ProviderFor(Admins)
-final adminsProvider = NotifierProvider<Admins, List<Admin>>.internal(
+final usersProvider = NotifierProvider<Admins, List<Admin>>.internal(
   Admins.new,
   name: r'adminsProvider',
   debugGetCreateSourceHash:

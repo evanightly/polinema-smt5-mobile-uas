@@ -36,9 +36,31 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 9. Jalankan perintah `php artisan storage:link`
 10. Jalankan perintah `php artisan serve`
 
-
-
-
+## Progress
+- Admin
+  - Create
+  - Read
+  - Update
+  - Delete
+- Inventory
+  - Create v
+  - Read v 
+  - Update
+  - Delete v
+- Transaksi
+  - Create
+  - Read
+  - Update
+  - Delete
+- User
+  - Create
+  - Read v
+  - Update
+  - Delete
+- Settings v
+  - Dark Mode v
+- Profile
+  - Update Profile
 
 ## Anggota Kelompok
 

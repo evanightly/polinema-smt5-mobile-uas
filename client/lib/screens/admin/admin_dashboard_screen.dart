@@ -6,6 +6,7 @@ import 'package:client/providers/auth.dart';
 import 'package:client/screens/admin/sub_screens/admin_inventory_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
+import 'package:client/screens/admin/sub_screens/user_management_screen.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +37,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
       'User Management': const DashboardDrawerMenu(
         title: 'User Management',
         icon: Icons.people,
-        // page: AdminInventoryScreen(),
+        page: UserManagementScreen(),
       ),
       'Inventory': const DashboardDrawerMenu(
         title: 'Inventory',

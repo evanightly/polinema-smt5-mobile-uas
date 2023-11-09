@@ -8,7 +8,7 @@ class AdminMainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final admins = ref.watch(adminsProvider);
+    final admins = ref.watch(usersProvider);
     return ListView(
       itemExtent: 200,
       shrinkWrap: true,
