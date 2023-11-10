@@ -45,8 +45,25 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 - Inventory
   - Create v
   - Read v 
-  - Update
+  - Update v
   - Delete v
+
+  - Car Fuel
+    - Create
+    - Read
+    - Update
+    - Delete
+  - Car Brand
+    - Create
+    - Read
+    - Update
+    - Delete
+  - Car Body Type
+    - Create
+    - Read
+    - Update
+    - Delete
+
 - Transaksi
   - Create
   - Read

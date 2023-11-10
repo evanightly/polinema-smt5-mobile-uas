@@ -88,7 +88,49 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        //
+        try {
+            // check if the request has file
+            if ($request->hasFile('image')) {
+                // if the image starts with http then don't do anything
+                if (strpos($request->image, 'http') !== false) {
+                    $image_name = $car->image;
+                }
+
+                // check if the image exists
+                else if (file_exists(public_path('storage/images/cars/' . $car->image))) {
+                    // delete the image
+                    unlink(public_path('storage/images/cars/' . $car->image));
+                }
+                // store the new image
+                $image = $request->file('image')->store('images/cars', 'public');
+                $image_name = explode('/', $image)[2];
+            } else {
+                $image_name = $car->image;
+            }
+            $car->update([
+                'name' => $request->name,
+                'brand_id' => $request->brand_id,
+                'body_type_id' => $request->body_type_id,
+                'year' => $request->year,
+                'km_min' => $request->km_min,
+                'km_max' => $request->km_max,
+                'fuel_id' => $request->fuel_id,
+                'price' => $request->price,
+                'image' => $image_name,
+                'description' => $request->description,
+                'condition' => $request->condition,
+                'transmission' => $request->transmission,
+                'status' => $request->status,
+            ]);
+            return response()->json([
+                'message' => 'Car updated successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 400);
+        }
     }
 
     /**

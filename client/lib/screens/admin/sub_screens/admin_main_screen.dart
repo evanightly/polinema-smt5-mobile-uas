@@ -127,10 +127,10 @@ class AdminMainScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.supervised_user_circle,
                             size: 35,
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color: Colors.white,
                           ),
                           const SizedBox(width: 5),
                           Text(
@@ -188,10 +188,10 @@ class AdminMainScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.people,
                             size: 35,
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color: Colors.white,
                           ),
                           const SizedBox(width: 5),
                           Text(

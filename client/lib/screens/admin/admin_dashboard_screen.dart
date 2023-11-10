@@ -3,7 +3,7 @@ import 'package:client/components/user_anchor_menu.dart';
 import 'package:client/models/dashboard_drawer_menu.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/auth.dart';
-import 'package:client/screens/admin/sub_screens/admin_inventory_screen.dart';
+import 'package:client/screens/admin/sub_screens/admin_car_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
 import 'package:client/screens/admin/sub_screens/user_management_screen.dart';
@@ -39,10 +39,25 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
         icon: Icons.people,
         page: UserManagementScreen(),
       ),
-      'Inventory': const DashboardDrawerMenu(
-        title: 'Inventory',
-        icon: Icons.inventory,
-        page: AdminInventoryScreen(),
+      'Car': const DashboardDrawerMenu(
+        title: 'Car',
+        icon: Icons.directions_car,
+        page: AdminCarScreen(),
+      ),
+      'CarFuel': const DashboardDrawerMenu(
+        title: 'Car Fuel',
+        icon: Icons.local_gas_station,
+        // page: AdminInventoryScreen(),
+      ),
+      'CarBrand': const DashboardDrawerMenu(
+        title: 'Car Brand',
+        icon: Icons.branding_watermark,
+        // page: AdminInventoryScreen(),
+      ),
+      'CarBodyType': const DashboardDrawerMenu(
+        title: 'Car Body Type',
+        icon: Icons.directions_car_filled,
+        // page: AdminInventoryScreen(),
       ),
       'Transactions': const DashboardDrawerMenu(
         title: 'Transactions',
