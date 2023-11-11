@@ -130,8 +130,8 @@ class AdminCarScreen extends ConsumerWidget {
                     child: Flex(
                       direction: Axis.horizontal,
                       children: [
-                        car.imagePath != null
-                            ? _CarImage(car.imagePath!)
+                        car.image != null
+                            ? _CarImage(car.image!)
                             : const SizedBox.shrink(),
                         const SizedBox(
                           width: 16,

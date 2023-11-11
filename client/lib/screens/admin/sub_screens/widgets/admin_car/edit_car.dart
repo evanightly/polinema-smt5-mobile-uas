@@ -15,7 +15,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 void editCar(BuildContext context, Car car) {
-  print(car.name);
   showDialog(
     context: context,
     builder: (ctx) {
@@ -43,7 +42,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   late num _kmMax = widget.car.km_max;
   late CarFuel _fuel = widget.car.fuel;
   late num _price = widget.car.price;
-  late File? _file = File(widget.car.imagePath!);
+  late File? _file = File(widget.car.image!);
   late String? _description = widget.car.description;
   late CarCondition _condition = widget.car.condition;
   late CarTransmission _transmission = widget.car.transmission;
@@ -52,8 +51,8 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   @override
   void initState() {
     super.initState();
-    if (widget.car.imagePath != null) {
-      var path = widget.car.imagePath!;
+    if (widget.car.image != null) {
+      var path = widget.car.image!;
       if (!path.startsWith('http')) {
         path =
             'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$path';
@@ -151,7 +150,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
         fuel: _fuel,
         price: _price,
         uploadImage: _file,
-        imagePath: widget.car.imagePath,
+        image: widget.car.image,
         description: _description,
         condition: _condition,
         transmission: _transmission,

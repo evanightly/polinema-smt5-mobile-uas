@@ -14,8 +14,8 @@ class Users extends _$Users {
 
   // get all users
   Future<List<User>> get() async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.get('/users');
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.get('/users');
     final data = response.data as List<dynamic>;
     final users = data.map(
       (user) {
@@ -33,7 +33,7 @@ class Users extends _$Users {
 
   void add(User user) async {
     try {
-      final dio = ref.read(dioHttpProvider);
+      final dio = ref.read(dioHttpProvider.notifier);
       final formData = FormData.fromMap({
         'name': user.name,
         'email': user.email,
@@ -41,7 +41,7 @@ class Users extends _$Users {
         'image': await MultipartFile.fromFile(user.uploadImage!.path),
       });
 
-      final response = await dio.post('/users', data: formData);
+      final response = await dio.adminHttp.post('/users', data: formData);
       if (response.statusCode == 200) {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
@@ -57,7 +57,7 @@ class Users extends _$Users {
 
   void put(User user) async {
     try {
-      final dio = ref.read(dioHttpProvider);
+      final dio = ref.read(dioHttpProvider.notifier);
       final formData = FormData.fromMap({
         'name': user.name,
         'email': user.email,
@@ -65,7 +65,8 @@ class Users extends _$Users {
         'image': await MultipartFile.fromFile(user.uploadImage!.path),
       });
 
-      final response = await dio.put('/users/${user.id}', data: formData);
+      final response =
+          await dio.adminHttp.put('/users/${user.id}', data: formData);
       if (response.statusCode == 200) {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
@@ -80,8 +81,8 @@ class Users extends _$Users {
   }
 
   Future<bool> delete(String id) async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.delete('/users/$id');
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.delete('/users/$id');
     if (response.statusCode == 200) {
       await Future.delayed(const Duration(seconds: 3));
       refresh();

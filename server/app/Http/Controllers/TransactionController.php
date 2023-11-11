@@ -13,7 +13,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        return Transaction::all();
     }
 
     /**
@@ -29,7 +29,7 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        //
+        return Transaction::create($request->validated());
     }
 
     /**
@@ -53,7 +53,7 @@ class TransactionController extends Controller
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        //
+        return $transaction->update($request->validated());
     }
 
     /**
@@ -61,6 +61,6 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        return $transaction->delete();
     }
 }

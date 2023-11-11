@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return User::create($request->validated());
     }
 
     /**
@@ -52,7 +52,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        return $user->update($request->validated());
     }
 
     /**
@@ -60,6 +60,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        return $user->delete();
     }
 }

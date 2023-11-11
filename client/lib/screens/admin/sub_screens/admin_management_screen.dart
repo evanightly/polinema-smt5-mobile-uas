@@ -1,4 +1,5 @@
 import 'package:client/models/admin.dart';
+import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,16 +9,15 @@ class AdminManagementScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget content = const Center(child: Text('No Items Yet'));
-    final admins = ref.watch(usersProvider);
-
-    if (admins.isNotEmpty) {
-      content = content = Padding(
+    final admins = ref.watch(adminsProvider);
+    final auth = ref.watch(adminAuthProvider);
+    return admins.when(data: (data) {
+      return Padding(
         padding: const EdgeInsets.all(4),
         child: ListView.builder(
-          itemCount: admins.length,
+          itemCount: data.length,
           itemBuilder: (ctx, index) {
-            final item = admins[index];
+            final item = data[index];
             return ListTile(
               leading: _AdminAvatar(item),
               title: Text(
@@ -34,14 +34,17 @@ class AdminManagementScreen extends ConsumerWidget {
                           : Theme.of(context).colorScheme.secondary,
                     ),
               ),
-              trailing: _AdminActions(item),
+              trailing:
+                  auth!.isSuperAdmin ? _AdminActions(item) : const SizedBox.shrink(),
             );
           },
         ),
       );
-    }
-
-    return content;
+    }, error: (error, stack) {
+      return Center(child: Text('Something went wrong $error $stack'));
+    }, loading: () {
+      return const Center(child: CircularProgressIndicator());
+    });
   }
 }
 
@@ -54,7 +57,7 @@ class _AdminAvatar extends StatelessWidget {
     Widget image = const SizedBox.shrink();
     if (admin.image!.isNotEmpty) {
       image = CircleAvatar(
-        backgroundImage: AssetImage(admin.image!),
+        backgroundImage: NetworkImage(admin.imageUrl),
       );
     }
     return image;
@@ -96,7 +99,7 @@ class _AdminActions extends StatelessWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: AssetImage(admin.image!),
+                          foregroundImage: NetworkImage(admin.imageUrl),
                         ),
                       ),
                       const SizedBox(width: 24),

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:client/models/car_body_type.dart';
 import 'package:client/models/car_brand.dart';
 import 'package:client/models/car_fuel.dart';
+import 'package:client/providers/diohttp.dart';
 
 enum CarTransmission { Automatic, Manual }
 
@@ -22,7 +23,7 @@ class Car {
   num km_max;
   CarFuel fuel;
   num price;
-  String? imagePath;
+  String? image;
   File? uploadImage;
   String? description;
   CarCondition condition;
@@ -40,7 +41,7 @@ class Car {
     required this.km_max,
     required this.fuel,
     required this.price,
-    this.imagePath,
+    this.image,
     this.uploadImage,
     this.description,
     required this.condition,
@@ -51,6 +52,18 @@ class Car {
   String get brandName => brand.name;
   String get fuelName => fuel.name;
   String get bodyTypeName => body_type.name;
+  String get imageUrl {
+    String imageUrl = '';
+    if (image == null) {
+      return imageUrl;
+    }
+
+    if (image!.startsWith('http') == false) {
+      return image!;
+    } else {
+      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/admins/$imageUrl';
+    }
+  }
 
   // convert json to object
   factory Car.fromJson(Map<String, dynamic> json) {
@@ -80,7 +93,7 @@ class Car {
       km_max: km_max,
       fuel: fuel,
       price: price,
-      imagePath: image,
+      image: image,
       description: description,
       condition: condition,
       transmission: transmission,
@@ -99,7 +112,7 @@ class Car {
       'km_max': km_max,
       'fuel': fuelName,
       'price': price,
-      'image': imagePath,
+      'image': image,
       'description': description,
       'condition': condition.toString(),
       'transmission': transmission.toString(),

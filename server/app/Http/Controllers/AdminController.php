@@ -13,7 +13,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        return Admin::all();
     }
 
     /**
@@ -29,7 +29,7 @@ class AdminController extends Controller
      */
     public function store(StoreAdminRequest $request)
     {
-        //
+        return Admin::create($request->validated());
     }
 
     /**
@@ -53,7 +53,7 @@ class AdminController extends Controller
      */
     public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        //
+        return $admin->update($request->validated());
     }
 
     /**
@@ -61,6 +61,6 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        //
+        return $admin->delete();
     }
 }

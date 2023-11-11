@@ -14,8 +14,8 @@ class Cars extends _$Cars {
 
   // get all cars
   Future<List<Car>> get() async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.get('/cars');
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.get('/cars');
     final data = response.data as List<dynamic>;
     final cars = data.map(
       (car) {
@@ -33,7 +33,7 @@ class Cars extends _$Cars {
 
   void add(Car car) async {
     try {
-      final dio = ref.read(dioHttpProvider);
+      final dio = ref.read(dioHttpProvider.notifier);
       final formData = FormData.fromMap({
         'name': car.name,
         'brand_id': car.brand.id,
@@ -50,7 +50,7 @@ class Cars extends _$Cars {
         'image': await MultipartFile.fromFile(car.uploadImage!.path),
       });
 
-      final response = await dio.post('/cars', data: formData);
+      final response = await dio.adminHttp.post('/cars', data: formData);
       if (response.statusCode == 200) {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
@@ -66,7 +66,7 @@ class Cars extends _$Cars {
 
   void put(Car car) async {
     try {
-      final dio = ref.read(dioHttpProvider);
+      final dio = ref.read(dioHttpProvider.notifier);
       // if car.imagePath starts with http then dont upload image
       if (car.uploadImage!.path.startsWith('http')) {
         final formData = FormData.fromMap({
@@ -84,7 +84,7 @@ class Cars extends _$Cars {
           'status': car.status.name,
         });
 
-        final response = await dio.post(
+        final response = await dio.adminHttp.post(
           '/cars/${car.id}?_method=PUT',
           data: formData,
           options: Options(
@@ -119,7 +119,7 @@ class Cars extends _$Cars {
         'image': await MultipartFile.fromFile(car.uploadImage!.path),
       });
 
-      final response = await dio.post(
+      final response = await dio.adminHttp.post(
         '/cars/${car.id}?_method=PUT',
         data: formData,
       );
@@ -136,8 +136,8 @@ class Cars extends _$Cars {
   }
 
   Future<bool> delete(String id) async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.delete('/cars/$id');
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.delete('/cars/$id');
     if (response.statusCode == 200) {
       state = AsyncValue.data(state.value!..removeWhere((car) => car.id == id));
       return true;

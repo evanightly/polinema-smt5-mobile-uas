@@ -1,4 +1,5 @@
 import 'package:client/providers/admins.dart';
+import 'package:client/providers/users.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +9,8 @@ class AdminMainScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final admins = ref.watch(usersProvider);
+    final admins = ref.watch(adminsProvider);
+    final users = ref.watch(usersProvider);
     return ListView(
       itemExtent: 200,
       shrinkWrap: true,
@@ -134,7 +136,7 @@ class AdminMainScreen extends ConsumerWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            admins.length.toString(),
+                             admins.asData?.value.length.toString() ?? '0',
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
@@ -195,7 +197,7 @@ class AdminMainScreen extends ConsumerWidget {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            admins.length.toString(),
+                            users.asData?.value.length.toString() ?? '0',
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme

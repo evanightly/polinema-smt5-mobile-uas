@@ -1,5 +1,5 @@
 import 'package:client/components/user_anchor_menu.dart';
-import 'package:client/providers/auth.dart';
+import 'package:client/providers/admin_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,14 +7,14 @@ class DashboardAppBarUser extends ConsumerWidget {
   const DashboardAppBarUser({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(authProvider);
+    final loggedUser = ref.watch(adminAuthProvider);
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: UserAnchorMenu(
         icon: Stack(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage(loggedUser!.image!),
+              backgroundImage: NetworkImage(loggedUser!.imageUrl),
               radius: 20,
             ),
             Positioned(

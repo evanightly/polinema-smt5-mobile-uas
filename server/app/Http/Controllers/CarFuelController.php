@@ -29,7 +29,7 @@ class CarFuelController extends Controller
      */
     public function store(StoreCarFuelRequest $request)
     {
-        //
+        return CarFuel::create($request->validated());
     }
 
     /**
@@ -53,7 +53,7 @@ class CarFuelController extends Controller
      */
     public function update(UpdateCarFuelRequest $request, CarFuel $carFuel)
     {
-        //
+        return $carFuel->update($request->validated());
     }
 
     /**
@@ -61,6 +61,6 @@ class CarFuelController extends Controller
      */
     public function destroy(CarFuel $carFuel)
     {
-        //
+        return $carFuel->delete();
     }
 }

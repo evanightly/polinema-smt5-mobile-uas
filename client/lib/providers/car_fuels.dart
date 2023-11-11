@@ -12,8 +12,8 @@ class CarFuels extends _$CarFuels {
   }
 
   Future<List<CarFuel>> get() async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.get('/car-fuels');
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.get('/car-fuels');
     final data = response.data as List<dynamic>;
     final carFuels = data.map(
       (carFuel) {

@@ -1,5 +1,5 @@
 import 'package:client/models/admin.dart';
-import 'package:client/providers/auth.dart';
+import 'package:client/providers/admin_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,7 +61,7 @@ class _EditProfile extends ConsumerWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: AssetImage(loggedUser.image!),
+                          foregroundImage: NetworkImage(loggedUser.imageUrl),
                         ),
                       ),
                       const SizedBox(width: 24),
@@ -106,7 +106,7 @@ class _EditProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(authProvider);
+    final loggedUser = ref.watch(adminAuthProvider);
 
     return IconButton(
       onPressed: () => openEditDialog(context, loggedUser!),
@@ -120,12 +120,12 @@ class _ProfileAvatar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(authProvider);
+    final loggedUser = ref.watch(adminAuthProvider);
     return SizedBox(
       width: double.infinity,
       height: 150,
       child: CircleAvatar(
-        foregroundImage: AssetImage(loggedUser!.image!),
+        foregroundImage: NetworkImage(loggedUser!.imageUrl),
       ),
     );
   }
@@ -136,7 +136,7 @@ class _ProfileBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSuperAdmin = ref.watch(authProvider)!.isSuperAdmin;
+    final isSuperAdmin = ref.watch(adminAuthProvider)!.isSuperAdmin;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
@@ -177,7 +177,7 @@ class _ProfileName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final name = ref.watch(authProvider)!.name;
+    final name = ref.watch(adminAuthProvider)!.name;
     return Text(name, style: Theme.of(context).textTheme.headlineMedium);
   }
 }
@@ -187,7 +187,7 @@ class _ProfileEmail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final email = ref.watch(authProvider)!.email;
+    final email = ref.watch(adminAuthProvider)!.email;
     return Text(email, style: Theme.of(context).textTheme.bodyMedium);
   }
 }

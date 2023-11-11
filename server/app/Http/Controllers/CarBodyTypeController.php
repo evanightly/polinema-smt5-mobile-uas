@@ -29,7 +29,7 @@ class CarBodyTypeController extends Controller
      */
     public function store(StoreCarBodyTypeRequest $request)
     {
-        //
+        return CarBodyType::create($request->validated());
     }
 
     /**
@@ -53,7 +53,7 @@ class CarBodyTypeController extends Controller
      */
     public function update(UpdateCarBodyTypeRequest $request, CarBodyType $carBodyType)
     {
-        //
+        return $carBodyType->update($request->validated());
     }
 
     /**
@@ -61,6 +61,6 @@ class CarBodyTypeController extends Controller
      */
     public function destroy(CarBodyType $carBodyType)
     {
-        //
+        return $carBodyType->delete();
     }
 }

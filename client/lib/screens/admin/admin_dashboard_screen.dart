@@ -1,8 +1,8 @@
 import 'package:client/components/dashboard_drawer_list_tile.dart';
 import 'package:client/components/user_anchor_menu.dart';
 import 'package:client/models/dashboard_drawer_menu.dart';
+import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
-import 'package:client/providers/auth.dart';
 import 'package:client/screens/admin/sub_screens/admin_car_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
@@ -80,7 +80,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
   };
 
   void logout() {
-    ref.read(authProvider.notifier).logout(context);
+    ref.read(adminAuthProvider.notifier).logout(context);
   }
 
   void _setSelectedIndex(String page) {
@@ -107,7 +107,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final loggedUser = ref.read(authProvider.notifier);
+      final loggedUser = ref.read(adminAuthProvider.notifier);
       loggedUser.redirectIfNotLogged(context);
 
       final dashboardActionsNotifier =
@@ -118,7 +118,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loggedUser = ref.read(authProvider);
+    final loggedUser = ref.read(adminAuthProvider);
     final dashboardActions = ref.watch(adminDashboardActionsProvider);
 
     Widget content = const SizedBox.shrink();
@@ -139,7 +139,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundImage: AssetImage(loggedUser.image!),
+                            backgroundImage: NetworkImage(loggedUser.imageUrl),
                             radius: 28,
                           ),
                           const SizedBox(height: 14),

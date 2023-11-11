@@ -29,7 +29,7 @@ class CarBrandController extends Controller
      */
     public function store(StoreCarBrandRequest $request)
     {
-        //
+        return CarBrand::create($request->validated());
     }
 
     /**
@@ -53,7 +53,7 @@ class CarBrandController extends Controller
      */
     public function update(UpdateCarBrandRequest $request, CarBrand $carBrand)
     {
-        //
+        return $carBrand->update($request->validated());
     }
 
     /**
@@ -61,6 +61,6 @@ class CarBrandController extends Controller
      */
     public function destroy(CarBrand $carBrand)
     {
-        //
+        return $carBrand->delete();
     }
 }

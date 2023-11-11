@@ -13,8 +13,8 @@ class CarBrands extends _$CarBrands {
   }
 
   Future<List<CarBrand>> get() async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.get('/car-brands');
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.get('/car-brands');
     final data = response.data as List<dynamic>;
     final carBrands = data.map(
       (carBrand) {

@@ -19,9 +19,9 @@ void carDetails(BuildContext context, Car car) {
               ClipRRect(
                 borderRadius: BorderRadius.circular(circularRadius),
                 child: Image.network(
-                  car.imagePath!.startsWith('http')
-                      ? car.imagePath!
-                      : 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/${car.imagePath!}',
+                  car.image!.startsWith('http')
+                      ? car.image!
+                      : 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/${car.image!}',
                   fit: BoxFit.cover,
                   width: 120,
                   height: 200,

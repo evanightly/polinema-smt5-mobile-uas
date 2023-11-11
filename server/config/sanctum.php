@@ -46,7 +46,9 @@ return [
     |
     */
 
-    'expiration' => null,
+    // expire in 1 day
+    'expiration' => 1440,
+    // 'expiration' => null,
 
     /*
     |--------------------------------------------------------------------------
