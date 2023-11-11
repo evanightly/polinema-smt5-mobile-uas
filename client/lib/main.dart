@@ -3,6 +3,7 @@ import 'package:client/providers/settings.dart';
 import 'package:client/providers/shared_preference.dart';
 import 'package:client/screens/admin/admin_dashboard_screen.dart';
 import 'package:client/screens/admin/admin_login_screen.dart';
+import 'package:client/screens/admin_profile_screen.dart';
 import 'package:client/screens/home_screen.dart';
 import 'package:client/screens/user/user_dashboard_screen.dart';
 import 'package:client/screens/user/user_login_screen.dart';
@@ -40,7 +41,8 @@ class App extends ConsumerWidget {
         '/admin': (context) => const AdminDashboardScreen(),
         '/user/login': (context) => const UserLoginScreen(),
         '/user': (context) => const UserDashboardScreen(),
-        '/profile': (context) => const UserProfileScreen(),
+        '/admin/profile': (context) => const AdminProfileScreen(),
+        '/user/profile': (context) => const UserProfileScreen(),
       },
     );
   }

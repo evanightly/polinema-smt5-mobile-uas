@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class DashboardDrawerListTile extends StatelessWidget {
-  const DashboardDrawerListTile({
+class AdminDashboardDrawerListTile extends StatelessWidget {
+  const AdminDashboardDrawerListTile({
     required this.icon,
     required this.title,
     this.isSelected = false,

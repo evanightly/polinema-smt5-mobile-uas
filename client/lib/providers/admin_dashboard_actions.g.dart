@@ -7,7 +7,7 @@ part of 'admin_dashboard_actions.dart';
 // **************************************************************************
 
 String _$adminDashboardActionsHash() =>
-    r'7e5f1781495c402758c2722c895e69ebd7596513';
+    r'25070ee39aefdfe82659209d0b1a5226a7a3fdfa';
 
 /// See also [AdminDashboardActions].
 @ProviderFor(AdminDashboardActions)

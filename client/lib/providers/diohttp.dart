@@ -1,4 +1,5 @@
 import 'package:client/providers/admin_auth.dart';
+import 'package:client/providers/user_auth.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,6 +24,18 @@ class DioHttp extends _$DioHttp {
 
   Dio get adminHttp {
     final auth = ref.read(adminAuthProvider);
+    // get state with options header
+
+    return Dio(
+      BaseOptions(
+        baseUrl: _serverBaseUrl,
+        headers: {'Authorization': 'Bearer ${auth!.token}'},
+      ),
+    );
+  }
+
+  Dio get userHttp {
+    final auth = ref.read(userAuthProvider);
     // get state with options header
 
     return Dio(

@@ -1,17 +1,16 @@
-import 'package:client/models/admin.dart';
-import 'package:client/providers/admin_dashboard_actions.dart';
+import 'package:client/models/user.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'admin_auth.g.dart';
+part 'user_auth.g.dart';
 
 @Riverpod(keepAlive: true)
-class AdminAuth extends _$AdminAuth {
-  void loginAdmin(BuildContext context, String email, String password) async {
+class UserAuth extends _$UserAuth {
+  void loginUser(BuildContext context, String email, String password) async {
     final dio = ref.read(dioHttpProvider);
     final response = await dio.post(
-      '/admin/login',
+      '/user/login',
       data: {
         'email': email,
         'password': password,
@@ -19,13 +18,13 @@ class AdminAuth extends _$AdminAuth {
     );
 
     final data = response.data as Map<String, dynamic>;
-    final admin = Admin.fromAuthJson(data['data']);
 
-    state = admin;
-    ref.read(adminDashboardActionsProvider.notifier).setActions([]);
+    final user = User.fromAuthJson(data['data']);
+
+    state = user;
 
     if (context.mounted) {
-      Navigator.pushReplacementNamed(context, '/admin');
+      Navigator.pushReplacementNamed(context, '/user');
     }
   }
 
@@ -34,7 +33,7 @@ class AdminAuth extends _$AdminAuth {
     // ref.read(adminDashboardActionsProvider.notifier).empty();
     // log('Logout');
 
-    await ref.read(dioHttpProvider.notifier).adminHttp.post('/admin/logout');
+    await ref.read(dioHttpProvider.notifier).userHttp.post('/user/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');
@@ -43,12 +42,12 @@ class AdminAuth extends _$AdminAuth {
 
   void redirectIfNotLogged(BuildContext context) {
     if (state == null) {
-      Navigator.pushReplacementNamed(context, '/admin/login');
+      Navigator.pushReplacementNamed(context, '/user/login');
     }
   }
 
   @override
-  Admin? build() {
+  User? build() {
     return null;
   }
 }

@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'admin_auth.dart';
+part of 'user_auth.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adminAuthHash() => r'b328aab1d4922a89dfc0b91c29ce0a9b65c35c94';
+String _$userAuthHash() => r'98e4f585c140a7d0f2b5871e5578156cc4e221df';
 
-/// See also [AdminAuth].
-@ProviderFor(AdminAuth)
-final adminAuthProvider = NotifierProvider<AdminAuth, Admin?>.internal(
-  AdminAuth.new,
-  name: r'adminAuthProvider',
+/// See also [UserAuth].
+@ProviderFor(UserAuth)
+final userAuthProvider = NotifierProvider<UserAuth, User?>.internal(
+  UserAuth.new,
+  name: r'userAuthProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$adminAuthHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$userAuthHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$AdminAuth = Notifier<Admin?>;
+typedef _$UserAuth = Notifier<User?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

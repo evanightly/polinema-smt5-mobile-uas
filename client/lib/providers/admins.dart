@@ -12,20 +12,15 @@ class Admins extends _$Admins {
   }
 
   Future<List<Admin>> get() async {
-    try {
-      final dio = ref.read(dioHttpProvider.notifier);
-      final response = await dio.adminHttp.get('/admins');
-      final data = response.data as List<dynamic>;
-      final admins = data.map(
-        (admin) {
-          return Admin.fromJson(admin);
-        },
-      ).toList();
+    final dio = ref.read(dioHttpProvider.notifier);
+    final response = await dio.adminHttp.get('/admins');
+    final data = response.data as List<dynamic>;
+    final admins = data.map(
+      (admin) {
+        return Admin.fromJson(admin);
+      },
+    ).toList();
 
-      return admins;
-    } catch (e) {
-      print(e);
-      return [];
-    }
+    return admins;
   }
 }

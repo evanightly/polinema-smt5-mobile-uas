@@ -1,5 +1,5 @@
-import 'package:client/components/dashboard_drawer_list_tile.dart';
-import 'package:client/components/user_anchor_menu.dart';
+import 'package:client/components/admin_anchor_menu.dart';
+import 'package:client/components/admin_dashboard_drawer_list_tile.dart';
 import 'package:client/models/dashboard_drawer_menu.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
@@ -84,6 +84,8 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
   }
 
   void _setSelectedIndex(String page) {
+    final loggedUser = ref.read(adminAuthProvider.notifier);
+
     final dashboardActions = ref.watch(adminDashboardActionsProvider.notifier);
 
     setState(() {
@@ -94,7 +96,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
     Navigator.pop(context);
 
     // Reset dashboard actions to handle persisting actions bug
-    dashboardActions.reset();
+    dashboardActions.reset(loggedUser);
   }
 
   Widget? get _dashboardContent {
@@ -112,7 +114,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
 
       final dashboardActionsNotifier =
           ref.watch(adminDashboardActionsProvider.notifier);
-      dashboardActionsNotifier.reset();
+      dashboardActionsNotifier.reset(loggedUser);
     });
   }
 
@@ -168,7 +170,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                                             .onSurface,
                                       ),
                                 ),
-                                const UserAnchorMenu(
+                                const AdminAnchorMenu(
                                   icon: Icon(Icons.keyboard_arrow_down),
                                 )
                               ],
@@ -180,7 +182,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                     for (var page
                         in _drawerMenu[DashboardDrawerMenuPosition.top]!
                             .entries)
-                      DashboardDrawerListTile(
+                      AdminDashboardDrawerListTile(
                         isSelected: _selectedPage == page.key,
                         icon: page.value.icon,
                         title: page.value.title,
@@ -199,7 +201,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                     for (var page
                         in _drawerMenu[DashboardDrawerMenuPosition.bottom]!
                             .entries)
-                      DashboardDrawerListTile(
+                      AdminDashboardDrawerListTile(
                         isSelected: _selectedPage == page.key,
                         icon: page.value.icon,
                         title: page.value.title,

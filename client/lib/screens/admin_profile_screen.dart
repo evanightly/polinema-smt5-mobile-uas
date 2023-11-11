@@ -1,10 +1,10 @@
-import 'package:client/models/user.dart';
-import 'package:client/providers/user_auth.dart';
+import 'package:client/models/admin.dart';
+import 'package:client/providers/admin_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+class AdminProfileScreen extends StatelessWidget {
+  const AdminProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +17,7 @@ class UserProfileScreen extends StatelessWidget {
         children: [
           _ProfileAvatar(),
           SizedBox(height: 24),
+          _ProfileBadge(),
           SizedBox(height: 15),
           _ProfileName(),
           SizedBox(height: 6),
@@ -30,7 +31,7 @@ class UserProfileScreen extends StatelessWidget {
 class _EditProfile extends ConsumerWidget {
   const _EditProfile();
 
-  void openEditDialog(BuildContext context, User loggedUser) {
+  void openEditDialog(BuildContext context, Admin loggedUser) {
     var emailController = TextEditingController(text: loggedUser.email);
     var nameController = TextEditingController(text: loggedUser.name);
     var passwordController = TextEditingController();
@@ -105,7 +106,7 @@ class _EditProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(userAuthProvider);
+    final loggedUser = ref.watch(adminAuthProvider);
 
     return IconButton(
       onPressed: () => openEditDialog(context, loggedUser!),
@@ -119,7 +120,7 @@ class _ProfileAvatar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(userAuthProvider);
+    final loggedUser = ref.watch(adminAuthProvider);
     return SizedBox(
       width: double.infinity,
       height: 150,
@@ -130,12 +131,53 @@ class _ProfileAvatar extends ConsumerWidget {
   }
 }
 
+class _ProfileBadge extends ConsumerWidget {
+  const _ProfileBadge();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSuperAdmin = ref.watch(adminAuthProvider)!.isSuperAdmin;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: const [.2, .87],
+          colors: [
+            if (isSuperAdmin) ...[
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.primary.withOpacity(.5)
+            ] else ...[
+              Theme.of(context).colorScheme.secondary,
+              Theme.of(context).colorScheme.secondary.withOpacity(.5)
+            ]
+          ],
+        ),
+        color: isSuperAdmin
+            ? Theme.of(context).colorScheme.error
+            : Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Text(
+        isSuperAdmin ? 'Super Admin' : 'Admin',
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              color: isSuperAdmin
+                  ? Theme.of(context).colorScheme.onError
+                  : Theme.of(context).colorScheme.onSecondary,
+            ),
+      ),
+    );
+  }
+}
+
 class _ProfileName extends ConsumerWidget {
   const _ProfileName();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final name = ref.watch(userAuthProvider)!.name;
+    final name = ref.watch(adminAuthProvider)!.name;
     return Text(name, style: Theme.of(context).textTheme.headlineMedium);
   }
 }
@@ -145,7 +187,7 @@ class _ProfileEmail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final email = ref.watch(userAuthProvider)!.email;
+    final email = ref.watch(adminAuthProvider)!.email;
     return Text(email, style: Theme.of(context).textTheme.bodyMedium);
   }
 }

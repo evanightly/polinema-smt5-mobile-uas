@@ -7,11 +7,9 @@ use App\Http\Controllers\CarBrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarFuelController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
-use App\Models\Admin;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,10 +24,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
+Route::post('/user/login', [UserAuthController::class, 'login']);
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
-    
+    Route::post('/user/logout', [UserAuthController::class, 'logout']);
+
     Route::resource('cars', CarController::class);
     Route::resource('users', UserController::class);
     Route::resource('car-body-types', CarBodyTypeController::class);

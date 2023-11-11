@@ -1,18 +1,18 @@
-import 'package:client/providers/user_auth.dart';
+import 'package:client/providers/admin_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserAnchorMenu extends ConsumerWidget {
-  const UserAnchorMenu({required this.icon, super.key});
+class AdminAnchorMenu extends ConsumerWidget {
+  const AdminAnchorMenu({required this.icon, super.key});
 
   final Widget icon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    navigateToUserProfile() => Navigator.pushNamed(context, '/user/profile');
+    navigateToUserProfile() => Navigator.pushNamed(context, '/admin/profile');
 
     void logout() {
-      ref.read(userAuthProvider.notifier).logout(context);
+      ref.read(adminAuthProvider.notifier).logout(context);
     }
 
     return MenuAnchor(

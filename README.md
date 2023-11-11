@@ -38,16 +38,22 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 
 ## Progress
 - Admin
-  - Create
-  - Read
-  - Update
-  - Delete
-- Inventory
-  - Create v
-  - Read v 
-  - Update v
-  - Delete v
-
+  - login ✔
+  - Admin Management
+    - Create
+    - Read ✔
+    - Update
+    - Delete
+  - User Management
+    - Create
+    - Read ✔
+    - Update
+    - Delete
+  - Car Inventory
+    - Create ✔
+    - Read ✔ 
+    - Update ✔
+    - Delete ✔
   - Car Fuel
     - Create
     - Read
@@ -64,18 +70,20 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Update
     - Delete
 
-- Transaksi
-  - Create
-  - Read
-  - Update
-  - Delete
 - User
-  - Create
-  - Read v
-  - Update
-  - Delete
-- Settings v
-  - Dark Mode v
+  - Register
+  - Login ✔
+  - Dashboard
+    - Home
+      - List Barang
+      - Filter Barang + SPK
+    - Cart
+    - Car Showcase
+    - Transaction List
+
+
+- Settings ✔
+  - Dark Mode ✔
 - Profile
   - Update Profile
 
