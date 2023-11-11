@@ -48,4 +48,9 @@ class User extends Authenticatable
 
     protected $keyType = 'string';
     public $incrementing = false;
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
 }

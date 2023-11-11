@@ -92,7 +92,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Delete
 
 - User
-  - Register
+  - Register ✔
   - Login ✔
   - Dashboard
     - Home

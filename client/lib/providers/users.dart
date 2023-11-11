@@ -71,8 +71,6 @@ class Users extends _$Users {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
       } else {
-        // state = AsyncValue.error('Failed to update users', StackTrace.current);
-        // Force reload data
         refresh();
       }
     } catch (e) {
@@ -90,28 +88,5 @@ class Users extends _$Users {
     } else {
       return false;
     }
-  }
-
-  Future<User> login(String email, String password) async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.post('/users/login', data: {
-      'email': email,
-      'password': password,
-    });
-    final data = response.data as Map<String, dynamic>;
-    final user = User.fromJson(data);
-    return user;
-  }
-
-  Future<User> register(String name, String email, String password) async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.post('/users/register', data: {
-      'name': name,
-      'email': email,
-      'password': password,
-    });
-    final data = response.data as Map<String, dynamic>;
-    final user = User.fromJson(data);
-    return user;
   }
 }

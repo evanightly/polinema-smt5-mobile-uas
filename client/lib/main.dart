@@ -7,6 +7,7 @@ import 'package:client/screens/admin_profile_screen.dart';
 import 'package:client/screens/home_screen.dart';
 import 'package:client/screens/user/user_dashboard_screen.dart';
 import 'package:client/screens/user/user_login_screen.dart';
+import 'package:client/screens/user/user_register_screen.dart';
 import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -40,6 +41,7 @@ class App extends ConsumerWidget {
         '/admin/login': (context) => const AdminLoginScreen(),
         '/admin': (context) => const AdminDashboardScreen(),
         '/user/login': (context) => const UserLoginScreen(),
+        '/user/register': (context) => const UserRegisterScreen(),
         '/user': (context) => const UserDashboardScreen(),
         '/admin/profile': (context) => const AdminProfileScreen(),
         '/user/profile': (context) => const UserProfileScreen(),

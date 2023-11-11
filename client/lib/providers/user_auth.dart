@@ -28,6 +28,32 @@ class UserAuth extends _$UserAuth {
     }
   }
 
+  void registerUser(
+      BuildContext context, String name, String email, String password) async {
+    try {
+      final dio = ref.read(dioHttpProvider);
+      final response = await dio.post('/user/register', data: {
+        'name': name,
+        'email': email,
+        'password': password,
+      });
+      final data = response.data as Map<String, dynamic>;
+      final user = User.fromAuthJson(data['data']);
+
+      state = user;
+
+      if (context.mounted) {
+        print(state!.email);
+        print(state!.image);
+        print(state!.name);
+        print(state!.password);
+        Navigator.pushReplacementNamed(context, '/user');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void logout(BuildContext context) async {
     // state = null;
     // ref.read(adminDashboardActionsProvider.notifier).empty();

@@ -40,6 +40,38 @@ class UserAuthController extends Controller
         }
     }
 
+    public function register(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => 'required|email|unique:users,email',
+                'name' => 'required',
+                'password' => 'required|min:6',
+            ]);
+
+            $user = User::create([
+                'email' => $request->email,
+                'name' => $request->name,
+                'password' => Hash::make($request->password)
+            ]);
+
+            return response()->json([
+                'message' => 'Register success',
+                'data' => [
+                    'user' => $user,
+                    'token' => $user->createToken($user->id)->plainTextToken
+                ],
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Register failed',
+                'error' => $th->getMessage()
+            ], 401);
+        }
+    }
+
+    // logout
+
     public function logout(Request $request)
     {
         try {
