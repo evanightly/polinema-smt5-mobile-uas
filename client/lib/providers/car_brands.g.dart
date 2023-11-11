@@ -6,7 +6,7 @@ part of 'car_brands.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$carBrandsHash() => r'c7ca9abdad72bfb7def19bd94a4d1b4f6ac41998';
+String _$carBrandsHash() => r'f818256d7bef872f319caed0b9a90792dfe79d86';
 
 /// See also [CarBrands].
 @ProviderFor(CarBrands)

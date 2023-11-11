@@ -1,21 +1,21 @@
-import 'package:client/models/car_brand.dart';
+import 'package:client/models/car_body_type.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
-import 'package:client/providers/car_brands.dart';
+import 'package:client/providers/car_body_types.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class AdminCarBrandScreen extends ConsumerWidget {
-  const AdminCarBrandScreen({super.key});
+class AdminCarBodyTypeScreen extends ConsumerWidget {
+  const AdminCarBodyTypeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final carBrands = ref.watch(carBrandsProvider);
+    final carBodyType = ref.watch(carBodyTypesProvider);
     final auth = ref.watch(adminAuthProvider);
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     Future<void> refresh() async {
-      await ref.read(carBrandsProvider.notifier).refresh();
+      await ref.read(carBodyTypesProvider.notifier).refresh();
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -23,13 +23,13 @@ class AdminCarBrandScreen extends ConsumerWidget {
         final dashboardActions =
             ref.read(adminDashboardActionsProvider.notifier);
 
-        final isLoadingCarBrandData = carBrands.maybeWhen(
+        final isLoadingCarBodyTypeData = carBodyType.maybeWhen(
           loading: () => true,
           orElse: () => false,
         );
 
         dashboardActions.setActions(
-          isLoadingCarBrandData
+          isLoadingCarBodyTypeData
               ? [
                   const SizedBox(
                     height: 24,
@@ -39,12 +39,12 @@ class AdminCarBrandScreen extends ConsumerWidget {
                     ),
                   ),
                 ]
-              : [_AddCarBrand()],
+              : [_AddCarBodyType()],
         );
       },
     );
 
-    return carBrands.when(data: (data) {
+    return carBodyType.when(data: (data) {
       return Padding(
         padding: const EdgeInsets.all(4),
         child: LiquidPullToRefresh(
@@ -63,7 +63,7 @@ class AdminCarBrandScreen extends ConsumerWidget {
                       ),
                 ),
                 trailing: auth!.isSuperAdmin
-                    ? _CarBrandActions(item)
+                    ? _CarBodyTypeActions(item)
                     : const SizedBox.shrink(),
               );
             },
@@ -78,17 +78,17 @@ class AdminCarBrandScreen extends ConsumerWidget {
   }
 }
 
-class _CarBrandActions extends ConsumerWidget {
-  const _CarBrandActions(this.carBrand);
-  final CarBrand carBrand;
+class _CarBodyTypeActions extends ConsumerWidget {
+  const _CarBodyTypeActions(this.carBodyType);
+  final CarBodyType carBodyType;
 
   void openEditDialog(BuildContext context, WidgetRef ref) {
-    var nameController = TextEditingController(text: carBrand.name);
+    var nameController = TextEditingController(text: carBodyType.name);
 
     void update() {
-      ref.read(carBrandsProvider.notifier).put(
-            CarBrand(
-              id: carBrand.id,
+      ref.read(carBodyTypesProvider.notifier).put(
+            CarBodyType(
+              id: carBodyType.id,
               name: nameController.text,
             ),
           );
@@ -100,7 +100,7 @@ class _CarBrandActions extends ConsumerWidget {
       builder: (ctx) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Edit Car Brand'),
+            title: const Text('Edit Car Body Type'),
             actions: [
               IconButton(onPressed: update, icon: const Icon(Icons.check))
             ],
@@ -130,14 +130,14 @@ class _CarBrandActions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void delete() {
-      final carBrands = ref.read(carBrandsProvider.notifier);
-      carBrands.delete(carBrand);
+      final carBodyTypes = ref.read(carBodyTypesProvider.notifier);
+      carBodyTypes.delete(carBodyType);
     }
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (carBrand.cars.isEmpty)
+        if (carBodyType.cars.isEmpty)
           IconButton(
             onPressed: delete,
             icon: const Icon(Icons.delete),
@@ -153,15 +153,15 @@ class _CarBrandActions extends ConsumerWidget {
   }
 }
 
-class _AddCarBrand extends ConsumerWidget {
+class _AddCarBodyType extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void openAddDialog(BuildContext context, Function add) {
       var nameController = TextEditingController();
 
       void add() {
-        final carBrands = ref.read(carBrandsProvider.notifier);
-        carBrands.create(CarBrand(name: nameController.text));
+        final carBodyTypes = ref.read(carBodyTypesProvider.notifier);
+        carBodyTypes.create(CarBodyType(name: nameController.text));
         Navigator.of(context).pop();
       }
 
@@ -170,7 +170,7 @@ class _AddCarBrand extends ConsumerWidget {
         builder: (ctx) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Add Car Brand'),
+              title: const Text('Add Car Body Type'),
               actions: [
                 IconButton(onPressed: add, icon: const Icon(Icons.check))
               ],

@@ -13,7 +13,13 @@ class CarFuelController extends Controller
      */
     public function index()
     {
-        return CarFuel::all();
+        return CarFuel::with([
+            'cars' => [
+                'fuel',
+                'bodyType',
+                'brand'
+            ],
+        ])->get();
     }
 
     /**

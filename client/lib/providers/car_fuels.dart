@@ -20,7 +20,30 @@ class CarFuels extends _$CarFuels {
         return CarFuel.fromJson(carFuel);
       },
     ).toList();
-
     return carFuels;
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => get());
+  }
+
+  Future<void> create(CarFuel carFuel) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+    await dio.http.post('/car-fuels', data: carFuel.toJson());
+    refresh();
+  }
+
+  Future<void> put(CarFuel carFuel) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+    await dio.http
+        .post('/car-fuels/${carFuel.id}?_method=PUT', data: carFuel.toJson());
+    refresh();
+  }
+
+  Future<void> delete(CarFuel carFuel) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+    await dio.http.delete('/car-fuels/${carFuel.id}');
+    refresh();
   }
 }

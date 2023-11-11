@@ -55,19 +55,22 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Update ✔
     - Delete ✔
   - Car Fuel
-    - Create
-    - Read
-    - Update
-    - Delete
+    - Create ✔
+    - Read ✔
+    - Update ✔
+    - Delete ✔
   - Car Brand
-    - Create
-    - Read
-    - Update
-    - Delete
+    - Create ✔
+    - Read ✔
+    - Update ✔
+    - Delete ✔
   - Car Body Type
-    - Create
+    - Create ✔
+    - Read ✔
+    - Update ✔
+    - Delete ✔
+  - Transactions
     - Read
-    - Update
     - Delete
 
 - User

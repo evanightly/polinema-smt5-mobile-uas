@@ -36,7 +36,6 @@ class CarBrands extends _$CarBrands {
 
   Future<void> put(CarBrand carBrand) async {
     final dio = ref.read(dioHttpProvider.notifier);
-    print(carBrand.toJson());
     await dio.http.post('/car-brands/${carBrand.id}?_method=PUT', data: carBrand.toJson());
     refresh();
   }

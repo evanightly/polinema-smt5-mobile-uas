@@ -1,21 +1,21 @@
-import 'package:client/models/car_brand.dart';
+import 'package:client/models/car_fuel.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
-import 'package:client/providers/car_brands.dart';
+import 'package:client/providers/car_fuels.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class AdminCarBrandScreen extends ConsumerWidget {
-  const AdminCarBrandScreen({super.key});
+class AdminCarFuelScreen extends ConsumerWidget {
+  const AdminCarFuelScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final carBrands = ref.watch(carBrandsProvider);
+    final carFuels = ref.watch(carFuelsProvider);
     final auth = ref.watch(adminAuthProvider);
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     Future<void> refresh() async {
-      await ref.read(carBrandsProvider.notifier).refresh();
+      await ref.read(carFuelsProvider.notifier).refresh();
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -23,13 +23,13 @@ class AdminCarBrandScreen extends ConsumerWidget {
         final dashboardActions =
             ref.read(adminDashboardActionsProvider.notifier);
 
-        final isLoadingCarBrandData = carBrands.maybeWhen(
+        final isLoadingCarFuelData = carFuels.maybeWhen(
           loading: () => true,
           orElse: () => false,
         );
 
         dashboardActions.setActions(
-          isLoadingCarBrandData
+          isLoadingCarFuelData
               ? [
                   const SizedBox(
                     height: 24,
@@ -39,12 +39,12 @@ class AdminCarBrandScreen extends ConsumerWidget {
                     ),
                   ),
                 ]
-              : [_AddCarBrand()],
+              : [_AddCarFuel()],
         );
       },
     );
 
-    return carBrands.when(data: (data) {
+    return carFuels.when(data: (data) {
       return Padding(
         padding: const EdgeInsets.all(4),
         child: LiquidPullToRefresh(
@@ -63,7 +63,7 @@ class AdminCarBrandScreen extends ConsumerWidget {
                       ),
                 ),
                 trailing: auth!.isSuperAdmin
-                    ? _CarBrandActions(item)
+                    ? _CarFuelActions(item)
                     : const SizedBox.shrink(),
               );
             },
@@ -78,17 +78,17 @@ class AdminCarBrandScreen extends ConsumerWidget {
   }
 }
 
-class _CarBrandActions extends ConsumerWidget {
-  const _CarBrandActions(this.carBrand);
-  final CarBrand carBrand;
+class _CarFuelActions extends ConsumerWidget {
+  const _CarFuelActions(this.carFuel);
+  final CarFuel carFuel;
 
   void openEditDialog(BuildContext context, WidgetRef ref) {
-    var nameController = TextEditingController(text: carBrand.name);
+    var nameController = TextEditingController(text: carFuel.name);
 
     void update() {
-      ref.read(carBrandsProvider.notifier).put(
-            CarBrand(
-              id: carBrand.id,
+      ref.read(carFuelsProvider.notifier).put(
+            CarFuel(
+              id: carFuel.id,
               name: nameController.text,
             ),
           );
@@ -130,14 +130,14 @@ class _CarBrandActions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void delete() {
-      final carBrands = ref.read(carBrandsProvider.notifier);
-      carBrands.delete(carBrand);
+      final carBrands = ref.read(carFuelsProvider.notifier);
+      carBrands.delete(carFuel);
     }
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (carBrand.cars.isEmpty)
+        if (carFuel.cars.isEmpty)
           IconButton(
             onPressed: delete,
             icon: const Icon(Icons.delete),
@@ -153,15 +153,15 @@ class _CarBrandActions extends ConsumerWidget {
   }
 }
 
-class _AddCarBrand extends ConsumerWidget {
+class _AddCarFuel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void openAddDialog(BuildContext context, Function add) {
       var nameController = TextEditingController();
 
       void add() {
-        final carBrands = ref.read(carBrandsProvider.notifier);
-        carBrands.create(CarBrand(name: nameController.text));
+        final carBrands = ref.read(carFuelsProvider.notifier);
+        carBrands.create(CarFuel(name: nameController.text));
         Navigator.of(context).pop();
       }
 
