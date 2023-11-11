@@ -34,7 +34,7 @@ class AdminAuth extends _$AdminAuth {
     // ref.read(adminDashboardActionsProvider.notifier).empty();
     // log('Logout');
 
-    await ref.read(dioHttpProvider.notifier).adminHttp.post('/admin/logout');
+    await ref.read(dioHttpProvider.notifier).http.post('/admin/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');

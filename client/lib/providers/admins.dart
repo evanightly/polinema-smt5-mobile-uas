@@ -13,7 +13,7 @@ class Admins extends _$Admins {
 
   Future<List<Admin>> get() async {
     final dio = ref.read(dioHttpProvider.notifier);
-    final response = await dio.adminHttp.get('/admins');
+    final response = await dio.http.get('/admins');
     final data = response.data as List<dynamic>;
     final admins = data.map(
       (admin) {

@@ -6,7 +6,7 @@ part of 'admins.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adminsHash() => r'ef9454ad4c9407118feda19f7e218682b5b09a1c';
+String _$adminsHash() => r'70ccd3876df4efa6c769ea6be2fc1d00395b63de';
 
 /// See also [Admins].
 @ProviderFor(Admins)

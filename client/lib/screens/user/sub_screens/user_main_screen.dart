@@ -1,44 +1,140 @@
+import 'package:client/providers/cars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class UserMainScreen extends StatelessWidget {
+class UserMainScreen extends ConsumerWidget {
   const UserMainScreen({super.key});
-
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Container(
-          height: 140,
-          alignment: Alignment.bottomCenter,
-          margin: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            image: const DecorationImage(
-              image: AssetImage('assets/images/car2_Porsche.jpg'),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 6, bottom: 6),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+    final cars = ref.watch(carsProvider);
+    Future<void> onRefresh() async {
+      await ref.read(carsProvider.notifier).refresh();
+    }
+
+    return LiquidPullToRefresh(
+      key: refreshIndicatorKey,
+      onRefresh: onRefresh,
+      child: ListView(
+        children: [
+          Container(
+            height: 140,
+            alignment: Alignment.bottomCenter,
+            margin: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/images/car2_Porsche.jpg'),
+                fit: BoxFit.cover,
               ),
-              color: Colors.black54,
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Text(
-              'New Arrival',
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(color: Colors.white),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(top: 6, bottom: 6),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+                color: Colors.black54,
+              ),
+              child: Text(
+                'New Arrival',
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.white),
+              ),
             ),
           ),
-        )
-      ],
+
+          // list of cars with its price
+          cars.when(
+            data: (data) {
+              return Container(
+                margin: const EdgeInsets.only(left: 15, right: 15),
+                child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cars.asData?.value.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.8,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = cars.asData?.value[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(12),
+                                ),
+                                image: DecorationImage(
+                                  image: NetworkImage(item!.imageUrl),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 10, top: 10),
+                              child: Text(
+                                item.name,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 10, top: 5),
+                              child: Text(
+                                '\$${item.price}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              );
+            },
+            error: ((error, stackTrace) {
+              return Center(child: Text(error.toString()));
+            }),
+            loading: () {
+              return const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: CircularProgressIndicator()),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

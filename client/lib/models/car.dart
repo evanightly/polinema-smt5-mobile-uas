@@ -58,10 +58,10 @@ class Car {
       return imageUrl;
     }
 
-    if (image!.startsWith('http') == false) {
+    if (image!.startsWith('http')) {
       return image!;
     } else {
-      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/admins/$imageUrl';
+      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$image';
     }
   }
 

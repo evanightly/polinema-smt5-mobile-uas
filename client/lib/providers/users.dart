@@ -15,7 +15,7 @@ class Users extends _$Users {
   // get all users
   Future<List<User>> get() async {
     final dio = ref.read(dioHttpProvider.notifier);
-    final response = await dio.adminHttp.get('/users');
+    final response = await dio.http.get('/users');
     final data = response.data as List<dynamic>;
     final users = data.map(
       (user) {
@@ -41,7 +41,7 @@ class Users extends _$Users {
         'image': await MultipartFile.fromFile(user.uploadImage!.path),
       });
 
-      final response = await dio.adminHttp.post('/users', data: formData);
+      final response = await dio.http.post('/users', data: formData);
       if (response.statusCode == 200) {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
@@ -66,7 +66,7 @@ class Users extends _$Users {
       });
 
       final response =
-          await dio.adminHttp.put('/users/${user.id}', data: formData);
+          await dio.http.put('/users/${user.id}', data: formData);
       if (response.statusCode == 200) {
         await Future.delayed(const Duration(seconds: 3));
         refresh();
@@ -82,7 +82,7 @@ class Users extends _$Users {
 
   Future<bool> delete(String id) async {
     final dio = ref.read(dioHttpProvider.notifier);
-    final response = await dio.adminHttp.delete('/users/$id');
+    final response = await dio.http.delete('/users/$id');
     if (response.statusCode == 200) {
       await Future.delayed(const Duration(seconds: 3));
       refresh();

@@ -22,27 +22,25 @@ class DioHttp extends _$DioHttp {
     );
   }
 
-  Dio get adminHttp {
-    final auth = ref.read(adminAuthProvider);
-    // get state with options header
+  Dio get http {
+    final isAdminLoggedIn = ref.read(adminAuthProvider);
+    final isUserLoggedIn = ref.read(userAuthProvider);
 
-    return Dio(
-      BaseOptions(
+    // Default options
+    BaseOptions options = BaseOptions(baseUrl: _serverBaseUrl);
+
+    if (isAdminLoggedIn != null) {
+      options = BaseOptions(
         baseUrl: _serverBaseUrl,
-        headers: {'Authorization': 'Bearer ${auth!.token}'},
-      ),
-    );
-  }
-
-  Dio get userHttp {
-    final auth = ref.read(userAuthProvider);
-    // get state with options header
-
-    return Dio(
-      BaseOptions(
+        headers: {'Authorization': 'Bearer ${isAdminLoggedIn.token}'},
+      );
+    } else if (isUserLoggedIn != null) {
+      options = BaseOptions(
         baseUrl: _serverBaseUrl,
-        headers: {'Authorization': 'Bearer ${auth!.token}'},
-      ),
-    );
+        headers: {'Authorization': 'Bearer ${isUserLoggedIn.token}'},
+      );
+    }
+
+    return Dio(options);
   }
 }

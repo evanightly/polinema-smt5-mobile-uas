@@ -91,6 +91,8 @@ class CarController extends Controller
         try {
             // check if the request has file
             if ($request->hasFile('image')) {
+
+
                 // if the image starts with http then don't do anything
                 if (strpos($request->image, 'http') !== false) {
                     $image_name = $car->image;

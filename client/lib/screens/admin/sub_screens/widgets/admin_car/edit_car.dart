@@ -8,7 +8,6 @@ import 'package:client/providers/car_body_types.dart';
 import 'package:client/providers/car_brands.dart';
 import 'package:client/providers/car_fuels.dart';
 import 'package:client/providers/cars.dart';
-import 'package:client/providers/diohttp.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,20 +17,20 @@ void editCar(BuildContext context, Car car) {
   showDialog(
     context: context,
     builder: (ctx) {
-      return UpdateInventory(car: car);
+      return UpdateCar(car: car);
     },
   );
 }
 
-class UpdateInventory extends ConsumerStatefulWidget {
-  const UpdateInventory({required this.car, super.key});
+class UpdateCar extends ConsumerStatefulWidget {
+  const UpdateCar({required this.car, super.key});
   final Car car;
 
   @override
-  ConsumerState<UpdateInventory> createState() => _UpdateInventoryState();
+  ConsumerState<UpdateCar> createState() => _UpdateCarState();
 }
 
-class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
+class _UpdateCarState extends ConsumerState<UpdateCar> {
   final _formKey = GlobalKey<FormState>();
   Widget _selectedImage = const SizedBox.shrink();
   late String _name = widget.car.name;
@@ -42,7 +41,7 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   late num _kmMax = widget.car.km_max;
   late CarFuel _fuel = widget.car.fuel;
   late num _price = widget.car.price;
-  late File? _file = File(widget.car.image!);
+  File? _file;
   late String? _description = widget.car.description;
   late CarCondition _condition = widget.car.condition;
   late CarTransmission _transmission = widget.car.transmission;
@@ -52,12 +51,8 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
   void initState() {
     super.initState();
     if (widget.car.image != null) {
-      var path = widget.car.image!;
-      if (!path.startsWith('http')) {
-        path =
-            'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$path';
-      }
-      _selectedImage = Image.network(path, height: 240, fit: BoxFit.cover);
+      _selectedImage =
+          Image.network(widget.car.imageUrl, height: 240, fit: BoxFit.cover);
     }
   }
 
@@ -138,6 +133,22 @@ class _UpdateInventoryState extends ConsumerState<UpdateInventory> {
       }
 
       _formKey.currentState!.save();
+
+      print(widget.car.id);
+      print(_name);
+      print(_brand);
+      print(_bodyType);
+      print(_year);
+      print(_kmMin);
+      print(_kmMax);
+      print(_fuel);
+      print(_price);
+      print(_file);
+      print(widget.car.image);
+      print(_description);
+      print(_condition);
+      print(_transmission);
+      print(_status);
 
       final newCar = Car(
         id: widget.car.id,

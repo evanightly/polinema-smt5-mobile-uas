@@ -33,7 +33,7 @@ class UserAuth extends _$UserAuth {
     // ref.read(adminDashboardActionsProvider.notifier).empty();
     // log('Logout');
 
-    await ref.read(dioHttpProvider.notifier).userHttp.post('/user/logout');
+    await ref.read(dioHttpProvider.notifier).http.post('/user/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');

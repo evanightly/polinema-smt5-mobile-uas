@@ -12,8 +12,8 @@ class AdminLoginScreen extends ConsumerStatefulWidget {
 class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  String _email = '';
-  String _password = '';
+  String _email = 'evan@gmail.com';
+  String _password = 'admin';
   late bool _obscureText;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -93,6 +93,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
                                 ),
                               ),
                               child: TextFormField(
+                                initialValue: _email,
                                 decoration: const InputDecoration(
                                   enabledBorder: InputBorder.none,
                                   focusedBorder: InputBorder.none,
@@ -136,6 +137,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
                                 children: [
                                   Expanded(
                                     child: TextFormField(
+                                      initialValue: _password,
                                       decoration: const InputDecoration(
                                         enabledBorder: InputBorder.none,
                                         focusedBorder: InputBorder.none,
