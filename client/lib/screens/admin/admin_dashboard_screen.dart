@@ -3,6 +3,7 @@ import 'package:client/components/admin_dashboard_drawer_list_tile.dart';
 import 'package:client/models/dashboard_drawer_menu.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
+import 'package:client/screens/admin/sub_screens/admin_car_brand_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_car_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
@@ -52,7 +53,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
       'CarBrand': const DashboardDrawerMenu(
         title: 'Car Brand',
         icon: Icons.branding_watermark,
-        // page: AdminInventoryScreen(),
+        page: AdminCarBrandScreen(),
       ),
       'CarBodyType': const DashboardDrawerMenu(
         title: 'Car Body Type',

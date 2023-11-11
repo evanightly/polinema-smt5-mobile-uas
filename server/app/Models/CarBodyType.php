@@ -15,6 +15,6 @@ class CarBodyType extends Model
 
     public function cars()
     {
-        return $this->hasMany(Car::class);
+        return $this->hasMany(Car::class, 'body_type_id', 'id');
     }
 }

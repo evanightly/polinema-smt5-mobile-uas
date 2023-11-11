@@ -134,22 +134,6 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
 
       _formKey.currentState!.save();
 
-      print(widget.car.id);
-      print(_name);
-      print(_brand);
-      print(_bodyType);
-      print(_year);
-      print(_kmMin);
-      print(_kmMax);
-      print(_fuel);
-      print(_price);
-      print(_file);
-      print(widget.car.image);
-      print(_description);
-      print(_condition);
-      print(_transmission);
-      print(_status);
-
       final newCar = Car(
         id: widget.car.id,
         name: _name,

@@ -13,7 +13,13 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        return CarBrand::all();
+        return CarBrand::with([
+            'cars' => [
+                'fuel',
+                'bodyType',
+                'brand'
+            ],
+        ])->get();
     }
 
     /**

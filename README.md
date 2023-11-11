@@ -75,10 +75,10 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
   - Login ✔
   - Dashboard
     - Home
-      - List Barang
+      - List Barang ✔
       - Filter Barang + SPK
     - Cart
-    - Car Showcase
+    - Car Showcase (based on brand)
     - Transaction List
 
 

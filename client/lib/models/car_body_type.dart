@@ -10,4 +10,11 @@ class CarBodyType {
       name: json['name'].toString(),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
 }
