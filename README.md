@@ -77,11 +77,11 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Read ✔
     - Update
     - Delete
-  - User Management
-    - Create
+  - User Management ✔
+    - Create ✔
     - Read ✔
-    - Update
-    - Delete
+    - Update ✔
+    - Delete ✔
   - Car Inventory
     - Create ✔
     - Read ✔ 
