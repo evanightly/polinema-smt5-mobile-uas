@@ -1,7 +1,8 @@
 import 'package:client/models/admin.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/diohttp.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admin_auth.g.dart';
@@ -9,6 +10,10 @@ part 'admin_auth.g.dart';
 @Riverpod(keepAlive: true)
 class AdminAuth extends _$AdminAuth {
   void loginAdmin(BuildContext context, String email, String password) async {
+    EasyLoading.show(
+      indicator: const CircularProgressIndicator(),
+      status: 'Loading...',
+    );
     final dio = ref.read(dioHttpProvider);
     final response = await dio.post(
       '/admin/login',
@@ -26,6 +31,9 @@ class AdminAuth extends _$AdminAuth {
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/admin');
+      EasyLoading.dismiss();
+    } else {
+      EasyLoading.showError('Failed to login');
     }
   }
 
@@ -34,10 +42,16 @@ class AdminAuth extends _$AdminAuth {
     // ref.read(adminDashboardActionsProvider.notifier).empty();
     // log('Logout');
 
+    EasyLoading.show(
+      indicator: const CircularProgressIndicator(),
+      status: 'Loading...',
+    );
+
     await ref.read(dioHttpProvider.notifier).http.post('/admin/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');
+      EasyLoading.dismiss();
     }
   }
 

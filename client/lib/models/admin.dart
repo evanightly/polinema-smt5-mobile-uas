@@ -1,4 +1,5 @@
 import 'package:client/providers/diohttp.dart';
+import 'package:flutter/material.dart';
 
 class Admin {
   final String? id;
@@ -8,6 +9,16 @@ class Admin {
   final bool isSuperAdmin;
   final String? image;
   final String? token;
+
+  const Admin({
+    this.id,
+    required this.name,
+    required this.email,
+    required this.password,
+    required this.isSuperAdmin,
+    this.image,
+    this.token,
+  });
 
   String get imageUrl {
     if (image == null) {
@@ -21,15 +32,12 @@ class Admin {
     }
   }
 
-  const Admin({
-    this.id,
-    required this.name,
-    required this.email,
-    required this.password,
-    required this.isSuperAdmin,
-    this.image,
-    this.token,
-  });
+  ImageProvider get imageProviderWidget {
+    if (image == 'null') {
+      return const AssetImage('assets/images/person1.jpg');
+    }
+    return NetworkImage(imageUrl);
+  }
 
   factory Admin.fromAuthJson(Map<String, dynamic> json) {
     final id = json['user']['id'].toString();

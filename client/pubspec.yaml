@@ -46,6 +46,8 @@ dependencies:
   fl_chart: ^0.64.0
   salomon_bottom_bar: ^3.3.2
   liquid_pull_to_refresh: ^3.0.1
+  flutter_easyloading: ^3.0.5
+  elegant_notification: ^1.11.2
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +87,7 @@ flutter:
     - assets/images/person1.jpg
     - assets/images/person2.jpg
     - assets/images/person3.jpg
+    - assets/images/person4.jpg
     - assets/images/undraw_electric_car.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

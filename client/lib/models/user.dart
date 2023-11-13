@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:client/providers/diohttp.dart';
+import 'package:flutter/material.dart';
 
 class User {
   final String? id;
@@ -29,8 +30,15 @@ class User {
     if (image!.startsWith('http')) {
       return image!;
     } else {
-      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/admins/$image';
+      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/users/$image';
     }
+  }
+
+  ImageProvider get imageProviderWidget {
+    if (image == 'null') {
+      return const AssetImage('assets/images/person1.jpg');
+    }
+    return NetworkImage(imageUrl);
   }
 
   factory User.fromAuthJson(Map<String, dynamic> json) {

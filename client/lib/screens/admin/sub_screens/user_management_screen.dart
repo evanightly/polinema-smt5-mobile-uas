@@ -59,7 +59,7 @@ class _UserAvatar extends StatelessWidget {
     Widget image = const SizedBox.shrink();
     if (user.image!.isNotEmpty) {
       image = CircleAvatar(
-        backgroundImage: NetworkImage(user.image!),
+        backgroundImage: user.imageProviderWidget,
       );
     }
     return image;
@@ -101,7 +101,7 @@ class _UserActions extends ConsumerWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: NetworkImage(user.image!),
+                          foregroundImage: user.imageProviderWidget,
                         ),
                       ),
                       const SizedBox(width: 24),

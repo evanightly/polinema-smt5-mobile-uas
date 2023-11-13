@@ -8,14 +8,14 @@ class UserDashboardAppBarProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    dynamic user = ref.watch(userAuthProvider);
+    dynamic loggedUser = ref.watch(userAuthProvider);
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: UserAnchorMenu(
         icon: Stack(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(user!.imageUrl),
+              backgroundImage: loggedUser.imageProviderWidget,
               radius: 20,
             ),
             Positioned(

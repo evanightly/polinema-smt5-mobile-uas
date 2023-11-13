@@ -11,6 +11,7 @@ import 'package:client/screens/user/user_register_screen.dart';
 import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,6 +47,7 @@ class App extends ConsumerWidget {
         '/admin/profile': (context) => const AdminProfileScreen(),
         '/user/profile': (context) => const UserProfileScreen(),
       },
+      builder: EasyLoading.init()
     );
   }
 }

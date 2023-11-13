@@ -60,7 +60,7 @@ class _EditProfile extends ConsumerWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: NetworkImage(loggedUser.imageUrl),
+                          foregroundImage: loggedUser.imageProviderWidget,
                         ),
                       ),
                       const SizedBox(width: 24),
@@ -121,12 +121,17 @@ class _ProfileAvatar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final loggedUser = ref.watch(userAuthProvider);
     return SizedBox(
-      width: double.infinity,
-      height: 150,
-      child: CircleAvatar(
-        foregroundImage: NetworkImage(loggedUser!.imageUrl),
-      ),
-    );
+        width: double.infinity,
+        height: 150,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: DecorationImage(
+              image: loggedUser!.imageProviderWidget,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ));
   }
 }
 

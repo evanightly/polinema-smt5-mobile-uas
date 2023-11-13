@@ -1,6 +1,7 @@
 import 'package:client/models/user.dart';
 import 'package:client/providers/diohttp.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_auth.g.dart';
@@ -31,6 +32,11 @@ class UserAuth extends _$UserAuth {
   void registerUser(
       BuildContext context, String name, String email, String password) async {
     try {
+      EasyLoading.show(
+        indicator: const CircularProgressIndicator(),
+        status: 'Loading...',
+      );
+
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post('/user/register', data: {
         'name': name,
@@ -43,26 +49,26 @@ class UserAuth extends _$UserAuth {
       state = user;
 
       if (context.mounted) {
-        print(state!.email);
-        print(state!.image);
-        print(state!.name);
-        print(state!.password);
         Navigator.pushReplacementNamed(context, '/user');
+        EasyLoading.dismiss();
       }
     } catch (e) {
-      print(e);
+      EasyLoading.showError(
+          'Failed with error, user with the same email already exists');
     }
   }
 
   void logout(BuildContext context) async {
-    // state = null;
-    // ref.read(adminDashboardActionsProvider.notifier).empty();
-    // log('Logout');
+    EasyLoading.show(
+      indicator: const CircularProgressIndicator(),
+      status: 'Loading...',
+    );
 
     await ref.read(dioHttpProvider.notifier).http.post('/user/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');
+      EasyLoading.dismiss();
     }
   }
 
