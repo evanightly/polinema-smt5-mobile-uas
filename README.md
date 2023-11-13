@@ -36,7 +36,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 9. Jalankan perintah `php artisan storage:link`
 10. Jalankan perintah `php artisan serve`
 
-## Questions
+## Note
 1.  Transaction Entity
     <br>
     Transaction per time or per item?
@@ -53,6 +53,21 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
           - Transaction (user)
           - Data mode: Detail Transaction (car, transaction)
           - Example: User can buy multiple cars at a time
+2.  Transaction process
+    1. User choose car
+    2. User upload payment proof
+    3. Admin verify payment proof (Admin has relation with transaction entity)
+    4. Admin send car to user
+    5. User receive car
+    6. User confirm transaction
+    7. Transaction complete
+3.  Transaction status
+    - Waiting for payment
+    - Waiting for verification
+    - Waiting for delivery
+    - Waiting for confirmation
+    - Complete
+    - Cancelled
 
 ## Progress
 - Admin
@@ -87,7 +102,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Read ✔
     - Update ✔
     - Delete ✔
-  - Transactions ❓ (read [Questions](#questions) above)
+  - Transactions ❓ (read [Note](#note) above)
     - Read
     - Delete
 
@@ -100,7 +115,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
       - Filter Barang + SPK
     - Cart
     - Car Showcase (based on brand)
-    - Transaction List ❓ (read [Questions](#questions) above)
+    - Transaction List ❓ (read [Note](#note) above)
 
 
 - Settings ✔

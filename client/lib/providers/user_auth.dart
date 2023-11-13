@@ -9,23 +9,27 @@ part 'user_auth.g.dart';
 @Riverpod(keepAlive: true)
 class UserAuth extends _$UserAuth {
   void loginUser(BuildContext context, String email, String password) async {
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.post(
-      '/user/login',
-      data: {
-        'email': email,
-        'password': password,
-      },
-    );
+    try {
+      final dio = ref.read(dioHttpProvider);
+      final response = await dio.post(
+        '/user/login',
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
 
-    final data = response.data as Map<String, dynamic>;
+      final data = response.data as Map<String, dynamic>;
 
-    final user = User.fromAuthJson(data['data']);
+      final user = User.fromAuthJson(data['data']);
 
-    state = user;
+      state = user;
 
-    if (context.mounted) {
-      Navigator.pushReplacementNamed(context, '/user');
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(context, '/user');
+      }
+    } catch (e) {
+      EasyLoading.showError('Failed with error, user not found');
     }
   }
 

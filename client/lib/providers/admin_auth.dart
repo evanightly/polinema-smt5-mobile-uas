@@ -10,30 +10,32 @@ part 'admin_auth.g.dart';
 @Riverpod(keepAlive: true)
 class AdminAuth extends _$AdminAuth {
   void loginAdmin(BuildContext context, String email, String password) async {
-    EasyLoading.show(
-      indicator: const CircularProgressIndicator(),
-      status: 'Loading...',
-    );
-    final dio = ref.read(dioHttpProvider);
-    final response = await dio.post(
-      '/admin/login',
-      data: {
-        'email': email,
-        'password': password,
-      },
-    );
+    try {
+      EasyLoading.show(
+        indicator: const CircularProgressIndicator(),
+        status: 'Loading...',
+      );
+      final dio = ref.read(dioHttpProvider);
+      final response = await dio.post(
+        '/admin/login',
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
 
-    final data = response.data as Map<String, dynamic>;
-    final admin = Admin.fromAuthJson(data['data']);
+      final data = response.data as Map<String, dynamic>;
+      final admin = Admin.fromAuthJson(data['data']);
 
-    state = admin;
-    ref.read(adminDashboardActionsProvider.notifier).setActions([]);
+      state = admin;
+      ref.read(adminDashboardActionsProvider.notifier).setActions([]);
 
-    if (context.mounted) {
-      Navigator.pushReplacementNamed(context, '/admin');
-      EasyLoading.dismiss();
-    } else {
-      EasyLoading.showError('Failed to login');
+      if (context.mounted) {
+        Navigator.pushReplacementNamed(context, '/admin');
+        EasyLoading.dismiss();
+      }
+    } catch (e) {
+      EasyLoading.showError('Failed with error, admin not found');
     }
   }
 

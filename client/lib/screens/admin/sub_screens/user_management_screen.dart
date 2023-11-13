@@ -1,7 +1,13 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:client/models/user.dart';
+import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/users.dart';
+import 'package:client/screens/admin/sub_screens/widgets/admin_user/add_user.dart';
+import 'package:client/screens/admin/sub_screens/widgets/admin_user/edit_user.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class UserManagementScreen extends ConsumerWidget {
   const UserManagementScreen({super.key});
@@ -9,26 +15,61 @@ class UserManagementScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final users = ref.watch(usersProvider);
+    final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
+    Future<void> refresh() async {
+      await ref.read(usersProvider.notifier).refresh();
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        final dashboardActions =
+            ref.read(adminDashboardActionsProvider.notifier);
+
+        final isLoadingUserData = users.maybeWhen(
+          loading: () => true,
+          orElse: () => false,
+        );
+
+        dashboardActions.setActions(
+          isLoadingUserData
+              ? [
+                  const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                ]
+              : [const AddUser()],
+        );
+      },
+    );
 
     return users.when(
       data: (data) {
-        return ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(4),
-              child: ListTile(
-                leading: _UserAvatar(data[index]),
-                title: Text(
-                  data[index].name,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+        return LiquidPullToRefresh(
+          key: refreshIndicatorKey,
+          onRefresh: refresh,
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(4),
+                child: ListTile(
+                  leading: _UserAvatar(data[index]),
+                  title: Text(
+                    data[index].name,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                  trailing: _UserActions(data[index]),
                 ),
-                trailing: _UserActions(data[index]),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
       },
       error: (_, error) {
@@ -70,82 +111,40 @@ class _UserActions extends ConsumerWidget {
   const _UserActions(this.user);
   final User user;
 
-  void delete() {}
-
-  void openEditDialog(BuildContext context) {
-    var nameController = TextEditingController(text: user.name);
-    var emailController = TextEditingController(text: user.email);
-    var passwordController = TextEditingController();
-
-    void update() {}
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Edit User'),
-            actions: [
-              IconButton(onPressed: update, icon: const Icon(Icons.check))
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
-            child: Form(
-              child: Flex(
-                direction: Axis.vertical,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: CircleAvatar(
-                          foregroundImage: user.imageProviderWidget,
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Change Image'),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: nameController,
-                    autocorrect: false,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(hintText: 'Name'),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: emailController,
-                    autocorrect: false,
-                    keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(hintText: 'Email'),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    autocorrect: false,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(hintText: 'Password'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void delete() {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        animType: AnimType.rightSlide,
+        title: 'Are you sure?',
+        desc:
+            'You are about to terminate ${user.name}\n\nWarning: this operation will delete all data related to this user',
+        btnCancelOnPress: () {},
+        btnOkOnPress: () async {
+          try {
+            await ref.read(usersProvider.notifier).delete(user.id!);
+            if (context.mounted) {
+              ElegantNotification.success(
+                title: const Text("Terminate"),
+                description: Text("${user.name} has been terminated"),
+                background: Theme.of(context).colorScheme.background,
+              ).show(context);
+            }
+          } catch (e) {
+            if (context.mounted) {
+              ElegantNotification.error(
+                title: const Text("Failed"),
+                description: Text("Failed to terminate ${user.name}"),
+                background: Theme.of(context).colorScheme.background,
+              ).show(context);
+            }
+          }
+        },
+      ).show();
+    }
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -155,7 +154,7 @@ class _UserActions extends ConsumerWidget {
           color: Colors.red.shade400,
         ),
         IconButton(
-          onPressed: () => openEditDialog(context),
+          onPressed: () => openEditUserDialog(context, user),
           icon: const Icon(Icons.edit),
           color: Colors.blue.shade400,
         )

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -12,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        return User::with('transactions')->latest()->get();
     }
 
     /**
@@ -26,9 +27,24 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        return User::create($request->validated());
+        if (!$request->hasFile('image')) {
+            return response()->json([
+                'message' => 'Image not found'
+            ], 400);
+        }
+        $image = $request->file('image')->store('images/users', 'public');
+        $image_name = explode('/', $image)[2];
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'image' => $image_name
+        ]);
+
+        return $user;
     }
 
     /**
@@ -50,9 +66,43 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        return $user->update($request->validated());
+        try {
+            // check if the request has file
+            if ($request->hasFile('image')) {
+                // if the image starts with http then don't do anything
+                if (strpos($request->image, 'http') !== false) {
+                    $image_name = $user->image;
+                }
+
+                if ($user->image) {
+                    if (file_exists(public_path('storage/images/users/' . $user->image))) {
+                        // delete the image
+                        unlink(public_path('storage/images/users/' . $user->image));
+                    }
+                }
+                // store the new image
+                $image = $request->file('image')->store('images/users', 'public');
+                $image_name = explode('/', $image)[2];
+            } else {
+                $image_name = $user->image;
+            }
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+                'image' => $image_name,
+            ]);
+            return response()->json([
+                'message' => 'User updated successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 400);
+        }
     }
 
     /**
@@ -60,6 +110,23 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return $user->delete();
+        try {
+            // delete user with its image
+            if ($user->image) {
+                if (file_exists(public_path('storage/images/users/' . $user->image))) {
+                    // delete the image
+                    unlink(public_path('storage/images/users/' . $user->image));
+                }
+            }
+            $user->delete();
+            return response()->json([
+                'message' => 'User deleted successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 400);
+        }
     }
 }
