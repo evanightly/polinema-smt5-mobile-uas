@@ -2,6 +2,7 @@ import 'package:client/models/car_fuel.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/car_fuels.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -92,6 +93,12 @@ class _CarFuelActions extends ConsumerWidget {
               name: nameController.text,
             ),
           );
+
+      ElegantNotification.success(
+        title: const Text("Update"),
+        description: Text("${carFuel.name} has been updated"),
+        background: Theme.of(context).colorScheme.background,
+      ).show(context);
       Navigator.of(context).pop();
     }
 
@@ -130,8 +137,13 @@ class _CarFuelActions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void delete() {
-      final carBrands = ref.read(carFuelsProvider.notifier);
-      carBrands.delete(carFuel);
+      ref.read(carFuelsProvider.notifier).delete(carFuel);
+
+      ElegantNotification.success(
+        title: const Text("Delete"),
+        description: Text("${carFuel.name} has been deleted"),
+        background: Theme.of(context).colorScheme.background,
+      ).show(context);
     }
 
     return Row(
@@ -162,6 +174,11 @@ class _AddCarFuel extends ConsumerWidget {
       void add() {
         final carBrands = ref.read(carFuelsProvider.notifier);
         carBrands.create(CarFuel(name: nameController.text));
+        ElegantNotification.success(
+          title: const Text("Create"),
+          description: Text("${nameController.text} has been created"),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
         Navigator.of(context).pop();
       }
 
