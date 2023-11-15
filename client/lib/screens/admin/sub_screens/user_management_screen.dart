@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:client/models/user.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
+import 'package:client/providers/cars.dart';
 import 'package:client/providers/users.dart';
 import 'package:client/screens/admin/sub_screens/widgets/admin_user/add_user.dart';
 import 'package:client/screens/admin/sub_screens/widgets/admin_user/edit_user.dart';
@@ -19,6 +20,7 @@ class UserManagementScreen extends ConsumerWidget {
 
     Future<void> refresh() async {
       await ref.read(usersProvider.notifier).refresh();
+      await ref.read(carsProvider.notifier).refresh();
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
@@ -120,15 +122,15 @@ class _UserActions extends ConsumerWidget {
         animType: AnimType.rightSlide,
         title: 'Are you sure?',
         desc:
-            'You are about to terminate ${user.name}\n\nWarning: this operation will delete all data related to this user',
+            'You are about to delete ${user.name}\n\nWarning: this operation will delete all data related to this user',
         btnCancelOnPress: () {},
         btnOkOnPress: () async {
           try {
             await ref.read(usersProvider.notifier).delete(user.id!);
             if (context.mounted) {
               ElegantNotification.success(
-                title: const Text("Terminate"),
-                description: Text("${user.name} has been terminated"),
+                title: const Text("delete"),
+                description: Text("${user.name} has been deleted"),
                 background: Theme.of(context).colorScheme.background,
               ).show(context);
             }
@@ -136,7 +138,7 @@ class _UserActions extends ConsumerWidget {
             if (context.mounted) {
               ElegantNotification.error(
                 title: const Text("Failed"),
-                description: Text("Failed to terminate ${user.name}"),
+                description: Text("Failed to delete ${user.name}"),
                 background: Theme.of(context).colorScheme.background,
               ).show(context);
             }

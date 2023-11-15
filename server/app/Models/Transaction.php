@@ -11,12 +11,13 @@ class Transaction extends Model
 
     protected $fillable = [
         'user_id',
-        'car_id',
         'payment_method', // ['Cash', 'Credit Card', 'Debit Card']
         'payment_proof',
         'payment_date',
-        'payment_amount',
-        'payment_status', // ['Pending', 'Success', 'Failed']
+        'total',
+        'status', // ['Pending', 'On Going', 'Finished', 'Rejected', 'Verified']
+        'verified_by', // Admin
+        'verified_at',
     ];
     
     // User has many transaction of car

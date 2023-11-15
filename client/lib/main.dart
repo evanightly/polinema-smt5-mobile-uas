@@ -47,7 +47,7 @@ class App extends ConsumerWidget {
         '/admin/profile': (context) => const AdminProfileScreen(),
         '/user/profile': (context) => const UserProfileScreen(),
       },
-      builder: EasyLoading.init()
+      builder: EasyLoading.init(),
     );
   }
 }

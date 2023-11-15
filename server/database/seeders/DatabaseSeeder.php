@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CarFuelSeeder::class,
             CarSeeder::class,
             TransactionSeeder::class,
+            DetailTransactionSeeder::class,
         ]);
     }
 }
