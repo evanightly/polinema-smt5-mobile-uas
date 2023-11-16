@@ -1,6 +1,7 @@
 import 'package:client/components/user_dashboard_appbar_profile.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:client/screens/user/sub_screens/user_main_screen.dart';
+import 'package:client/screens/user/widgets/cart/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -52,12 +53,13 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
     ),
     // Settings
     DashboardBottomMenu(
-        menu: SalomonBottomBarItem(
-          icon: const Icon(Icons.settings),
-          title: const Text("Settings"),
-          selectedColor: Colors.teal,
-        ),
-        page: const SettingsScreen()),
+      menu: SalomonBottomBarItem(
+        icon: const Icon(Icons.settings),
+        title: const Text("Settings"),
+        selectedColor: Colors.teal,
+      ),
+      page: const SettingsScreen(),
+    ),
   ];
 
   @override
@@ -66,13 +68,10 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
       appBar: AppBar(
         title: const Text('Ambatucar', style: TextStyle(fontSize: 20.0)),
         automaticallyImplyLeading: false,
-        actions: [
+        actions: const [
           // show cart and user profile
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_cart),
-          ),
-          const UserDashboardAppBarProfile()
+          Cart(),
+          UserDashboardAppBarProfile()
         ],
       ),
       body: _bottomMenu[_currentIndex].page ??

@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
+import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
+import 'package:client/screens/user/widgets/user_main/car_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -13,6 +17,32 @@ class UserMainScreen extends ConsumerWidget {
     final cars = ref.watch(carsProvider);
     Future<void> onRefresh() async {
       await ref.read(carsProvider.notifier).refresh();
+    }
+
+    void openCarDetailsScreen(Car car) {
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          opaque: false,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0.0, 1.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+
+            final tween = Tween(begin: begin, end: end).chain(CurveTween(
+              curve: curve,
+            ));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+          pageBuilder: (context, _, __) {
+            return CarDetails(car: car);
+          },
+        ),
+      );
     }
 
     return LiquidPullToRefresh(
@@ -69,87 +99,90 @@ class UserMainScreen extends ConsumerWidget {
                       mainAxisExtent: 275,
                     ),
                     itemBuilder: (context, index) {
-                      final item = cars.asData?.value[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 10,
-                              offset: const Offset(0, 0),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  topRight: Radius.circular(12),
-                                ),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: CachedNetworkImageProvider(
-                                    item!.imageUrl,
-                                    errorListener: (p0) {
-                                      print(p0);
-                                    },
+                      final car = cars.asData?.value[index];
+                      return InkWell(
+                        onTap: () => openCarDetailsScreen(car),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 0),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(12),
+                                    topRight: Radius.circular(12),
+                                  ),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: CachedNetworkImageProvider(
+                                      car!.imageUrl,
+                                      errorListener: (p0) {
+                                        log(p0.toString());
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(15),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium!
-                                        .copyWith(
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '\$ ${formatNumber(item.price)}',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium!
-                                        .copyWith(color: Colors.black87),
-                                  ),
-                                  const SizedBox(height: 11),
-                                  Badge(
-                                    largeSize: 20,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
+                              Container(
+                                padding: const EdgeInsets.all(15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      car.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
-                                    backgroundColor:
-                                        item.condition.name == 'New'
-                                            ? Colors.green
-                                            : Colors.orange,
-                                    label: Text(
-                                      item.condition.name,
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      '\$ ${formatNumber(car.price)}',
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
+                                          .copyWith(color: Colors.black87),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(height: 11),
+                                    Badge(
+                                      largeSize: 20,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                      ),
+                                      backgroundColor:
+                                          car.condition.name == 'New'
+                                              ? Colors.green
+                                              : Colors.orange,
+                                      label: Text(
+                                        car.condition.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: Colors.white,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     }),

@@ -49,9 +49,6 @@ class Car {
     required this.status,
   });
 
-  String get brandName => brand.name;
-  String get fuelName => fuel.name;
-  String get bodyTypeName => body_type.name;
   String get imageUrl {
     String imageUrl = '';
     if (image == null) {
@@ -105,12 +102,12 @@ class Car {
     return {
       'id': id,
       'name': name,
-      'brand': brandName,
-      'body_type': bodyTypeName,
+      'brand': brand.name,
+      'body_type': body_type.name,
       'year': year,
       'km_min': km_min,
       'km_max': km_max,
-      'fuel': fuelName,
+      'fuel': fuel.name,
       'price': price,
       'image': image,
       'description': description,
