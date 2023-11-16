@@ -15,7 +15,7 @@ class Transaction extends Model
         'payment_proof',
         'payment_date',
         'total',
-        'status', // ['Pending', 'On Going', 'Finished', 'Rejected', 'Verified']
+        'status', // ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished']
         'verified_by', // Admin
         'verified_at',
     ];
@@ -26,8 +26,18 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
     
-    public function car()
+    public function verifiedBy()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Admin::class, 'verified_by');
+    }
+
+    public function transactionDetails()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
+    public function getPaymentProofAttribute($value)
+    {
+        return asset('storage/transaction_proof' . $value);
     }
 }

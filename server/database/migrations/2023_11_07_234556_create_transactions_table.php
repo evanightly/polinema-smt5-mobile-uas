@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('payment_proof');
             $table->date('payment_date');
             $table->bigInteger('total');
-            $table->enum('status', ['Pending', 'On Going', 'Finished', 'Rejected', 'Verified']);
+            $table->enum('status', ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished'])->default('On Going');
             $table->foreignUuid('verified_by')->nullable()->constrained('admins')->onDelete('cascade');
             $table->date('verified_at')->nullable();
             $table->timestamps();

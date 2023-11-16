@@ -36,6 +36,11 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 9. Jalankan perintah `php artisan storage:link`
 10. Jalankan perintah `php artisan serve`
 
+<!-- /// -->
+`cd server && php artisan serve`
+`cd server && php artisan dump-server`
+`cd client && dart run build_runner watch -d`
+
 ## Note
 1.  Transaction Entity
     <br>

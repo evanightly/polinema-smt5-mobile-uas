@@ -39,7 +39,6 @@ class Users extends _$Users {
         indicator: const CircularProgressIndicator(),
         status: 'Loading...',
       );
-      print(user.uploadImage!.path);
       final dio = ref.read(dioHttpProvider.notifier);
       final formData = FormData.fromMap({
         'name': user.name,
@@ -65,7 +64,6 @@ class Users extends _$Users {
 
   void put(User user) async {
     try {
-      print(user.uploadImage!.path);
       EasyLoading.show(
         indicator: const CircularProgressIndicator(),
         status: 'Loading...',
@@ -74,7 +72,6 @@ class Users extends _$Users {
       FormData formData;
 
       if (user.uploadImage != null) {
-        print('yes');
         formData = FormData.fromMap({
           'name': user.name,
           'email': user.email,
@@ -82,7 +79,6 @@ class Users extends _$Users {
           'image': await MultipartFile.fromFile(user.uploadImage!.path),
         });
       } else {
-        print('no');
         formData = FormData.fromMap({
           'name': user.name,
           'email': user.email,
@@ -90,8 +86,6 @@ class Users extends _$Users {
         });
       }
 
-      print('formData');
-      print(formData.fields);
       final dio = ref.read(dioHttpProvider.notifier);
 
       final response =
