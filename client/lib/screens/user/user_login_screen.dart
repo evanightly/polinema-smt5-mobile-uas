@@ -36,9 +36,8 @@ class _UserLoginScreenState extends ConsumerState<UserLoginScreen> {
   }
 
   void login() {
-    final auth = ref.read(userAuthProvider.notifier);
     if (_formKey.currentState!.validate()) {
-      auth.loginUser(context, _email, _password);
+      ref.read(userAuthProvider.notifier).loginUser(context, _email, _password);
     }
   }
 

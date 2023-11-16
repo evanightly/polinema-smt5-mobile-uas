@@ -1,5 +1,6 @@
 import 'package:client/models/user.dart';
 import 'package:client/providers/diohttp.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,6 +11,10 @@ part 'user_auth.g.dart';
 class UserAuth extends _$UserAuth {
   void loginUser(BuildContext context, String email, String password) async {
     try {
+      EasyLoading.show(
+        indicator: const CircularProgressIndicator(),
+        status: 'Loading...',
+      );
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post(
         '/user/login',
@@ -27,6 +32,14 @@ class UserAuth extends _$UserAuth {
 
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/user');
+        EasyLoading.dismiss();
+      }
+    } on DioException catch (d) {
+      if (d.type == DioExceptionType.connectionTimeout) {
+        EasyLoading.showError(
+          'Server timeout, probably wrong ip address supplied',
+          duration: const Duration(seconds: 5),
+        );
       }
     } catch (e) {
       EasyLoading.showError('Failed with error, user not found');

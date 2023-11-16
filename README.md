@@ -38,8 +38,9 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 
 <!-- /// -->
 `cd server && php artisan serve`
-`cd server && php artisan dump-server`
 `cd client && dart run build_runner watch -d`
+`cd server && php artisan dump-server`
+`cd client && flutter run`
 
 ## Note
 1.  Transaction Entity

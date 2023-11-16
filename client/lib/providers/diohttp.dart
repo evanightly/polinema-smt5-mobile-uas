@@ -18,6 +18,7 @@ class DioHttp extends _$DioHttp {
     return Dio(
       BaseOptions(
         baseUrl: _serverBaseUrl,
+        connectTimeout: const Duration(seconds: 15),
       ),
     );
   }

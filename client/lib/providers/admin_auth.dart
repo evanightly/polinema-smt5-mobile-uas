@@ -1,6 +1,7 @@
 import 'package:client/models/admin.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/diohttp.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -33,6 +34,13 @@ class AdminAuth extends _$AdminAuth {
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/admin');
         EasyLoading.dismiss();
+      }
+    } on DioException catch (d) {
+      if (d.type == DioExceptionType.connectionTimeout) {
+        EasyLoading.showError(
+          'Server timeout, probably wrong ip address supplied',
+          duration: const Duration(seconds: 5),
+        );
       }
     } catch (e) {
       EasyLoading.showError('Failed with error, admin not found');

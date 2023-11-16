@@ -26,7 +26,6 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final adminAuthController = ref.read(adminAuthProvider.notifier);
     void navigateToUserLogin() {
       Navigator.pushReplacementNamed(context, '/user/login');
     }
@@ -36,7 +35,10 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
         return;
       }
       _formKey.currentState!.save();
-      adminAuthController.loginAdmin(context, _email, _password);
+
+      ref
+          .read(adminAuthProvider.notifier)
+          .loginAdmin(context, _email, _password);
     }
 
     return Scaffold(

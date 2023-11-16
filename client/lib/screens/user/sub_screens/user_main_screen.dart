@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/providers/cars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,9 +64,9 @@ class UserMainScreen extends ConsumerWidget {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.8,
                       crossAxisSpacing: 15,
                       mainAxisSpacing: 15,
+                      mainAxisExtent: 275,
                     ),
                     itemBuilder: (context, index) {
                       final item = cars.asData?.value[index];
@@ -91,28 +93,60 @@ class UserMainScreen extends ConsumerWidget {
                                   topRight: Radius.circular(12),
                                 ),
                                 image: DecorationImage(
-                                  image: NetworkImage(item!.imageUrl),
                                   fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    item!.imageUrl,
+                                    errorListener: (p0) {
+                                      print(p0);
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(left: 10, top: 10),
-                              child: Text(
-                                item.name,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 10, top: 5),
-                              child: Text(
-                                '\$${item.price}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: Theme.of(context).primaryColor,
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          color: Colors.black87,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '\$ ${formatNumber(item.price)}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: Colors.black87),
+                                  ),
+                                  const SizedBox(height: 11),
+                                  Badge(
+                                    largeSize: 20,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
                                     ),
+                                    backgroundColor:
+                                        item.condition.name == 'New'
+                                            ? Colors.green
+                                            : Colors.orange,
+                                    label: Text(
+                                      item.condition.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
