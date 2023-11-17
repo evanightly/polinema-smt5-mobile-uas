@@ -110,6 +110,8 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Delete ✔
   - Transactions ❓ (read [Note](#note) above)
     - Read
+      - Verify Transaction Proofs
+      - Accept Transaction
     - Delete
 
 - User

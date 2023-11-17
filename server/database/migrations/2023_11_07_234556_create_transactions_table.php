@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('total');
             $table->enum('status', ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished'])->default('On Going');
             $table->foreignUuid('verified_by')->nullable()->constrained('admins')->onDelete('cascade');
-            $table->date('verified_at')->nullable();
+            $table->dateTime('verified_at')->nullable();
             $table->timestamps();
         });
     }
