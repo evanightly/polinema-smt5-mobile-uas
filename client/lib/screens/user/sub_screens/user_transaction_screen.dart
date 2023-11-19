@@ -40,7 +40,6 @@ class UserTransactionScreen extends ConsumerWidget {
     }
 
     void showDetailTransaction(UserTransaction transaction) {
-      print(transaction.detailTransactions);
       showDialog(
         context: context,
         builder: (context) => Scaffold(
