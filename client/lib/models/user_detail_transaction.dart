@@ -1,3 +1,4 @@
+import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 
 class UserDetailTransaction {
@@ -18,6 +19,10 @@ class UserDetailTransaction {
     required this.subtotal,
     required this.car,
   });
+
+  get formattedCarPrice => formatNumber(carPrice);
+  get formattedSubtotal => formatNumber(subtotal);
+
 
   factory UserDetailTransaction.fromJson(Map<String, dynamic> json) {
     final id = json['id'].toString();

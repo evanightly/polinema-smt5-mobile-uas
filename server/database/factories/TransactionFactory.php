@@ -31,7 +31,7 @@ class TransactionFactory extends Factory
             'status' => fake()->randomElement(['Pending', 'Finished', 'Rejected', 'Verified']),
             'verified_by' => fake()->randomElement($sampleAdmins),
             'verified_at' => fake()->date(),
-            'deliver_address' => fake()->address(),
+            'delivery_address' => fake()->address(),
         ];
     }
 }

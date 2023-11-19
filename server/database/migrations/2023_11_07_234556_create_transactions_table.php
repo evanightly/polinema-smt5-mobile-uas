@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('status', ['OnGoing', 'Pending', 'Rejected', 'Verified', 'Finished'])->default('OnGoing');
             $table->foreignUuid('verified_by')->nullable()->constrained('admins')->onDelete('cascade');
             $table->dateTime('verified_at')->nullable();
-            $table->string('deliver_address')->nullable();
+            $table->string('delivery_address')->nullable();
             $table->timestamps();
         });
     }

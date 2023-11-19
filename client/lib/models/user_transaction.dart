@@ -20,6 +20,7 @@ class UserTransaction {
   final Admin? verifiedBy;
   final DateTime? verifiedAt;
   final DateTime createdAt;
+  final String? deliveryAddress;
   final List<UserDetailTransaction>? detailTransactions;
 
   const UserTransaction({
@@ -33,6 +34,7 @@ class UserTransaction {
     this.verifiedBy,
     this.verifiedAt,
     required this.createdAt,
+    this.deliveryAddress,
     this.detailTransactions = const [],
   });
 
@@ -93,6 +95,8 @@ class UserTransaction {
       // print("createdAt ${createdAt}");
       final detailTransactions = json['detail_transactions'] as List<dynamic>;
       // print("detailTransactions ${detailTransactions}");
+      final deliveryAddress = json['delivery_address']?.toString() ?? '';
+      // print("deliveryAddress ${deliveryAddress}");
       final userDetailTransactions = detailTransactions.map(
         (detailTransaction) {
           // print("detailTransaction ${detailTransaction}");
@@ -111,6 +115,7 @@ class UserTransaction {
         verifiedBy: verifiedBy,
         verifiedAt: verifiedAt,
         createdAt: createdAt,
+        deliveryAddress: deliveryAddress,
         detailTransactions: userDetailTransactions,
       );
 
@@ -133,6 +138,7 @@ class UserTransaction {
       'verified_by': verifiedBy?.toJson(),
       'verified_at': verifiedAt.toString(),
       'created_at': createdAt.toString(),
+      'delivery_address': deliveryAddress,
       'detail_transactions':
           detailTransactions?.map((e) => e.toJson()).toList(),
     };

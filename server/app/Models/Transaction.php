@@ -18,7 +18,7 @@ class Transaction extends Model
         'status', // ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished']
         'verified_by', // Admin
         'verified_at',
-        'deliver_address',
+        'delivery_address',
     ];
 
     // User has many transaction of car

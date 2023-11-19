@@ -65,7 +65,7 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Price: \$${detailTransaction.carPrice}',
+                  'Price: \$${detailTransaction.formattedCarPrice}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
@@ -81,48 +81,46 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        color: Theme.of(context).colorScheme.primary,
-                        onPressed: substractQty,
-                        icon: const Icon(Icons.remove),
-                      ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      color: Theme.of(context).colorScheme.primary,
+                      onPressed: substractQty,
+                      icon: const Icon(Icons.remove),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: TextFormField(
-                        controller: _qtyController,
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 1,
-                            horizontal: 0,
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: TextFormField(
+                      controller: _qtyController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 1,
+                          horizontal: 0,
                         ),
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        onChanged: (value) => setQty(
-                          num.parse(value),
-                        ),
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                      ),
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      onChanged: (value) => setQty(
+                        num.parse(value),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: IconButton(
-                        color: Theme.of(context).colorScheme.primary,
-                        onPressed: addQty,
-                        icon: const Icon(Icons.add),
-                      ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      color: Theme.of(context).colorScheme.primary,
+                      onPressed: addQty,
+                      icon: const Icon(Icons.add),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           )

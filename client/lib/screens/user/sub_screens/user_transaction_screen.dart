@@ -40,6 +40,7 @@ class UserTransactionScreen extends ConsumerWidget {
     }
 
     void showDetailTransaction(UserTransaction transaction) {
+      print(transaction.detailTransactions);
       showDialog(
         context: context,
         builder: (context) => Scaffold(
@@ -59,7 +60,6 @@ class UserTransactionScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
@@ -96,6 +96,21 @@ class UserTransactionScreen extends ConsumerWidget {
                 leading: const Text('Verified At:'),
                 trailing: Text(transaction.verifiedDate),
               ),
+              Padding(
+                padding: const EdgeInsets.all(_leftPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Delivery Address:',
+                        style: Theme.of(context).textTheme.bodyLarge),
+                    const SizedBox(height: 8),
+                    Text(
+                      transaction.deliveryAddress ?? '',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    )
+                  ],
+                ),
+              ),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
@@ -114,7 +129,7 @@ class UserTransactionScreen extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 32),
                     if (transaction.paymentProof != null)
                       CachedNetworkImage(
                         imageUrl: transaction.imageUrl,
@@ -145,7 +160,8 @@ class UserTransactionScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              if (transaction.detailTransactions != null)
+              if (transaction.detailTransactions != null &&
+                  transaction.detailTransactions!.isNotEmpty)
                 for (var i = 0; i < transaction.detailTransactions!.length; i++)
                   ListTile(
                     leading: _CarImage(transaction.detailTransactions![i].car),

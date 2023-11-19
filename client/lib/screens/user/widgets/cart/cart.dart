@@ -17,15 +17,19 @@ class _CartState extends ConsumerState<Cart> {
   Widget build(BuildContext context) {
     final cart = ref.watch(userTransactionsProvider);
     String total = '';
-    
+    int itemsInCart = 0;
+
     // select only transactions with status 'OnGoing'
     final onGoingTransactions = cart.asData?.value
         .where((transaction) => transaction.status == Status.OnGoing)
         .toList();
 
-    if (onGoingTransactions == null || onGoingTransactions.isEmpty) {
-      return const SizedBox();
-    } else {
+    itemsInCart = onGoingTransactions?.fold(0, (previousValue, element) {
+          return (previousValue! + element.detailTransactions!.length);
+        }) ??
+        0;
+
+    if (onGoingTransactions != null && onGoingTransactions.isNotEmpty) {
       total = formatNumber(
         onGoingTransactions.fold(0, (previousValue, transaction) {
           return previousValue + transaction.total;
@@ -47,8 +51,8 @@ class _CartState extends ConsumerState<Cart> {
               decoration: BoxDecoration(
                 color: Theme.of(context)
                     .colorScheme
-                    .inverseSurface
-                    .withOpacity(.2),
+                    .primaryContainer
+                    .withOpacity(.5),
               ),
               child: Row(
                 children: [
@@ -68,7 +72,7 @@ class _CartState extends ConsumerState<Cart> {
               padding: const EdgeInsets.all(12),
               child: ListView(
                 children: [
-                  if (onGoingTransactions.isNotEmpty)
+                  if (onGoingTransactions!.isNotEmpty)
                     for (var transaction in onGoingTransactions)
                       for (var detailTransaction
                           in transaction.detailTransactions!)
@@ -83,7 +87,12 @@ class _CartState extends ConsumerState<Cart> {
 
     return IconButton(
       onPressed: openCartScreen,
-      icon: const Icon(Icons.shopping_cart),
+      icon: Badge(
+        label: itemsInCart == 0
+            ? null
+            : Text(itemsInCart.toString()),
+        child: const Icon(Icons.shopping_cart),
+      ),
     );
   }
 }
