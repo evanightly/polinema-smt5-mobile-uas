@@ -1,5 +1,7 @@
 import 'package:client/models/user.dart';
+import 'package:client/providers/cars.dart';
 import 'package:client/providers/diohttp.dart';
+import 'package:client/providers/user_transactions.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -31,6 +33,8 @@ class UserAuth extends _$UserAuth {
       state = user;
 
       if (context.mounted) {
+        ref.read(carsProvider.notifier).refresh();
+        ref.read(userTransactionsProvider.notifier).refresh();
         Navigator.pushReplacementNamed(context, '/user');
         EasyLoading.dismiss();
       }

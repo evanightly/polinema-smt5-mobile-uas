@@ -81,4 +81,15 @@ class Admin {
 
     return admin;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'password': password,
+      'isSuperAdmin': isSuperAdmin,
+      'image': image,
+    };
+  }
 }

@@ -24,13 +24,14 @@ class TransactionFactory extends Factory
 
         return [
             'user_id' => fake()->randomElement($sampleUsers),
-            'payment_method' => fake()->randomElement(['Cash', 'Credit Card', 'Debit Card']),
+            'payment_method' => fake()->randomElement(['Cash', 'CreditCard', 'DebitCard']),
             'payment_proof' => fake()->imageUrl(),
             'payment_date' => fake()->date(),
             'total' => fake()->numberBetween(100000000, 200000000),
-            'status' => fake()->randomElement(['Pending', 'On Going', 'Finished', 'Rejected', 'Verified']),
+            'status' => fake()->randomElement(['Pending', 'OnGoing', 'Finished', 'Rejected', 'Verified']),
             'verified_by' => fake()->randomElement($sampleAdmins),
             'verified_at' => fake()->date(),
+            'deliver_address' => fake()->address(),
         ];
     }
 }

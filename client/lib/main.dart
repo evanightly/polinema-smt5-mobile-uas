@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: 'public.env');
+  await dotenv.load();
 
   final prefs = await SharedPreferences.getInstance();
 
@@ -33,7 +33,7 @@ class App extends ConsumerWidget {
     ref.read(sharedPreferenceProvider.notifier).init(prefs);
     return MaterialApp(
       title: 'Mein App',
-      initialRoute: '/',
+      initialRoute: '/user/login',
       debugShowCheckedModeBanner: false,
       theme:
           ref.watch(settingsProvider).darkMode ? darkThemeData : lightThemeData,

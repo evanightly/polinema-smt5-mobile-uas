@@ -4,23 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({super.key});
+  const UserProfileScreen({this.disableBackButton = false, super.key});
+
+  final bool disableBackButton;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: !disableBackButton,
         actions: const [_EditProfile()],
       ),
-      body: const Flex(
+      body: Flex(
         direction: Axis.vertical,
         children: [
-          _ProfileAvatar(),
-          SizedBox(height: 24),
-          SizedBox(height: 15),
-          _ProfileName(),
-          SizedBox(height: 6),
-          _ProfileEmail(),
+          const _ProfileAvatar(),
+          const SizedBox(height: 24),
+          const SizedBox(height: 15),
+          const _ProfileName(),
+          const SizedBox(height: 6),
+          const _ProfileEmail(),
+          const SizedBox(height: 6),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            height: 1,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(.2),
+          ),
+          const SizedBox(height: 6),
+          const _ProfileAddress()
         ],
       ),
     );
@@ -152,5 +163,26 @@ class _ProfileEmail extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final email = ref.watch(userAuthProvider)!.email;
     return Text(email, style: Theme.of(context).textTheme.bodyMedium);
+  }
+}
+
+class _ProfileAddress extends ConsumerWidget {
+  const _ProfileAddress();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final address = ref.watch(userAuthProvider)!.address;
+    Widget content = const SizedBox.shrink();
+
+    if (address != null) {
+      content = Container(
+        child: Text(
+          address,
+          style: Theme.of(context).textTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+    return content;
   }
 }

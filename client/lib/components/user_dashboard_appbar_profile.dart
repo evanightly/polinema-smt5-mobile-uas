@@ -9,34 +9,41 @@ class UserDashboardAppBarProfile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     dynamic loggedUser = ref.watch(userAuthProvider);
-    return Padding(
-      padding: const EdgeInsets.only(right: 10.0),
-      child: UserAnchorMenu(
-        icon: Stack(
-          children: [
-            CircleAvatar(
-              backgroundImage: loggedUser.imageProviderWidget,
-              radius: 20,
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                width: 14,
-                height: 14,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: const LinearGradient(
-                    colors: [Colors.lightGreen, Colors.green],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+
+    Widget content = const SizedBox.shrink();
+
+    if (loggedUser != null) {
+      content = Padding(
+        padding: const EdgeInsets.only(right: 10.0),
+        child: UserAnchorMenu(
+          icon: Stack(
+            children: [
+              CircleAvatar(
+                backgroundImage: loggedUser.imageProviderWidget,
+                radius: 14,
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: const LinearGradient(
+                      colors: [Colors.lightGreen, Colors.green],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
+
+    return content;
   }
 }

@@ -12,7 +12,18 @@ class DetailTransaction extends Model
     protected $fillable = [
         'transaction_id',
         'car_id',
+        'car_price', // price when transaction happened
         'qty',
         'subtotal',
     ];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
 }

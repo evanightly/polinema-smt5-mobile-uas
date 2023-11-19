@@ -1,7 +1,9 @@
 import 'package:client/components/user_dashboard_appbar_profile.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:client/screens/user/sub_screens/user_main_screen.dart';
+import 'package:client/screens/user/sub_screens/user_transaction_screen.dart';
 import 'package:client/screens/user/widgets/cart/cart.dart';
+import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -36,20 +38,13 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
       ),
       page: const UserMainScreen(),
     ),
-    // Cars
-    DashboardBottomMenu(
-      menu: SalomonBottomBarItem(
-        icon: const Icon(Icons.directions_car),
-        title: const Text("Car Showcase"),
-        selectedColor: Colors.pink,
-      ),
-    ),
     DashboardBottomMenu(
       menu: SalomonBottomBarItem(
         icon: const Icon(Icons.my_library_books_outlined),
         title: const Text("My Transactions"),
         selectedColor: Colors.orange,
       ),
+      page: const UserTransactionScreen(),
     ),
     // Settings
     DashboardBottomMenu(
@@ -59,6 +54,14 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
         selectedColor: Colors.teal,
       ),
       page: const SettingsScreen(),
+    ),
+    DashboardBottomMenu(
+      menu: SalomonBottomBarItem(
+        icon: const Icon(Icons.person),
+        title: const Text("Profile"),
+        selectedColor: Colors.blue,
+      ),
+      page: const UserProfileScreen(disableBackButton: true),
     ),
   ];
 

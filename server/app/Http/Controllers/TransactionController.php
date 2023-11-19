@@ -37,7 +37,8 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        dump($transaction);
+        return $transaction->load(['user', 'verifiedBy']);
     }
 
     /**

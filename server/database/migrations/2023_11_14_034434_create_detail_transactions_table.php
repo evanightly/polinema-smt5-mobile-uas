@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
             $table->foreignId('car_id')->constrained('cars')->cascadeOnDelete();
+            $table->integer('car_price');
             $table->integer('qty');
             $table->integer('subtotal');
             $table->timestamps();

@@ -19,6 +19,7 @@ class DetailTransactionFactory extends Factory
         return [
             'transaction_id' => $this->faker->numberBetween(1, 10),
             'car_id' => $this->faker->numberBetween(1, 10),
+            'car_price' => $this->faker->numberBetween(100000, 1000000),
             'qty' => $this->faker->numberBetween(1, 10),
             'subtotal' => $this->faker->numberBetween(100000, 1000000),
         ];

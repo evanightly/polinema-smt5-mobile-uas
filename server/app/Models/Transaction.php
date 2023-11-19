@@ -18,26 +18,27 @@ class Transaction extends Model
         'status', // ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished']
         'verified_by', // Admin
         'verified_at',
+        'deliver_address',
     ];
-    
+
     // User has many transaction of car
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function verifiedBy()
     {
         return $this->belongsTo(Admin::class, 'verified_by');
     }
 
-    public function transactionDetails()
+    public function detailTransactions()
     {
-        return $this->hasMany(TransactionDetail::class);
+        return $this->hasMany(DetailTransaction::class);
     }
 
-    public function getPaymentProofAttribute($value)
-    {
-        return asset('storage/transaction_proof' . $value);
-    }
+    // public function getPaymentProofAttribute($value)
+    // {
+    //     return asset('storage/transaction_proof' . $value);
+    // }
 }

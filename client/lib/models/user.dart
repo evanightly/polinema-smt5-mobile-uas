@@ -11,6 +11,7 @@ class User {
   final String? image;
   final File? uploadImage;
   final String? token;
+  final String? address;
 
   User({
     this.id,
@@ -20,6 +21,7 @@ class User {
     this.image,
     this.uploadImage,
     this.token,
+    this.address,
   });
 
   String get imageUrl {
@@ -48,6 +50,7 @@ class User {
     final password = json['user']['password'].toString();
     final image = json['user']['image'].toString();
     final token = json['token'].toString();
+    final address = json['user']['address'].toString();
 
     final admin = User(
       id: id,
@@ -56,18 +59,19 @@ class User {
       password: password,
       image: image,
       token: token,
+      address: address,
     );
 
     return admin;
   }
 
-  // fromJson
   factory User.fromJson(Map<String, dynamic> json) {
     final id = json['id'].toString();
     final name = json['name'].toString();
     final email = json['email'].toString();
     final password = json['password'].toString();
     final image = json['image'].toString();
+    final address = json['address'].toString();
 
     final admin = User(
       id: id,
@@ -75,6 +79,7 @@ class User {
       email: email,
       password: password,
       image: image,
+      address: address,
     );
 
     return admin;

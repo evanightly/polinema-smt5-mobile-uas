@@ -41,7 +41,8 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'image' => $image_name
+            'image' => $image_name,
+            'address' => $request->address
         ]);
 
         return $user;
@@ -52,7 +53,18 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return $user->load(
+            ['transactions' => [
+                'verifiedBy',
+                'detailTransactions' => [
+                    'car' => [
+                        'bodyType',
+                        'brand',
+                        'fuel'
+                    ]
+                ]
+            ]]
+        );
     }
 
     /**
@@ -93,6 +105,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
                 'image' => $image_name,
+                'address' => $request->address
             ]);
             return response()->json([
                 'message' => 'User updated successfully'

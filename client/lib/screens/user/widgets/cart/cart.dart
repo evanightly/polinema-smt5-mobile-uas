@@ -47,7 +47,7 @@ class _CartState extends ConsumerState<Cart> {
             body: Container(
               padding: const EdgeInsets.all(12),
               child: ListView(
-                children: [UserCartItem()],
+                children: const [UserCartItem()],
               ),
             ),
           );
