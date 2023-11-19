@@ -5,7 +5,7 @@ class UserDetailTransaction {
   final String transactionId;
   final String carId;
   final num carPrice;
-  final String qty;
+  final int qty;
   final num subtotal;
   final Car car;
 
@@ -24,7 +24,7 @@ class UserDetailTransaction {
     final transactionId = json['transaction_id'].toString();
     final carId = json['car_id'].toString();
     final carPrice = json['car']['price'];
-    final qty = json['qty'].toString();
+    final qty = json['qty'];
     final subtotal = json['subtotal'];
     final car = Car.fromJson(json['car']);
 

@@ -20,7 +20,7 @@ class UserAuthController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if (!$user || !Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
+                return ValidationException::withMessages([
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
             }

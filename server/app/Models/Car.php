@@ -25,7 +25,8 @@ class Car extends Model
         'description',
         'condition', // ['Used', 'New']
         'transmission', // ['Automatic', 'Manual']
-        'status' // ['Available', 'Sold']
+        'status', // ['Available', 'Sold']
+        'stock'
     ];
 
     public function brand()

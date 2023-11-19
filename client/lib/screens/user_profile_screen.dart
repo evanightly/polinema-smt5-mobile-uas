@@ -175,12 +175,10 @@ class _ProfileAddress extends ConsumerWidget {
     Widget content = const SizedBox.shrink();
 
     if (address != null) {
-      content = Container(
-        child: Text(
-          address,
-          style: Theme.of(context).textTheme.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
+      content = Text(
+        address,
+        style: Theme.of(context).textTheme.bodyMedium,
+        textAlign: TextAlign.center,
       );
     }
     return content;

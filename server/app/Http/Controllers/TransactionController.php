@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Models\Car;
+use App\Models\DetailTransaction;
+
 
 class TransactionController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +33,93 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        return Transaction::create($request->validated());
+        try {
+            $defaultStockThreshold = 2;
+            $userId = $request->user_id;
+            $carId = $request['car']['id'];
+
+            // search user transaction with status 'OnGoing'
+            $userTransaction = Transaction::where('user_id', $userId)->where('status', 'OnGoing')->first();
+            if ($userTransaction) {
+                /**
+                 * Update detail transaction with the selected car, and check if the selected car is exist in detail transaction,
+                 * - if it exist, check the car stock if more than 1, if it is, then update the detail transaction qty and decrease the car stock
+                 * - if not exist, check the car stock if more than 1, if it is, then create new detail transaction and decrease the car stock
+                 */
+
+                $detailTransaction = DetailTransaction::where(['transaction_id' => $userTransaction->id, 'car_id' => $carId])->first();
+                $selectedCar = Car::where('id', $carId)->first();
+                if ($detailTransaction) {
+                    dump('Car already exist in detail transaction', $detailTransaction);
+                    if ($selectedCar->stock > $defaultStockThreshold) {
+                        $selectedCar->update(['stock' => $selectedCar->stock - 1]);
+                        // update transaction with the selected car
+                        $detailTransaction->update(['qty' => $detailTransaction->qty + 1]);
+                    } else {
+                        return response()->json([
+                            'message' => 'Stock is not enough'
+                        ], 400);
+                    }
+                } else {
+                    dump('Car not exist in detail transaction', $detailTransaction);
+                    if ($selectedCar->stock > $defaultStockThreshold) {
+                        $selectedCar->update(['stock' => $selectedCar->stock - 1]);
+                        // create new detail transaction with the selected car
+                        $detailTransaction = DetailTransaction::create([
+                            'transaction_id' => $userTransaction->id,
+                            'car_id' => $carId,
+                            'qty' => 1,
+                            'car_price' => $selectedCar->price,
+                            'subtotal' => $selectedCar->price
+                        ]);
+
+                        $total = $userTransaction->total + $selectedCar->price;
+
+                        // update transaction with the selected car, append the detail transaction to
+                        $userTransaction->update(['total' => $total]);
+                    } else {
+                        return response()->json([
+                            'message' => 'Stock is not enough'
+                        ], 400);
+                    }
+                }
+            } else {
+                $selectedCar = Car::where('id', $request->car)->first();
+                if ($selectedCar->stock > $defaultStockThreshold) {
+                    $selectedCar->update(['stock' => $selectedCar->stock - 1]);
+                    $transaction = Transaction::create($request->validated() + ['user_id' => $userId] + ['total' => $selectedCar->price]);
+                    $transactionId = $transaction->id;
+
+                    $detailTransaction = DetailTransaction::create([
+                        'transaction_id' => $transactionId,
+                        'car_id' => $selectedCar->id,
+                        'car_price' => $selectedCar->price,
+                        'qty' => 1,
+                        'subtotal' => $selectedCar->price
+                    ]);
+
+                    $total = $transaction->total + $selectedCar->price;
+                } else {
+                    return response()->json([
+                        'message' => 'Stock is not enough'
+                    ], 400);
+                }
+            }
+
+            return response()->json([
+                'message' => 'Added to cart'
+            ], 200);
+        } catch (\Throwable $th) {
+            dump($th);
+        }
+
+        // if ($userTransaction) {
+        //     $userTransaction->update(['status' => 'Canceled']);
+        // }
+        // $transaction = Transaction::create($request->validated());
+        // return $transaction;
+
+        // return Transaction::create($request->validated());
     }
 
     /**
@@ -37,7 +127,6 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        dump($transaction);
         return $transaction->load(['user', 'verifiedBy']);
     }
 

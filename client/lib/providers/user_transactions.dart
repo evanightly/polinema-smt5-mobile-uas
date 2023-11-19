@@ -1,6 +1,13 @@
+import 'dart:developer';
+
+import 'package:client/models/car.dart';
 import 'package:client/models/user_transaction.dart';
+import 'package:client/providers/cars.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:client/providers/user_auth.dart';
+import 'package:dio/dio.dart';
+import 'package:elegant_notification/elegant_notification.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_transactions.g.dart';
@@ -23,6 +30,7 @@ class UserTransactions extends _$UserTransactions {
       final response = await dio.http.get('/users/${user!.id}');
       final data = response.data as dynamic;
       final transactions = data['transactions'] as List<dynamic>;
+
       final userTransactions = transactions.map(
         (transaction) {
           return UserTransaction.fromJson(transaction);
@@ -37,5 +45,46 @@ class UserTransactions extends _$UserTransactions {
   Future<void> refresh() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
+  }
+
+  Future<void> add(BuildContext context, Car car) async {
+    try {
+      final user = ref.read(userAuthProvider);
+      final dio = ref.read(dioHttpProvider.notifier);
+      final cars = ref.read(carsProvider.notifier);
+      final response = await dio.http.post(
+        '/transactions',
+        data: {'user_id': user!.id, 'car': car.toJson()},
+      );
+
+      log(response.data.toString());
+
+      if (response.statusCode == 200) {
+        if (context.mounted) {
+          ElegantNotification.success(
+            title: const Text("Success"),
+            description: Text(response.data['message']),
+            background: Theme.of(context).colorScheme.background,
+          ).show(context);
+        }
+
+        refresh();
+        cars.refresh();
+      }
+      final data = response.data as dynamic;
+      final newTransaction = UserTransaction.fromJson(data);
+      state.whenData((transactions) {
+        transactions.add(newTransaction);
+        state = AsyncValue.data(transactions);
+      });
+    } on DioException catch (e) {
+      if (context.mounted) {
+        ElegantNotification.error(
+          title: const Text("Error"),
+          description: Text(e.response?.data['message']),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
+      }
+    }
   }
 }

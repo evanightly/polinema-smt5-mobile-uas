@@ -1,20 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
+import 'package:client/providers/cars.dart';
+import 'package:client/providers/user_transactions.dart';
 import 'package:client/screens/user/widgets/cart/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CarDetails extends StatelessWidget {
+class CarDetails extends ConsumerWidget {
   const CarDetails({required this.car, super.key});
   final Car car;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     void returnToDashboard() {
       Navigator.pop(context);
     }
 
-    void addToCart() {}
+    void addToCart() {
+      ref.read(userTransactionsProvider.notifier).add(context, car);
+      ref.read(carsProvider.notifier).refresh();
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       bottomNavigationBar: BottomAppBar(
@@ -88,10 +96,20 @@ class CarDetails extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 const SizedBox(height: 12),
-                Text('Price :\$ ${formatNumber(car.price)}',
-                    style: const TextStyle(fontSize: 18)),
+                Text(
+                  'Price :\$ ${formatNumber(car.price)}',
+                  style: const TextStyle(fontSize: 18),
+                ),
                 const SizedBox(height: 12),
-                const Text('Specification :', style: TextStyle(fontSize: 18)),
+                Text(
+                  'Ready : ${car.stock} items',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Specification :',
+                  style: TextStyle(fontSize: 18),
+                ),
                 const SizedBox(height: 12),
                 GridView.count(
                   childAspectRatio: (1 / .7),

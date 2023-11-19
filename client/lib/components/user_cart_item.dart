@@ -1,15 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/models/user_detail_transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserCartItem extends ConsumerStatefulWidget {
-  const UserCartItem({super.key});
+  const UserCartItem({required this.detailTransaction, super.key});
+
+  final UserDetailTransaction? detailTransaction;
 
   @override
   ConsumerState<UserCartItem> createState() => _UserCartItemState();
 }
 
 class _UserCartItemState extends ConsumerState<UserCartItem> {
-  final num _qty = 1;
+  late final num _qty = widget.detailTransaction!.qty;
 
   late final _qtyController = TextEditingController(text: _qty.toString());
 
@@ -32,16 +36,19 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
 
   @override
   Widget build(BuildContext context) {
+    final detailTransaction = widget.detailTransaction;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
       child: Row(
         children: [
           Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/images/car2_Porsche.jpg'),
+              image: DecorationImage(
+                image:
+                    CachedNetworkImageProvider(detailTransaction!.car.imageUrl),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(12),
@@ -53,12 +60,12 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Porsche 911',
+                  detailTransaction.car.name,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Price: \$1200000',
+                  'Price: \$${detailTransaction.carPrice}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

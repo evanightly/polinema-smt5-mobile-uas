@@ -26,6 +26,7 @@ return new class extends Migration
             $table->enum('transmission', ['Automatic', 'Manual'])->nullable(false);
             $table->enum('status', ['Available', 'Sold'])->nullable(false);
             $table->text('description');
+            $table->integer('stock')->default(0);
             $table->timestamps();
         });
     }

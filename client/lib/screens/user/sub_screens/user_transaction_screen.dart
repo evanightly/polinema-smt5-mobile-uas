@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/models/user_transaction.dart';
@@ -25,7 +26,7 @@ class UserTransactionScreen extends ConsumerWidget {
       if (status == 'OnGoing') {
         textColor = Colors.blue;
       } else if (status == 'Pending') {
-        textColor = Colors.yellow;
+        textColor = Colors.orange;
       } else if (status == 'Rejected') {
         textColor = Colors.red;
       }
@@ -75,19 +76,19 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Payment Method:'),
-                trailing: Text(transaction.paymentMethod.name),
+                trailing: Text(transaction.paymentMethod?.name ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Payment Date:'),
-                trailing: Text(transaction.paymentDate),
+                trailing: Text(transaction.paymentDate ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Verified By:'),
-                trailing: Text(transaction.verifiedBy.name),
+                trailing: Text(transaction.verifiedBy?.name ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
@@ -115,12 +116,21 @@ class UserTransactionScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     if (transaction.paymentProof != null)
-                      Image.network(
-                        transaction.imageUrl,
-                        fit: BoxFit.cover,
+                      CachedNetworkImage(
+                        imageUrl: transaction.imageUrl,
                         width: double.infinity,
                         height: 200,
-                      ),
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) {
+                          return const Row(
+                            children: [
+                              Icon(Icons.error),
+                              SizedBox(width: 8),
+                              Text('No payment proof'),
+                            ],
+                          );
+                        },
+                      )
                   ],
                 ),
               ),
@@ -135,19 +145,18 @@ class UserTransactionScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              for (var i = 0; i < transaction.detailTransactions.length; i++)
-                ListTile(
-                  leading: _CarImage(transaction.detailTransactions[i].car),
-                  title: Text(
-                    transaction.detailTransactions[i].car.name,
+              if (transaction.detailTransactions != null)
+                for (var i = 0; i < transaction.detailTransactions!.length; i++)
+                  ListTile(
+                    leading: _CarImage(transaction.detailTransactions![i].car),
+                    title: Text(transaction.detailTransactions![i].car.name),
+                    subtitle: Text(
+                      '\$ ${formatNumber(transaction.detailTransactions![i].car.price)}',
+                    ),
+                    trailing: Text(
+                      'x ${transaction.detailTransactions![i].qty}',
+                    ),
                   ),
-                  subtitle: Text(
-                    '${transaction.detailTransactions[i].qty} x \$ ${formatNumber(transaction.detailTransactions[i].car.price)}',
-                  ),
-                  trailing: Text(
-                    'Subtotal: \$ ${formatNumber(transaction.detailTransactions[i].subtotal)}',
-                  ),
-                )
             ],
           ),
         ),
@@ -203,14 +212,8 @@ class _CarImage extends StatelessWidget {
           topLeft: Radius.circular(_circularRadius),
           bottomLeft: Radius.circular(_circularRadius),
         ),
-        child: Image.network(
-          // imagePath.startsWith('http')
-          //     ? imagePath
-          //     : 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$imagePath',
-          car.imageUrl,
-          fit: BoxFit.cover,
-          width: 120,
-          height: 80,
+        child: CachedNetworkImage(
+          imageUrl: car.imageUrl,
         ),
       );
     }

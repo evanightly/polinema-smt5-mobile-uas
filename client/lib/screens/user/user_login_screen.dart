@@ -12,7 +12,7 @@ class UserLoginScreen extends ConsumerStatefulWidget {
 
 class _UserLoginScreenState extends ConsumerState<UserLoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _email = 'jamal05@example.net';
+  String _email = 'thelma97@example.org';
   String _password = 'user';
 
   void navigateToRegisterUser() {

@@ -6,6 +6,7 @@ import 'package:client/models/car_body_type.dart';
 import 'package:client/models/car_brand.dart';
 import 'package:client/models/car_fuel.dart';
 import 'package:client/providers/diohttp.dart';
+import 'package:flutter/material.dart';
 
 enum CarTransmission { Automatic, Manual }
 
@@ -29,6 +30,7 @@ class Car {
   CarCondition condition;
   CarTransmission transmission;
   CarStatus status;
+  int stock;
 
   // constructor using named parameter
   Car({
@@ -47,6 +49,7 @@ class Car {
     required this.condition,
     required this.transmission,
     required this.status,
+    required this.stock,
   });
 
   String get imageUrl {
@@ -60,6 +63,13 @@ class Car {
     } else {
       return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$image';
     }
+  }
+
+  ImageProvider get imageProviderWidget {
+    if (image == null) {
+      return const AssetImage('assets/images/car1_MustangGT.jpg');
+    }
+    return NetworkImage(imageUrl);
   }
 
   // convert json to object
@@ -79,6 +89,7 @@ class Car {
         CarTransmission.values.byName(json['transmission'].toString());
     final status = CarStatus.values.byName(json['status']);
     final condition = CarCondition.values.byName(json['condition']);
+    final stock = int.parse(json['stock'].toString());
 
     return Car(
       id: id,
@@ -95,6 +106,7 @@ class Car {
       condition: condition,
       transmission: transmission,
       status: status,
+      stock: stock,
     );
   }
 
@@ -111,9 +123,10 @@ class Car {
       'price': price,
       'image': image,
       'description': description,
-      'condition': condition.toString(),
-      'transmission': transmission.toString(),
-      'status': status.toString(),
+      'condition': condition.name.toString(),
+      'transmission': transmission.name.toString(),
+      'status': status.name.toString(),
+      'stock': stock,
     };
   }
 }

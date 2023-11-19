@@ -12,26 +12,26 @@ enum Status { OnGoing, Pending, Rejected, Verified, Finished }
 class UserTransaction {
   final String? id;
   final String userId;
-  final PaymentMethod paymentMethod;
+  final PaymentMethod? paymentMethod;
   final String? paymentProof;
-  final String paymentDate;
+  final String? paymentDate;
   final num total;
   final Status status;
-  final Admin verifiedBy;
-  final DateTime verifiedAt;
+  final Admin? verifiedBy;
+  final DateTime? verifiedAt;
   final DateTime createdAt;
-  final List<UserDetailTransaction> detailTransactions;
+  final List<UserDetailTransaction>? detailTransactions;
 
   const UserTransaction({
     this.id,
     required this.userId,
-    required this.paymentMethod,
+    this.paymentMethod,
     this.paymentProof,
-    required this.paymentDate,
+    this.paymentDate,
     required this.total,
     required this.status,
-    required this.verifiedBy,
-    required this.verifiedAt,
+    this.verifiedBy,
+    this.verifiedAt,
     required this.createdAt,
     this.detailTransactions = const [],
   });
@@ -60,31 +60,46 @@ class UserTransaction {
     return NetworkImage(imageUrl);
   }
 
-  factory UserTransaction.fromJson(Map<String, dynamic> json) {
-    print(json['payment_proof']);
+  factory UserTransaction.fromJson(dynamic json) {
     try {
       final id = json['id'].toString();
+      // print("id ${id}");
       final userId = json['user_id'].toString();
-      final paymentMethod = PaymentMethod.values.byName(
-        json['payment_method'],
-      );
-      final paymentProof = json['payment_proof'].toString();
-      final paymentDate = json['payment_date'].toString();
+      // print("userId ${userId}");
+      final paymentMethod = json['payment_method'] != null
+          ? PaymentMethod.values.byName(
+              json['payment_method'],
+            )
+          : null;
+      // print("paymentMethod ${paymentMethod}");
+
+      final paymentProof = json['payment_proof']?.toString() ?? '';
+      // print("paymentProof ${paymentProof}");
+      final paymentDate = json['payment_date']?.toString() ?? '';
+      // print("paymentDate ${paymentDate}");
       final total = json['total'];
+      // print("total ${total}");
       final status = Status.values.byName(
         json['status'],
       );
-      final verifiedBy = Admin.fromJson(json['verified_by']);
-      final verifiedAt = DateTime.parse(json['verified_at'].toString());
+      // print("status ${status}");
+      final verifiedBy = json['verified_by'] != null
+          ? Admin.fromJson(json['verified_by'])
+          : null;
+      // print("verifiedBy ${verifiedBy}");
+      final verifiedAt = DateTime.tryParse(json['verified_at'].toString());
+      // print("verifiedAt ${verifiedAt}");
       final createdAt = DateTime.parse(json['created_at'].toString());
+      // print("createdAt ${createdAt}");
       final detailTransactions = json['detail_transactions'] as List<dynamic>;
+      // print("detailTransactions ${detailTransactions}");
       final userDetailTransactions = detailTransactions.map(
         (detailTransaction) {
-          // print(detailTransaction);
+          // print("detailTransaction ${detailTransaction}");
           return UserDetailTransaction.fromJson(detailTransaction);
         },
       ).toList();
-
+      // print("userDetailTransactions ${userDetailTransactions}");
       final userTransaction = UserTransaction(
         id: id,
         userId: userId,
@@ -101,6 +116,7 @@ class UserTransaction {
 
       return userTransaction;
     } catch (e) {
+      // print(e);
       throw Exception('Failed to parse UserTransaction from JSON');
     }
   }
@@ -109,15 +125,16 @@ class UserTransaction {
     return {
       'id': id,
       'user_id': userId,
-      'payment_method': paymentMethod.name,
+      'payment_method': paymentMethod?.name,
       'payment_proof': paymentProof,
       'payment_date': paymentDate,
       'total': total,
       'status': status.name,
-      'verified_by': verifiedBy.toJson(),
+      'verified_by': verifiedBy?.toJson(),
       'verified_at': verifiedAt.toString(),
       'created_at': createdAt.toString(),
-      'detail_transactions': detailTransactions.map((e) => e.toJson()).toList(),
+      'detail_transactions':
+          detailTransactions?.map((e) => e.toJson()).toList(),
     };
   }
 

@@ -150,6 +150,7 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
         condition: _condition,
         transmission: _transmission,
         status: _status,
+        stock: widget.car.stock,
       );
 
       ref.read(carsProvider.notifier).put(newCar);

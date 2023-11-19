@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('payment_method', ['Cash', 'CreditCard', 'DebitCard']);
-            $table->string('payment_proof');
-            $table->date('payment_date');
-            $table->bigInteger('total');
+            $table->enum('payment_method', ['Cash', 'CreditCard', 'DebitCard'])->nullable();
+            $table->string('payment_proof')->nullable();
+            $table->date('payment_date')->nullable();
+            $table->bigInteger('total')->default(0);
             $table->enum('status', ['OnGoing', 'Pending', 'Rejected', 'Verified', 'Finished'])->default('OnGoing');
             $table->foreignUuid('verified_by')->nullable()->constrained('admins')->onDelete('cascade');
             $table->dateTime('verified_at')->nullable();
-            $table->string('deliver_address');
+            $table->string('deliver_address')->nullable();
             $table->timestamps();
         });
     }

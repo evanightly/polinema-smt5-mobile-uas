@@ -1,5 +1,7 @@
 import 'package:client/components/user_cart_item.dart';
 import 'package:client/helpers/decimal_formatter.dart';
+import 'package:client/models/user_transaction.dart';
+import 'package:client/providers/user_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +15,19 @@ class Cart extends ConsumerStatefulWidget {
 class _CartState extends ConsumerState<Cart> {
   @override
   Widget build(BuildContext context) {
+    final cart = ref.watch(userTransactionsProvider);
+
+    // select only transactions with status 'OnGoing'
+    final onGoingTransactions = cart.asData?.value
+        .where((transaction) => transaction.status == Status.OnGoing)
+        .toList();
+
+    final totalPriceFormatted = formatNumber(
+      onGoingTransactions!.fold(0, (previousValue, transaction) {
+        return previousValue + transaction.total;
+      }),
+    );
+
     void openCartScreen() {
       showDialog(
         context: context,
@@ -33,7 +48,7 @@ class _CartState extends ConsumerState<Cart> {
               child: Row(
                 children: [
                   Text(
-                    'Total: \$${formatNumber(1200000)}',
+                    'Total: \$$totalPriceFormatted',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const Spacer(),
@@ -47,7 +62,13 @@ class _CartState extends ConsumerState<Cart> {
             body: Container(
               padding: const EdgeInsets.all(12),
               child: ListView(
-                children: const [UserCartItem()],
+                children: [
+                  if (onGoingTransactions.isNotEmpty)
+                    for (var transaction in onGoingTransactions!)
+                      for (var detailTransaction
+                          in transaction.detailTransactions!)
+                        UserCartItem(detailTransaction: detailTransaction),
+                ],
               ),
             ),
           );

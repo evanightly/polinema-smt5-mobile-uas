@@ -154,6 +154,7 @@ class _AddCarState extends ConsumerState<AddCar> {
         condition: _condition,
         transmission: _transmission,
         status: _status,
+        stock: 1,
       );
 
       ref.read(carsProvider.notifier).add(newCar);

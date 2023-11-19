@@ -30,6 +30,7 @@ class CarFactory extends Factory
             'condition' => fake()->randomElement(['Used', 'New']),
             'transmission' => fake()->randomElement(['Automatic', 'Manual']),
             'status' => fake()->randomElement(['Available']),
+            'stock' => fake()->numberBetween(0, 10)
         ];
     }
 }
