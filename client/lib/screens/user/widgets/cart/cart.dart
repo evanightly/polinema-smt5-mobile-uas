@@ -16,17 +16,22 @@ class _CartState extends ConsumerState<Cart> {
   @override
   Widget build(BuildContext context) {
     final cart = ref.watch(userTransactionsProvider);
-
+    String total = '';
+    
     // select only transactions with status 'OnGoing'
     final onGoingTransactions = cart.asData?.value
         .where((transaction) => transaction.status == Status.OnGoing)
         .toList();
 
-    final totalPriceFormatted = formatNumber(
-      onGoingTransactions!.fold(0, (previousValue, transaction) {
-        return previousValue + transaction.total;
-      }),
-    );
+    if (onGoingTransactions == null || onGoingTransactions.isEmpty) {
+      return const SizedBox();
+    } else {
+      total = formatNumber(
+        onGoingTransactions.fold(0, (previousValue, transaction) {
+          return previousValue + transaction.total;
+        }),
+      );
+    }
 
     void openCartScreen() {
       showDialog(
@@ -48,7 +53,7 @@ class _CartState extends ConsumerState<Cart> {
               child: Row(
                 children: [
                   Text(
-                    'Total: \$$totalPriceFormatted',
+                    'Total: \$$total',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const Spacer(),
@@ -64,7 +69,7 @@ class _CartState extends ConsumerState<Cart> {
               child: ListView(
                 children: [
                   if (onGoingTransactions.isNotEmpty)
-                    for (var transaction in onGoingTransactions!)
+                    for (var transaction in onGoingTransactions)
                       for (var detailTransaction
                           in transaction.detailTransactions!)
                         UserCartItem(detailTransaction: detailTransaction),
