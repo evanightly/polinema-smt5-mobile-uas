@@ -5,6 +5,7 @@ import 'package:client/models/user_transaction.dart';
 import 'package:client/providers/cars.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:client/providers/user_auth.dart';
+import 'package:client/providers/user_cart.dart';
 import 'package:dio/dio.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
@@ -60,6 +61,10 @@ class UserTransactions extends _$UserTransactions {
       log(response.data.toString());
 
       if (response.statusCode == 200) {
+        await ref.read(carsProvider.notifier).refresh();
+        await ref.read(userTransactionsProvider.notifier).refresh();
+        ref.read(userCartProvider.notifier).refresh();
+
         if (context.mounted) {
           ElegantNotification.success(
             title: const Text("Success"),
@@ -68,8 +73,7 @@ class UserTransactions extends _$UserTransactions {
           ).show(context);
         }
 
-        refresh();
-        cars.refresh();
+        await cars.refresh();
       }
       final data = response.data as dynamic;
       final newTransaction = UserTransaction.fromJson(data);
@@ -77,6 +81,8 @@ class UserTransactions extends _$UserTransactions {
         transactions.add(newTransaction);
         state = AsyncValue.data(transactions);
       });
+
+      return;
     } on DioException catch (e) {
       if (context.mounted) {
         ElegantNotification.error(

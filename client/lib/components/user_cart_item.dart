@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/models/user_detail_transaction.dart';
+import 'package:client/providers/user_cart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,19 +20,46 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
 
   void addQty() {
     _qtyController.text = (num.parse(_qtyController.text) + 1).toString();
+
+    ref.read(userCartProvider.notifier).modifyCartItemQty(
+          context,
+          widget.detailTransaction!,
+          num.parse(_qtyController.text),
+        );
   }
 
   void substractQty() {
     if (num.parse(_qtyController.text) <= 1) {
-      // remove from cart
+      ref
+          .read(userCartProvider.notifier)
+          .deleteCartItem(context, widget.detailTransaction!);
       return;
     }
     _qtyController.text = (num.parse(_qtyController.text) - 1).toString();
+
+    ref.read(userCartProvider.notifier).modifyCartItemQty(
+          context,
+          widget.detailTransaction!,
+          num.parse(_qtyController.text),
+        );
   }
 
-  void setQty(num value) {
-    if (value < 1) return;
+  void setQty(String value) {
+    num qty = num.tryParse(value) == null ? 0 : num.parse(value);
+    if (qty < 1) {
+      ref
+          .read(userCartProvider.notifier)
+          .deleteCartItem(context, widget.detailTransaction!);
+      return;
+    }
+
     _qtyController.text = value.toString();
+
+    ref.read(userCartProvider.notifier).modifyCartItemQty(
+          context,
+          widget.detailTransaction!,
+          qty,
+        );
   }
 
   @override
@@ -107,9 +135,7 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
                       ),
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
-                      onChanged: (value) => setQty(
-                        num.parse(value),
-                      ),
+                      onChanged: setQty,
                     ),
                   ),
                   Expanded(

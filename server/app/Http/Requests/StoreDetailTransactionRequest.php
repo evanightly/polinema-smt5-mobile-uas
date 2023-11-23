@@ -11,7 +11,7 @@ class StoreDetailTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,10 +22,10 @@ class StoreDetailTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'transaction_id' => ['required', 'integer', 'exists:transactions,id'],
-            'car_id' => ['required', 'integer', 'exists:cars,id'],
-            'qty' => ['required', 'integer', 'min:1'],
-            'subtotal' => ['required', 'integer', 'min:100000'],
+            'transaction_id' => ['integer', 'exists:transactions,id'],
+            'car_id' => ['integer', 'exists:cars,id'],
+            'qty' => ['integer', 'min:1'],
+            'subtotal' => ['integer', 'min:100000'],
         ];
     }
 }

@@ -18,8 +18,10 @@ class UserAuthController extends Controller
             ]);
 
             $user = User::where('email', $request->email)->first();
+            dump($request);
 
             if (!$user || !Hash::check($request->password, $user->password)) {
+                dump($request);
                 return ValidationException::withMessages([
                     'email' => ['The provided credentials are incorrect.'],
                 ]);
@@ -33,6 +35,7 @@ class UserAuthController extends Controller
                 ],
             ]);
         } catch (\Throwable $th) {
+            dump($th);
             return response()->json([
                 'message' => 'Login failed',
                 'error' => $th->getMessage()

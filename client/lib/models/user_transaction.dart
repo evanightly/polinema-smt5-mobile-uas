@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/models/user_detail_transaction.dart';
 import 'package:client/providers/diohttp.dart';
@@ -40,6 +41,7 @@ class UserTransaction {
 
   get transactionDate => createdAt.toString().split(' ')[0];
   get verifiedDate => verifiedAt.toString().split(' ')[0];
+  get formattedTotal => formatNumber(total);
 
   String get imageUrl {
     // print(paymentProof.runtimeType);

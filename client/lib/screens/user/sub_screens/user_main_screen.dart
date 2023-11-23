@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
+import 'package:client/providers/user_cart.dart';
+import 'package:client/providers/user_transactions.dart';
 import 'package:client/screens/user/widgets/user_main/car_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +19,8 @@ class UserMainScreen extends ConsumerWidget {
     final cars = ref.watch(carsProvider);
     Future<void> onRefresh() async {
       await ref.read(carsProvider.notifier).refresh();
+      await ref.read(userTransactionsProvider.notifier).refresh();
+      ref.read(userCartProvider.notifier).refresh();
     }
 
     void openCarDetailsScreen(Car car) {
@@ -157,7 +161,8 @@ class UserMainScreen extends ConsumerWidget {
                                   ),
                                   const SizedBox(height: 11),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Badge(
                                         largeSize: 20,

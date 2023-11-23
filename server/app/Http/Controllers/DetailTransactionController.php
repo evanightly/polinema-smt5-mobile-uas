@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DetailTransaction;
 use App\Http\Requests\StoreDetailTransactionRequest;
 use App\Http\Requests\UpdateDetailTransactionRequest;
+use App\Models\Transaction;
 
 class DetailTransactionController extends Controller
 {
@@ -37,7 +38,8 @@ class DetailTransactionController extends Controller
      */
     public function show(DetailTransaction $detailTransaction)
     {
-        //
+        // intended to use with cart after item modified
+        DetailTransaction::with(['transaction', 'car'])->find($detailTransaction->id);
     }
 
     /**
@@ -53,7 +55,11 @@ class DetailTransactionController extends Controller
      */
     public function update(UpdateDetailTransactionRequest $request, DetailTransaction $detailTransaction)
     {
-        $detailTransaction->update($request->validated());
+        $transaction = Transaction::find($detailTransaction->transaction_id);
+        $transaction->total = $transaction->total - $detailTransaction->total;
+        $transaction->save();
+
+        return $detailTransaction->update($request->validated());
     }
 
     /**
@@ -61,6 +67,6 @@ class DetailTransactionController extends Controller
      */
     public function destroy(DetailTransaction $detailTransaction)
     {
-        $detailTransaction->delete();
+        return $detailTransaction->delete();
     }
 }

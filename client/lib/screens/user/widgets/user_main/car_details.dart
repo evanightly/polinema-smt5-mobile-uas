@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
-import 'package:client/providers/cars.dart';
 import 'package:client/providers/user_transactions.dart';
-import 'package:client/screens/user/widgets/cart/cart.dart';
+import 'package:client/screens/user/widgets/cart/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,10 +16,12 @@ class CarDetails extends ConsumerWidget {
       Navigator.pop(context);
     }
 
-    void addToCart() {
-      ref.read(userTransactionsProvider.notifier).add(context, car);
-      ref.read(carsProvider.notifier).refresh();
-      Navigator.pop(context);
+    void addToCart() async {
+      await ref.read(userTransactionsProvider.notifier).add(context, car);
+      if (context.mounted) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
     }
 
     return Scaffold(
@@ -77,7 +78,7 @@ class CarDetails extends ConsumerWidget {
         centerTitle: true,
         title: Text(car.name),
         foregroundColor: Colors.white,
-        actions: const [Cart()],
+        actions: const [CartScreen()],
       ),
       body: Column(
         children: [
