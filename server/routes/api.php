@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\AdminController;
-namespace App\Http\Controllers\Api\CarBodyTypeController;
-namespace App\Http\Controllers\Api\CarBrandController;
-namespace App\Http\Controllers\Api\CarController;
-namespace App\Http\Controllers\Api\CarFuelController;
-namespace App\Http\Controllers\Api\DetailTransactionController;
-namespace App\Http\Controllers\Api\TransactionController;
-namespace App\Http\Controllers\Api\UserAuthController;
-namespace App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\CarBodyTypeController;
+use App\Http\Controllers\Api\CarBrandController;
+use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\CarFuelController;
+use App\Http\Controllers\Api\DetailTransactionController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserAuthController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Middleware\Authenticate;
-use App\Models\DetailTransaction;
 use Illuminate\Support\Facades\Route;
 
 /*
