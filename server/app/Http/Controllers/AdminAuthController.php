@@ -2,43 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+use App\Http\Requests\AdminAuthRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
 {
-    public function login(Request $request)
+    public function index()
     {
-        try {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+        return view('admin.login');
+    }
 
-            $user = Admin::where('email', $request->email)->first();
+    public function login(AdminAuthRequest $request)
+    {
+        // try {
+        //     $user = Admin::where('email', $request->email)->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
-                ]);
-            }
+        //     if (!$user || !Hash::check($request->password, $user->password)) {
+        //         throw ValidationException::withMessages([
+        //             'email' => ['The provided credentials are incorrect.'],
+        //         ]);
+        //     }
 
-            return response()->json([
-                'message' => 'Login success',
-                'data' => [
-                    'user' => $user,
-                    'token' => $user->createToken($user->id)->plainTextToken
-                ],
-            ]);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Login failed',
-                'error' => $th->getMessage()
-            ], 401);
-        }
+        //     Session()->put('admin', $user);
+
+        //     return redirect()->route('admin/dashboard');
+        // } catch (\Throwable $th) {
+        //     return redirect()->route('admin/login')->with('error', $th->getMessage());
+        // }
+
+        return redirect()->route('admin/');
     }
 
     public function logout(Request $request)

@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\Api\AdminAuthController;
-use App\Http\Controllers\Api\AdminController;
-use App\Http\Controllers\Api\CarBodyTypeController;
-use App\Http\Controllers\Api\CarBrandController;
-use App\Http\Controllers\Api\CarController;
-use App\Http\Controllers\Api\CarFuelController;
-use App\Http\Controllers\Api\DetailTransactionController;
-use App\Http\Controllers\Api\TransactionController;
-use App\Http\Controllers\Api\UserAuthController;
-use App\Http\Controllers\Api\UserController;
+namespace App\Http\Controllers\Api\AdminController;
+namespace App\Http\Controllers\Api\CarBodyTypeController;
+namespace App\Http\Controllers\Api\CarBrandController;
+namespace App\Http\Controllers\Api\CarController;
+namespace App\Http\Controllers\Api\CarFuelController;
+namespace App\Http\Controllers\Api\DetailTransactionController;
+namespace App\Http\Controllers\Api\TransactionController;
+namespace App\Http\Controllers\Api\UserAuthController;
+namespace App\Http\Controllers\Api\UserController;
 use App\Http\Middleware\Authenticate;
+use App\Models\DetailTransaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +23,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/user/login', [UserAuthController::class, 'login']);
 Route::post('/user/register', [UserAuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
     Route::post('/user/logout', [UserAuthController::class, 'logout']);
 
     Route::apiResource('cars', CarController::class);

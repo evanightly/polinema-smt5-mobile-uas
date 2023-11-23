@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Model
 {
-    use HasApiTokens, HasFactory , Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids;
 
     protected $fillable = [
         'name',

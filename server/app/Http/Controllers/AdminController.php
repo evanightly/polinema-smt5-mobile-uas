@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\AdminResource;
 
 class AdminController extends Controller
 {
@@ -13,7 +14,12 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return Admin::all();
+        // return dump(AdminResource::collection(Admin::all()));
+        dump(AdminResource::collection(Admin::all()));
+        return view('admin.admins.index', [
+            // return all admins as a collection of resources
+            'admins' => AdminResource::collection(Admin::all())
+        ]);
     }
 
     /**
@@ -21,7 +27,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.admins.create');
     }
 
     /**
@@ -45,7 +51,9 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        //
+        return view('admin.admins.edit', [
+            'admin' => $admin
+        ]);
     }
 
     /**

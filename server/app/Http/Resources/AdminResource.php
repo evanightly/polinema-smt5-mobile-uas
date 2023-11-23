@@ -14,6 +14,21 @@ class AdminResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        if (strpos($this->image, 'http') === 0) {
+            $imageUrl = $this->image;
+        } else if (!$this->image) {
+            $imageUrl = asset('storage/images/admins/' . $this->image);
+        }
+
+        // joined at
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'image' => $imageUrl,
+            'email' => $this->email,
+            'isSuperAdmin' => $this->isSuperAdmin,
+            'ok' => $this->created_at->diffForHumans(),
+            'updatedAt' => $this->updated_at,
+        ];
     }
 }
