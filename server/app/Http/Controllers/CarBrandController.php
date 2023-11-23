@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CarBrand;
 use App\Http\Requests\StoreCarBrandRequest;
 use App\Http\Requests\UpdateCarBrandRequest;
+use App\Http\Resources\CarBrandResource;
 
 class CarBrandController extends Controller
 {
@@ -13,13 +14,9 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        return CarBrand::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
+        return view('admin.car_brands.index', [
+            'carBrands' => CarBrandResource::collection(CarBrand::all())
+        ]);
     }
 
     /**

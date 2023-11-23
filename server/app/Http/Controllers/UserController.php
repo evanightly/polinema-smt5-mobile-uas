@@ -13,7 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::with('transactions')->latest()->get();
+        return view('admin.users.index', [
+            'users' => User::all()
+        ]);
     }
 
     /**

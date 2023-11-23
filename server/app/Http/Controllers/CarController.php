@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use App\Http\Resources\CarResource;
 
 class CarController extends Controller
 {
@@ -14,17 +15,19 @@ class CarController extends Controller
     public function index()
     {
         // Display all available cars
-        return Car::with([
-            'brand' => function ($brand) {
-                $brand->select('id', 'name');
-            },
-            'fuel' => function ($fuel) {
-                $fuel->select('id', 'name');
-            },
-            'bodyType' => function ($bodyType) {
-                $bodyType->select('id', 'name');
-            }
-        ])->latest()->get();
+        return view('admin.cars.index', [
+            'cars' => CarResource::collection(Car::with([
+                'brand' => function ($brand) {
+                    $brand->select('id', 'name');
+                },
+                'fuel' => function ($fuel) {
+                    $fuel->select('id', 'name');
+                },
+                'bodyType' => function ($bodyType) {
+                    $bodyType->select('id', 'name');
+                }
+            ])->latest()->get())
+        ]);
     }
 
     /**

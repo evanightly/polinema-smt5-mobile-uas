@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CarBodyType;
 use App\Http\Requests\StoreCarBodyTypeRequest;
 use App\Http\Requests\UpdateCarBodyTypeRequest;
+use App\Http\Resources\CarBodyTypeResource;
 
 class CarBodyTypeController extends Controller
 {
@@ -13,13 +14,9 @@ class CarBodyTypeController extends Controller
      */
     public function index()
     {
-        return CarBodyType::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
+        return view('admin.car_body_types.index', [
+            'carBodyTypes' => CarBodyTypeResource::collection(CarBodyType::all())
+        ]);
     }
 
     /**
