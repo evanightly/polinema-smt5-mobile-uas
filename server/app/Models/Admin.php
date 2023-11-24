@@ -26,4 +26,18 @@ class Admin extends Model
 
     protected $keyType = 'string';
     public $incrementing = false;
+
+    public function getJoinedAtAttribute()
+    {
+        return $this->created_at->format('d M Y');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        // check if image starts with http
+        if (strpos($this->image, 'http') === 0) {
+            return $this->image;
+        }
+        return asset('storage/images/admins/' . $this->image);
+    }
 }

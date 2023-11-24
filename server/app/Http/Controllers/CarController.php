@@ -15,7 +15,7 @@ class CarController extends Controller
     public function index()
     {
         // Display all available cars
-        return view('admin.cars.index', [
+        return view('cars.index', [
             'cars' => CarResource::collection(Car::with([
                 'brand' => function ($brand) {
                     $brand->select('id', 'name');

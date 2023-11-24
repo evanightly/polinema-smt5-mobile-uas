@@ -34,6 +34,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 7. Jalankan perintah `composer install`
 8. Jalankan perintah `php artisan key:generate`
 9. Jalankan perintah `php artisan storage:link`
+8. Jalankan perintah `php artisan sweetalert:publish`
 10. Jalankan perintah `php artisan serve`
 
 <!-- /// -->

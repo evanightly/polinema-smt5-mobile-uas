@@ -18,7 +18,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('admin.transactions.index', [
+        return view('transactions.index', [
             'transactions' => TransactionResource::collection(Transaction::all())
         ]);
     }

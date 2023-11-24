@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UpdateAdminRequest extends FormRequest
 {
@@ -22,7 +24,16 @@ class UpdateAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'email' => ['required', 'email', Rule::unique('admins')->ignore($this->admin)],
+            'password' => ['nullable', 'string', 'min:8'],
+            'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'isSuperAdmin' => ['nullable', 'boolean'],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->replace(['password' => Hash::make($this->password)]);
     }
 }

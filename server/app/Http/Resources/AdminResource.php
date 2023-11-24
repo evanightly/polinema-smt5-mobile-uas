@@ -14,22 +14,20 @@ class AdminResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if (strpos($this->image, 'http') === 0) {
-            $imageUrl = $this->image;
-        } else if (!$this->image) {
-            $imageUrl = asset('storage/images/admins/' . $this->image);
-        }
-
         // joined at
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => $imageUrl,
+            'image' => $this->image,
             'email' => $this->email,
             'isSuperAdmin' => $this->isSuperAdmin,
             'createdAt' => $this->created_at,
-            'joinedAt' => $this->created_at->diffForHumans(),
             'updatedAt' => $this->updated_at,
+
+            // custom attributes used in view
+            'imageUrl' => $this->imageUrl,
+            'joinedAt' => $this->created_at->format('d M Y'),
+            'isSuperAdminLabel' => $this->isSuperAdmin ? 'Yes' : 'No',
         ];
     }
 }

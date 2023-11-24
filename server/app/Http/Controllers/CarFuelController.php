@@ -13,7 +13,7 @@ class CarFuelController extends Controller
      */
     public function index()
     {
-        return view('admin.car_fuels.index', [
+        return view('car_fuels.index', [
             'carFuels' => CarFuel::all()
         ]);
     }

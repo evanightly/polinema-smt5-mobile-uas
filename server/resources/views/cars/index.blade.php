@@ -26,10 +26,12 @@
         <tbody>
             @foreach ($cars as $car)
                 <tr>
-                    <td class="flex gap-5 items-center">
-                        <div class="avatar">
-                            <div class="w-32 h-20">
-                                <img src="{{ $car->image }}" alt="{{ $car->name }}'Photo">
+                    <td>
+                        <div class="flex gap-5 items-center">
+                            <div class="avatar">
+                                <div class="w-32 h-20">
+                                    <img src="{{ $car->image }}" alt="{{ $car->name }}'Photo">
+                                </div>
                             </div>
                         </div>
                     </td>

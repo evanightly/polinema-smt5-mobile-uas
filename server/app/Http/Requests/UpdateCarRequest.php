@@ -22,7 +22,12 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'brand' => ['required', 'string', 'max:255', 'min:3'],
+            'price' => ['required', 'numeric', 'min:1'],
+            'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'description' => ['required', 'string', 'min:10'],
+            'isAvailable' => ['required', 'boolean'],
         ];
     }
 }

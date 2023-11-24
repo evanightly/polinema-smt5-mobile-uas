@@ -14,7 +14,7 @@ class CarBodyTypeController extends Controller
      */
     public function index()
     {
-        return view('admin.car_body_types.index', [
+        return view('car_body_types.index', [
             'carBodyTypes' => CarBodyTypeResource::collection(CarBodyType::all())
         ]);
     }

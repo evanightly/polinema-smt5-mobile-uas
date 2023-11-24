@@ -14,7 +14,7 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        return view('admin.car_brands.index', [
+        return view('car_brands.index', [
             'carBrands' => CarBrandResource::collection(CarBrand::all())
         ]);
     }

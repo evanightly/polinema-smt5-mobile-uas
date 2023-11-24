@@ -3,7 +3,7 @@
 @section('content')
     <div class="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center">
+        <div class="drawer-content flex flex-col items-center gap-5">
             <!-- Page content here -->
 
             <div class="navbar bg-base-100 shadow">
@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="container px-8">
+            <div class="container px-8 flex flex-col gap-5">
                 @yield('content-dashboard')
             </div>
         </div>
@@ -43,7 +43,7 @@
 
                 <li>
                     <a href="/" class="text-lg font-bold">
-                        Smelter
+                        Ambatucar
                     </a>
                 </li>
 

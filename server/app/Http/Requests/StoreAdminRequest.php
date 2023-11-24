@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
 class StoreAdminRequest extends FormRequest
 {
@@ -22,7 +23,23 @@ class StoreAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'email' => ['required', 'email', 'unique:admins'],
+            'password' => ['required', 'string', 'min:8'],
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'isSuperAdmin' => ['nullable', 'boolean'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'isSuperAdmin' => $this->has('isSuperAdmin') && $this->isSuperAdmin === 'on' ? true : false,
+        ]);
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->replace(['password' => Hash::make($this->password)]);
     }
 }

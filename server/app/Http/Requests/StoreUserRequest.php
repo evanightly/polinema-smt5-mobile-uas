@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\File;
+use Illuminate\Support\Facades\Hash;
 
 class StoreUserRequest extends FormRequest
 {
@@ -26,9 +26,12 @@ class StoreUserRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'unique:users', 'max:255'],
             'password' => ['required', 'string', 'max:255'],
-            'image' => [
-                File::types(['jpg', 'png', 'jpeg'])
-            ],
+            'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->replace(['password' => Hash::make($this->password)]);
     }
 }
