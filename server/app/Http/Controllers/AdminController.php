@@ -14,8 +14,6 @@ class AdminController extends Controller
      */
     public function index()
     {
-        // return dump(AdminResource::collection(Admin::all()));
-        dump(AdminResource::collection(Admin::all()));
         return view('admin.admins.index', [
             // return all admins as a collection of resources
             'admins' => AdminResource::collection(Admin::all())

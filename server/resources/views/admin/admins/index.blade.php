@@ -35,7 +35,7 @@
                         @endif
 
                     </td>
-                    <td>{{ $admin->created }}</td>
+                    <td>{{ $admin->createdAt }}</td>
                     <td>
                         <button class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button class="btn btn-error"><i class="fa-solid fa-trash-can"></i></button>

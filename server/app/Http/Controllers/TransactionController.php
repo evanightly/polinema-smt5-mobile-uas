@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Car;
 use App\Models\DetailTransaction;
 
@@ -17,7 +18,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return Transaction::with(['user', 'verifiedBy'])->get();
+        return dump( TransactionResource::collection(Transaction::all()));
+        return view('admin.transactions.index', [
+            'transactions' => TransactionResource::collection(Transaction::with([
+                'user',
+                'verifiedBy',
+            ]))
+        ]);
     }
 
     /**
@@ -143,7 +150,7 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         // ONLY FOR USER TRANSACTION
-        return'op';
+        return 'op';
         try {
             dump($request->payment_method);
             // get all request body data

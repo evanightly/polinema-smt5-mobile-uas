@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container px-8">
                 @yield('content-dashboard')
             </div>
         </div>

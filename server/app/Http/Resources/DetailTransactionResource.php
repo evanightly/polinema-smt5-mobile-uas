@@ -14,6 +14,16 @@ class DetailTransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'transaction_id' => $this->transaction_id,
+            'car_id' => $this->car_id,
+            'quantity' => $this->quantity,
+            'price' => $this->price,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'transaction' => new TransactionResource($this->whenLoaded('transaction')),
+            'car' => new CarResource($this->whenLoaded('car'))
+        ];
     }
 }
