@@ -18,12 +18,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return dump( TransactionResource::collection(Transaction::all()));
         return view('admin.transactions.index', [
-            'transactions' => TransactionResource::collection(Transaction::with([
-                'user',
-                'verifiedBy',
-            ]))
+            'transactions' => TransactionResource::collection(Transaction::all())
         ]);
     }
 

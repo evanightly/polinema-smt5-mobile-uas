@@ -33,9 +33,8 @@
                         @else
                             <span class="badge badge-secondary">Admin</span>
                         @endif
-
                     </td>
-                    <td>{{ $admin->createdAt }}</td>
+                    <td>{{ $admin->joinedAt }}ok</td>
                     <td>
                         <button class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button class="btn btn-error"><i class="fa-solid fa-trash-can"></i></button>

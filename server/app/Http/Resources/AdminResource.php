@@ -27,7 +27,8 @@ class AdminResource extends JsonResource
             'image' => $imageUrl,
             'email' => $this->email,
             'isSuperAdmin' => $this->isSuperAdmin,
-            'createdAt' => $this->created_at->diffForHumans(),
+            'createdAt' => $this->created_at,
+            'joinedAt' => $this->created_at->diffForHumans(),
             'updatedAt' => $this->updated_at,
         ];
     }

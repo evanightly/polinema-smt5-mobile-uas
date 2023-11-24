@@ -21,7 +21,7 @@
         <tbody>
             @foreach ($transactions as $transaction)
                 <tr>
-                    <td class="flex gap-5 items-center">
+                    <td>
                         {{ $transaction->user->name }}
                     </td>
                     <td>{{ $transaction->payment_method }}</td>
@@ -29,11 +29,11 @@
                         {{ $transaction->total }}
                     </td>
                     <td>
-                        <img src="{{ asset('storage/' . $transaction->payment_proof) }}" alt="" class="w-32">
+                        <img src="{{ $transaction->payment_proof }}" alt="" class="w-32">
                     </td>
                     <td>{{ $transaction->payment_date }}</td>
                     <td>{{ $transaction->status }}</td>
-                    <td>{{ $transaction->verified_by->name }}</td>
+                    <td>{{ $transaction->verifiedBy->name }}</td>
                     <td>
                         <button class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button class="btn btn-error"><i class="fa-solid fa-trash-can"></i></button>
