@@ -31,13 +31,43 @@
                     <td>{{ $user->joinedAt }}</td>
                     <td>
                         <div class="flex gap-3">
-                            <a href="{{ route('users.edit', [$user]) }}" class="btn btn-primary"><i
-                                    class="fa-solid fa-pen-to-square"></i></a>
-                            <form action="{{ route('users.destroy', [$user->id]) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-error"><i class="fa-solid fa-trash-can"></i></button>
-                            </form>
+
+                            <dialog id="confirmDeleteModal{{ $loop->index }}" class="modal">
+                                <div class="modal-box">
+                                    <h3 class="font-bold text-lg">Are you sure?</h3>
+                                    <p class="py-4">
+                                    <p>You are about to delete {{ $user->name }}</p>
+                                    <p class="text-bold">
+                                        <span class="text-warning">Warning</span>
+                                        <span>: this operation will delete all data related to this user</span>
+                                    </p>
+                                    </p>
+
+                                    <div class="modal-action">
+                                        <form method="dialog" action="">
+                                            <button class="btn">Cancel</button>
+                                        </form>
+
+                                        <form action="{{ route('users.destroy', [$user->id]) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-error">Yes, I Agree</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <form method="dialog" class="modal-backdrop">
+                                    <button>close</button>
+                                </form>
+                            </dialog>
+
+                            <a href="{{ route('users.edit', [$user]) }}" class="btn btn-primary">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+
+                            <button class="btn btn-error" onclick="confirmDeleteModal{{ $loop->index }}.showModal()">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>
