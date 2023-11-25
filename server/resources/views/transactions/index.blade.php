@@ -1,7 +1,7 @@
 @extends('layouts.admin_dashboard')
 
 @section('content-dashboard')
-    <div class="flex items-center gap-5 my-8">
+    <div class="flex items-center gap-5">
         <h1 class="text-2xl font-bold">Transactions</h1>
     </div>
     <table class="table table-zebra">
