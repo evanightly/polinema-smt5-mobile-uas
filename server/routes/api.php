@@ -22,10 +22,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::post('/user/login', [UserAuthController::class, 'login']);
 Route::post('/user/register', [UserAuthController::class, 'register']);
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('/user/logout', [UserAuthController::class, 'logout']);
 
     Route::apiResource('cars', CarController::class);

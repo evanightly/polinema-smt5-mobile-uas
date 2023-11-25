@@ -13,11 +13,13 @@
                 @csrf
                 <div class="mb-4">
                     <label for="email" class="label">Email</label>
-                    <input id="email" type="email" name="email" class="input w-full" required />
+                    <input id="email" type="email" name="email" class="input w-full" value="{{ old('email') }}"
+                        required />
                 </div>
                 <div class="mb-4">
                     <label for="password" class="label">Password</label>
-                    <input id="password" type="password" name="password" class="input w-full" required>
+                    <input id="password" type="password" name="password" class="input w-full" value="{{ old('password') }}"
+                        required />
                 </div>
                 <button type="submit" class="btn btn-primary btn-block mt-5">Login</button>
             </form>

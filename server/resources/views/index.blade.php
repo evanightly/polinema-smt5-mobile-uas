@@ -1,5 +1,6 @@
-@extends('layouts.master')
-@section('content')
+@extends('layouts.admin_dashboard')
+
+@section('content-dashboard')
     <div class="container ">
         <div class="row">
             <div class="col-md-12">

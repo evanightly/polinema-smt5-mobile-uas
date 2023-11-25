@@ -12,7 +12,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        RealRashid\SweetAlert\SweetAlertServiceProvider::class;
     }
 
     /**

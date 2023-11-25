@@ -1,5 +1,3 @@
-@include('sweetalert::alert')
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,16 +11,22 @@
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 
     <script>
+        const darkTheme = 'customDarkTheme'
+        const lightTheme = 'customLightTheme'
+
         let theme = localStorage.theme || 'light'
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia(
                 '(prefers-color-scheme: dark)').matches)) {
-            theme = 'dark'
+            theme = darkTheme
         } else {
-            theme = 'light'
+            theme = lightTheme
         }
 
         $('html').attr('data-theme', theme)
     </script>
+
+    @yield('prescripts')
+
 
     <title>Ambatucar</title>
 </head>
@@ -68,7 +72,7 @@
     </script>
 
 
-    @yield('scripts')
+    @yield('postscripts')
 
 </body>
 

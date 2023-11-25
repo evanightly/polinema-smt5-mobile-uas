@@ -23,22 +23,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-    return Session()->all();
+// Route::get('/login', [AdminAuthController::class, 'index'])->name('login');
+// Route::post('/login', [AdminAuthController::class, 'login']);
+
+// Route::post('/logout', [AdminAuthController::class, 'logout']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index']);
+    Route::resource('cars', CarController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('car-body-types', CarBodyTypeController::class);
+    Route::resource('car-brands', CarBrandController::class);
+    Route::resource('car-fuels', CarFuelController::class);
+    Route::resource('transactions', TransactionController::class);
+    Route::resource('detail-transactions', DetailTransactionController::class);
+    Route::resource('admins', AdminController::class);
 });
-
-Route::get('/', [AdminDashboardController::class, 'index']);
-
-Route::get('/login', [AdminAuthController::class, 'index'])->name('login');
-Route::post('/login', [AdminAuthController::class, 'login']);
-
-Route::post('/logout', [AdminAuthController::class, 'logout']);
-
-Route::resource('cars', CarController::class);
-Route::resource('users', UserController::class);
-Route::resource('car-body-types', CarBodyTypeController::class);
-Route::resource('car-brands', CarBrandController::class);
-Route::resource('car-fuels', CarFuelController::class);
-Route::resource('transactions', TransactionController::class);
-Route::resource('detail-transactions', DetailTransactionController::class);
-Route::resource('admins', AdminController::class);
