@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+
+    /* select li but dont select if its descendant is <details> */
+
+    #dashboard-sidebar.menu li {
+        @apply text-base-content
+    }
+
+    #dashboard-sidebar.menu li:has(details) {
+        @apply hover:bg-base-300 rounded-lg
+    }
+
+    #dashboard-sidebar.menu li:not(:has(details)):not(:has(span)) {
+        @apply hover:bg-primary hover:text-primary-content rounded-btn transition-all
+    }
+
+    #dashboard-sidebar.menu li.active {
+        @apply bg-primary text-primary-content rounded-btn
+    }
+}

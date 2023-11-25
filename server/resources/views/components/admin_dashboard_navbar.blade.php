@@ -6,7 +6,7 @@
     <label class="btn btn-ghost btn-circle swap swap-rotate">
         <input id="theme-toggle" type="checkbox" />
         <i class="swap-on fill-current text-lg text-yellow-300 fa-solid fa-sun"></i>
-        <i class="swap-off fill-current text-lg text-blue-300 fa-solid fa-moon"></i>
+        <i class="swap-off fill-current text-lg text-blue-500 fa-solid fa-moon"></i>
     </label>
     <div class="flex-none">
         <div class="dropdown dropdown-end">
@@ -22,7 +22,6 @@
                         <span class="badge">New</span>
                     </a>
                 </li>
-                <li><a>Settings</a></li>
                 <li>
                     <form action="{{ route('logout') }}" method="post" class="flex">
                         @csrf

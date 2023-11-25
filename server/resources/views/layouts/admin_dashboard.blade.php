@@ -1,5 +1,3 @@
-@extends('layouts.master')
-
 @section('content')
     <div class="drawer lg:drawer-open">
         <input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />
@@ -17,11 +15,11 @@
         </div>
         <div class="drawer-side">
             <label for="dashboard-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
-            <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+            <ul id="dashboard-sidebar" class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
                 <li>
-                    <a href="/" class="text-lg font-bold">
+                    <span class="text-lg font-bold">
                         Ambatucar
-                    </a>
+                    </span>
                 </li>
                 <li><a href="/">Dashboard</a></li>
                 <li><a href="/admins">Admins</a></li>
@@ -45,6 +43,17 @@
 
 @section('postscripts')
     <script>
+        const currentUrl = window.location.pathname;
+
+        $('#dashboard-sidebar.menu li').each(function() {
+            // if current page is the same as the link, but not the '/' link
+            console.log($(this).children('a').attr('href'))
+            if (currentUrl === $(this).children('a').attr('href')) {
+                $(this).addClass('active');
+            }
+        });
+
+
         /**
          * darkTheme and lightTheme variable is defined in views/layouts/master.blade.php
          **/
