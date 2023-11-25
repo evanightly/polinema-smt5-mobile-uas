@@ -10,6 +10,19 @@
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}" type="text/css">
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+
+    <script>
+        let theme = localStorage.theme || 'light'
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            theme = 'dark'
+        } else {
+            theme = 'light'
+        }
+
+        $('html').attr('data-theme', theme)
+    </script>
 
     <title>Ambatucar</title>
 </head>
@@ -54,6 +67,8 @@
         @endif
     </script>
 
+
+    @yield('scripts')
 
 </body>
 

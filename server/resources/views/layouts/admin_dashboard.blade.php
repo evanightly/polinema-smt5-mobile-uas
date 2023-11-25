@@ -2,15 +2,21 @@
 
 @section('content')
     <div class="drawer lg:drawer-open">
-        <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+        <input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col items-center gap-5">
+
             <!-- Page content here -->
 
             <div class="navbar bg-base-100 shadow">
                 <div class="flex-1">
-                    <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden">Open Sidebar</label>
+                    <label for="dashboard-sidebar" class="btn btn-primary drawer-button lg:hidden">Open Sidebar</label>
                     <a class="btn btn-ghost text-xl">Dashboard</a>
                 </div>
+                <label class="btn btn-ghost btn-circle swap swap-rotate">
+                    <input id="theme-toggle" type="checkbox" />
+                    <i class="swap-on fill-current text-lg text-yellow-300 fa-solid fa-sun"></i>
+                    <i class="swap-off fill-current text-lg text-yellow-300 fa-solid fa-moon"></i>
+                </label>
                 <div class="flex-none">
                     <div class="dropdown dropdown-end">
                         <label tabindex="0" class="btn btn-ghost btn-circle avatar">
@@ -38,15 +44,13 @@
             </div>
         </div>
         <div class="drawer-side">
-            <label for="my-drawer-2" aria-label="close sidebar" class="drawer-overlay"></label>
+            <label for="dashboard-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
             <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-
                 <li>
                     <a href="/" class="text-lg font-bold">
                         Ambatucar
                     </a>
                 </li>
-
                 <li><a href="/dashboard">Dashboard</a></li>
                 <li><a href="/admins">Admins</a></li>
                 <li><a href="/users">Users</a></li>
@@ -65,4 +69,38 @@
             </ul>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        // set themeToggleBtm to checked if theme is dark
+        if (localStorage.getItem('theme') === 'dark') {
+            themeToggleBtn.checked = true;
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            // if set via local storage previously
+            if (localStorage.getItem('theme')) {
+                if (localStorage.getItem('theme') === 'light') {
+                    $('html').attr('data-theme', 'dark')
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    $('html').attr('data-theme', 'light')
+                    localStorage.setItem('theme', 'light');
+                }
+
+                // if NOT set via local storage previously
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    $('html').attr('data-theme', 'light')
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    $('html').attr('data-theme', 'dark')
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+        });
+    </script>
 @endsection
