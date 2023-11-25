@@ -23,22 +23,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
-
 Route::get('/test', function () {
     return Session()->all();
 });
 
-Route::get('/login', [AdminAuthController::class, 'index'])->name('admin/login');
+Route::get('/', [AdminDashboardController::class, 'index']);
+
+Route::get('/login', [AdminAuthController::class, 'index'])->name('login');
 Route::post('/login', [AdminAuthController::class, 'login']);
 
 Route::post('/logout', [AdminAuthController::class, 'logout']);
-Route::get(
-    'dashboard',
-    [AdminDashboardController::class, 'index']
-);
 
 Route::resource('cars', CarController::class);
 Route::resource('users', UserController::class);

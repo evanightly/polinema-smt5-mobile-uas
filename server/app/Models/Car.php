@@ -43,4 +43,13 @@ class Car extends Model
     {
         return $this->hasOne(CarFuel::class, 'id', 'fuel_id');
     }
+
+    public function getImageUrlAttribute()
+    {
+        // check if image starts with http
+        if (strpos($this->image, 'http') === 0) {
+            return $this->image;
+        }
+        return asset('storage/images/cars/' . $this->image);
+    }
 }

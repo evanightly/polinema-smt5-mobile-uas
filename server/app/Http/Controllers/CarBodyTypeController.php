@@ -24,7 +24,7 @@ class CarBodyTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('car_body_types.create');
     }
 
     /**
@@ -32,7 +32,8 @@ class CarBodyTypeController extends Controller
      */
     public function store(StoreCarBodyTypeRequest $request)
     {
-        return CarBodyType::create($request->validated());
+        $newCarBodyType = new CarBodyTypeResource(CarBodyType::create($request->validated()));
+        return redirect()->route('car-body-types.index')->with('success', "Car body type $newCarBodyType->name created successfully");
     }
 
     /**
@@ -48,7 +49,9 @@ class CarBodyTypeController extends Controller
      */
     public function edit(CarBodyType $carBodyType)
     {
-        //
+        return view('car_body_types.edit', [
+            'carBodyType' => new CarBodyTypeResource($carBodyType)
+        ]);
     }
 
     /**
@@ -56,7 +59,8 @@ class CarBodyTypeController extends Controller
      */
     public function update(UpdateCarBodyTypeRequest $request, CarBodyType $carBodyType)
     {
-        return $carBodyType->update($request->validated());
+        $carBodyType->update($request->validated());
+        return redirect()->route('car-body-types.index')->with('success', "Car body type updated successfully");
     }
 
     /**
@@ -64,6 +68,7 @@ class CarBodyTypeController extends Controller
      */
     public function destroy(CarBodyType $carBodyType)
     {
-        return $carBodyType->delete();
+        $carBodyType->delete();
+        return redirect()->route('car-body-types.index')->with('success', "Car body type $carBodyType->name deleted successfully");
     }
 }

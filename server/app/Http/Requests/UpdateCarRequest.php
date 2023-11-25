@@ -22,12 +22,20 @@ class UpdateCarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'min:3'],
-            'brand' => ['required', 'string', 'max:255', 'min:3'],
+            'name' => ['required', 'string', 'max:255'],
+            'brand_id' => ['required', 'string'],
+            'body_type_id' => ['required', 'string'],
+            'fuel_id' => ['required', 'string'],
+            'year' => ['required', 'numeric', 'min:1900'],
+            'km_min' => ['required', 'numeric', 'min:0'],
+            'km_max' => ['required', 'numeric', 'min:0'],
             'price' => ['required', 'numeric', 'min:1'],
             'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'description' => ['required', 'string', 'min:10'],
-            'isAvailable' => ['required', 'boolean'],
+            'condition' => ['required', 'string', 'max:255', 'min:3'], // 'new', 'used
+            'transmission' => ['required', 'string', 'max:255'], // 'manual', 'automatic
+            'status' => ['string', 'max:255'], // 'new', 'used
+            'description' => ['string'],
+            'stock' => ['required', 'numeric', 'min:0'],
         ];
     }
 }

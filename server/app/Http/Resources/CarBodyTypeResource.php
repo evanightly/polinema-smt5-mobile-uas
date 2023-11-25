@@ -19,7 +19,7 @@ class CarBodyTypeResource extends JsonResource
             'name' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            // 'car' => new CarResource($this->whenLoaded('car')),
+            'cars' =>  CarResource::collection($this->cars),
             // 'bodyType' => new BodyTypeResource($this->whenLoaded('bodyType'))
         ];
     }
