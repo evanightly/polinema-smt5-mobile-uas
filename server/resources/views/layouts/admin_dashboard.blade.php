@@ -1,3 +1,5 @@
+@extends('layouts.master')
+
 @section('content')
     <div class="drawer lg:drawer-open">
         <input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />

@@ -21,7 +21,13 @@
                     <input id="password" type="password" name="password" class="input w-full" value="{{ old('password') }}"
                         required />
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-5">Login</button>
+                <div class="mb-4 flex gap-5 items-center">
+                    <label for="remember" class="cursor-pointer label">
+                        Remember me
+                    </label>
+                    <input id="remember" type="checkbox" name="remember" class="checkbox" />
+                </div>
+                <button type="submit" class="btn btn-primary mt-5">Login</button>
             </form>
         </div>
     </div>
