@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admins.dart';
@@ -34,8 +35,9 @@ class AdminManagementScreen extends ConsumerWidget {
                           : Theme.of(context).colorScheme.secondary,
                     ),
               ),
-              trailing:
-                  auth!.isSuperAdmin ? _AdminActions(item) : const SizedBox.shrink(),
+              trailing: auth!.isSuperAdmin
+                  ? _AdminActions(item)
+                  : const SizedBox.shrink(),
             );
           },
         ),
@@ -55,9 +57,9 @@ class _AdminAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget image = const SizedBox.shrink();
-    if (admin.image!.isNotEmpty) {
+    if (admin.imageUrl?.isNotEmpty ?? false) {
       image = CircleAvatar(
-        backgroundImage: NetworkImage(admin.imageUrl),
+        backgroundImage: CachedNetworkImageProvider(admin.imageUrl!),
       );
     }
     return image;
@@ -99,7 +101,7 @@ class _AdminActions extends StatelessWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: NetworkImage(admin.imageUrl),
+                          foregroundImage: admin.imageProviderWidget,
                         ),
                       ),
                       const SizedBox(width: 24),

@@ -24,13 +24,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
-Route::post('/user/login', [UserAuthController::class, 'login']);
-Route::post('/user/register', [UserAuthController::class, 'register']);
+Route::post('/admins/login', [AdminAuthController::class, 'login']);
+Route::post('/users/login', [UserAuthController::class, 'login']);
+Route::post('/users/register', [UserAuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
-    Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
-    Route::post('/user/logout', [UserAuthController::class, 'logout']);
+    Route::post('/admins/logout', [AdminAuthController::class, 'logout']);
+    Route::post('/users/logout', [UserAuthController::class, 'logout']);
 
     Route::apiResource('cars', CarController::class);
     Route::apiResource('users', UserController::class);

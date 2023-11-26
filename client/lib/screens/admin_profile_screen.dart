@@ -61,7 +61,7 @@ class _EditProfile extends ConsumerWidget {
                         height: 60,
                         width: 60,
                         child: CircleAvatar(
-                          foregroundImage: NetworkImage(loggedUser.imageUrl),
+                          foregroundImage: loggedUser.imageProviderWidget,
                         ),
                       ),
                       const SizedBox(width: 24),
@@ -125,7 +125,7 @@ class _ProfileAvatar extends ConsumerWidget {
       width: double.infinity,
       height: 150,
       child: CircleAvatar(
-        foregroundImage: NetworkImage(loggedUser!.imageUrl),
+        foregroundImage: loggedUser?.imageProviderWidget,
       ),
     );
   }

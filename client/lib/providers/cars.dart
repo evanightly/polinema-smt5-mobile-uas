@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:client/models/car.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cars.g.dart';
@@ -12,7 +9,6 @@ part 'cars.g.dart';
 class Cars extends _$Cars {
   @override
   Future<List<Car>> build() async {
-    log('Building Cars');
     return await get();
   }
 
@@ -30,7 +26,7 @@ class Cars extends _$Cars {
 
       return cars;
     } catch (e) {
-      debugPrint(e.toString());
+      print(e);
       return [];
     }
   }

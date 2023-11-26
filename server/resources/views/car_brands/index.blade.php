@@ -22,7 +22,6 @@
                             <a href="{{ route('car-brands.edit', [$carBrand]) }}" class="btn btn-primary">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-
                             @if ($carBrand->cars->count() <= 0)
                                 <button class="btn btn-error" onclick="confirmDeleteModal{{ $loop->index }}.showModal()">
                                     <i class="fa-solid fa-trash-can"></i>

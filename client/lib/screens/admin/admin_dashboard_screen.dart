@@ -144,7 +144,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundImage: NetworkImage(loggedUser.imageUrl),
+                            backgroundImage: loggedUser.imageProviderWidget,
                             radius: 28,
                           ),
                           const SizedBox(height: 14),

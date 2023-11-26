@@ -39,7 +39,7 @@ class UserController extends Controller
             $validated = $request->safe()->merge(['image' => $file_name]);
 
             $newUser = new UserResource(User::create($validated->all()));
-            return redirect()->route('user.index')->with('success', "$newUser->name has been created");
+            return redirect()->route('users.index')->with('success', "$newUser->name has been created");
         }
     }
 

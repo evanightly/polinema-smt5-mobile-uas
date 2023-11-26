@@ -77,6 +77,9 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Complete
     - Cancelled
 
+## Bugs
+- Navbar light mode button not sync properly
+
 ## Progress
 - Admin
   - login ✔
@@ -126,7 +129,6 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Cart
     - Car Showcase (based on brand)
     - Transaction List ❓ (read [Note](#note) above)
-
 
 - Settings ✔
   - Dark Mode ✔

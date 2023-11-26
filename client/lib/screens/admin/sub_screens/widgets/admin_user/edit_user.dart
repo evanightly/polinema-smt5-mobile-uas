@@ -28,7 +28,6 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
   late String _name;
   late String _email;
   late String _password;
-  late String _imagePath;
   File? _file;
   late Widget _selectedImage;
   final _formKey = GlobalKey<FormState>();
@@ -40,8 +39,7 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
     _name = widget.user.name;
     _email = widget.user.email;
     _password = widget.user.password;
-    _imagePath = widget.user.imageUrl;
-    if (widget.user.image != null) {
+    if (widget.user.imageUrl != null) {
       _selectedImage = Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
@@ -69,7 +67,6 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
         name: _name,
         email: _email,
         password: _password,
-        image: _imagePath,
         uploadImage: _file,
       );
 

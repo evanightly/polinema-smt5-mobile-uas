@@ -16,7 +16,17 @@ class CarController extends Controller
     public function index()
     {
         // Display all available cars
-        return CarResource::collection(Car::latest()->get());
+        return CarResource::collection(Car::with([
+            'brand' => function ($brand) {
+                $brand->select('id', 'name');
+            },
+            'fuel' => function ($fuel) {
+                $fuel->select('id', 'name');
+            },
+            'bodyType' => function ($bodyType) {
+                $bodyType->select('id', 'name');
+            }
+        ])->latest()->get());
     }
 
     /**

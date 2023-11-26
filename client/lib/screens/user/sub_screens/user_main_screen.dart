@@ -130,7 +130,7 @@ class UserMainScreen extends ConsumerWidget {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
-                                    car!.imageUrl,
+                                    car.imageUrl,
                                   ),
                                 ),
                               ),

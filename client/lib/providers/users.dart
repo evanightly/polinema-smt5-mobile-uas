@@ -110,7 +110,7 @@ class Users extends _$Users {
 
     final dio = ref.read(dioHttpProvider.notifier);
     final response = await dio.http.delete('/users/$id');
-    if (response.statusCode == 200) {
+    if (response.statusCode == 204) {
       await Future.delayed(const Duration(seconds: 3));
       refresh();
       EasyLoading.dismiss();

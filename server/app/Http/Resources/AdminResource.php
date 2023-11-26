@@ -18,9 +18,10 @@ class AdminResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'image' => $this->image,
             'email' => $this->email,
+            'password' => $this->password,
             'isSuperAdmin' => $this->isSuperAdmin,
+            'image' => $this->image,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
 

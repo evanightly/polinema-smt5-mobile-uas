@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
@@ -198,11 +199,8 @@ class _CarImage extends StatelessWidget {
           topLeft: Radius.circular(_circularRadius),
           bottomLeft: Radius.circular(_circularRadius),
         ),
-        child: Image.network(
-          // imagePath.startsWith('http')
-          //     ? imagePath
-          //     : 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$imagePath',
-          car.imageUrl,
+        child: CachedNetworkImage(
+          imageUrl: car.imageUrl,
           fit: BoxFit.cover,
           width: 120,
           height: 80,

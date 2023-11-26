@@ -76,12 +76,12 @@ class Car {
   factory Car.fromJson(Map<String, dynamic> json) {
     final id = json['id'].toString();
     final name = json['name'].toString();
-    final brand = CarBrand.fromJson(json['brand']);
-    final body_type = CarBodyType.fromJson(json['body_type']);
+    final brand = CarBrand.fromJson(json['car_brand']);
+    final body_type = CarBodyType.fromJson(json['car_body_type']);
     final year = json['year'].toString();
     final km_min = num.parse(json['km_min'].toString());
     final km_max = num.parse(json['km_max'].toString());
-    final fuel = CarFuel.fromJson(json['fuel']);
+    final fuel = CarFuel.fromJson(json['car_fuel']);
     final price = num.parse(json['price'].toString());
     final image = json['image'].toString();
     final description = json['description'].toString();

@@ -16,10 +16,16 @@ class CarResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'car_brand_id' => $this->car_brand_id,
-            'car_body_type_id' => $this->car_body_type_id,
-            'car_fuel_id' => $this->car_fuel_id,
+            'brand_id' => $this->brand_id,
+            'body_type_id' => $this->body_type_id,
+            'fuel_id' => $this->fuel_id,
             'name' => $this->name,
+            'year' => $this->year,
+            'km_min' => $this->km_min,
+            'km_max' => $this->km_max,
+            'transmission' => $this->transmission,
+            'status' => $this->status,
+            'condition' => $this->condition,
             'price' => $this->price,
             'stock' => $this->stock,
             'image' => $this->image,
@@ -28,10 +34,10 @@ class CarResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
-            'car_brand' => new CarBrandResource($this->whenLoaded('carBrand')),
-            'car_body_type' => new CarBodyTypeResource($this->whenLoaded('carBodyType')),
-            'car_fuel' => new CarFuelResource($this->whenLoaded('carFuel')),
-            'detail_transactions' => DetailTransactionResource::collection($this->whenLoaded('detailTransactions')),
+            'car_brand' => new CarBrandResource($this->whenLoaded('brand')),
+            'car_body_type' => new CarBodyTypeResource($this->whenLoaded('bodyType')),
+            'car_fuel' => new CarFuelResource($this->whenLoaded('fuel')),
+            // 'detail_transactions' => DetailTransactionResource::collection($this->detailTransactions),
         ];
     }
 }

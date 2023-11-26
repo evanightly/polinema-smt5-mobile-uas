@@ -35,11 +35,7 @@ class StoreAdminRequest extends FormRequest
     {
         $this->merge([
             'isSuperAdmin' => $this->has('isSuperAdmin') && $this->isSuperAdmin === 'on' ? true : false,
+            'password' => Hash::make($this->password)
         ]);
-    }
-
-    protected function passedValidation(): void
-    {
-        $this->replace(['password' => Hash::make($this->password)]);
     }
 }

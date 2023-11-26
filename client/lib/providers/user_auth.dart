@@ -17,7 +17,7 @@ class UserAuth extends _$UserAuth {
       );
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post(
-        '/user/login',
+        '/users/login',
         data: {
           'email': email,
           'password': password,
@@ -55,7 +55,7 @@ class UserAuth extends _$UserAuth {
       );
 
       final dio = ref.read(dioHttpProvider);
-      final response = await dio.post('/user/register', data: {
+      final response = await dio.post('/users/register', data: {
         'name': name,
         'email': email,
         'password': password,
@@ -66,7 +66,7 @@ class UserAuth extends _$UserAuth {
       state = user;
 
       if (context.mounted) {
-        Navigator.pushReplacementNamed(context, '/user');
+        Navigator.pushReplacementNamed(context, '/users');
         EasyLoading.dismiss();
       }
     } catch (e) {
@@ -81,7 +81,7 @@ class UserAuth extends _$UserAuth {
       status: 'Loading...',
     );
 
-    await ref.read(dioHttpProvider.notifier).http.post('/user/logout');
+    await ref.read(dioHttpProvider.notifier).http.post('/users/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');
@@ -91,7 +91,7 @@ class UserAuth extends _$UserAuth {
 
   void redirectIfNotLogged(BuildContext context) {
     if (state == null) {
-      Navigator.pushReplacementNamed(context, '/user/login');
+      Navigator.pushReplacementNamed(context, '/users/login');
     }
   }
 

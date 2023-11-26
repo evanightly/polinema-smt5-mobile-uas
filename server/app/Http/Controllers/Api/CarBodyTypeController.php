@@ -14,7 +14,13 @@ class CarBodyTypeController extends Controller
      */
     public function index()
     {
-        return CarBodyTypeResource::collection(CarBodyType::all());
+        return CarBodyTypeResource::collection(CarBodyType::with([
+            'cars' => [
+                'fuel',
+                'bodyType',
+                'brand'
+            ],
+        ])->get());
     }
 
     /**

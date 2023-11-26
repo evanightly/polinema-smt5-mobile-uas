@@ -24,6 +24,9 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'transaction' => new TransactionResource($this->whenLoaded('transaction')),
+
+            // custom attributes used in view
+            'imageUrl' => $this->imageUrl,
         ];
     }
 }

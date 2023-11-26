@@ -18,15 +18,14 @@ class AdminAuth extends _$AdminAuth {
       );
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post(
-        '/admin/login',
+        '/admins/login',
         data: {
           'email': email,
           'password': password,
         },
       );
 
-      final data = response.data as Map<String, dynamic>;
-      final admin = Admin.fromAuthJson(data['data']);
+      final admin = Admin.fromAuthJson(response.data);
 
       state = admin;
       ref.read(adminDashboardActionsProvider.notifier).setActions([]);
@@ -57,7 +56,7 @@ class AdminAuth extends _$AdminAuth {
       status: 'Loading...',
     );
 
-    await ref.read(dioHttpProvider.notifier).http.post('/admin/logout');
+    await ref.read(dioHttpProvider.notifier).http.post('/admins/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');
@@ -67,7 +66,7 @@ class AdminAuth extends _$AdminAuth {
 
   void redirectIfNotLogged(BuildContext context) {
     if (state == null) {
-      Navigator.pushReplacementNamed(context, '/admin/login');
+      Navigator.pushReplacementNamed(context, '/admins/login');
     }
   }
 

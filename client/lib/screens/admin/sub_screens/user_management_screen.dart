@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/models/user.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/cars.dart';
@@ -100,9 +101,9 @@ class _UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget image = const SizedBox.shrink();
-    if (user.image!.isNotEmpty) {
+    if (user.imageUrl != null) {
       image = CircleAvatar(
-        backgroundImage: user.imageProviderWidget,
+        backgroundImage: CachedNetworkImageProvider(user.imageUrl!),
       );
     }
     return image;
