@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\CarBodyType;
 use App\Http\Requests\StoreCarBodyTypeRequest;
 use App\Http\Requests\UpdateCarBodyTypeRequest;
+use App\Http\Resources\CarBodyTypeResource;
 
 class CarBodyTypeController extends Controller
 {
@@ -13,21 +14,7 @@ class CarBodyTypeController extends Controller
      */
     public function index()
     {
-        return CarBodyType::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return CarBodyTypeResource::collection(CarBodyType::all());
     }
 
     /**
@@ -35,7 +22,7 @@ class CarBodyTypeController extends Controller
      */
     public function store(StoreCarBodyTypeRequest $request)
     {
-        return CarBodyType::create($request->validated());
+        return new CarBodyTypeResource(CarBodyType::create($request->validated()));
     }
 
     /**
@@ -47,19 +34,11 @@ class CarBodyTypeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CarBodyType $carBodyType)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCarBodyTypeRequest $request, CarBodyType $carBodyType)
     {
-        return $carBodyType->update($request->validated());
+        return new CarBodyTypeResource(tap($carBodyType)->update($request->validated()));
     }
 
     /**
@@ -67,6 +46,7 @@ class CarBodyTypeController extends Controller
      */
     public function destroy(CarBodyType $carBodyType)
     {
-        return $carBodyType->delete();
+        $carBodyType->delete();
+        return response()->noContent();
     }
 }

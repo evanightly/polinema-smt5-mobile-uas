@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\DetailTransaction;
 use App\Http\Requests\StoreDetailTransactionRequest;
 use App\Http\Requests\UpdateDetailTransactionRequest;
+use App\Http\Resources\DetailTransactionResource;
 use App\Models\Transaction;
 
 class DetailTransactionController extends Controller
@@ -14,15 +15,7 @@ class DetailTransactionController extends Controller
      */
     public function index()
     {
-        DetailTransaction::with(['transaction', 'car'])->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // DetailTransaction::with(['transaction', 'car'])->get();
     }
 
     /**
@@ -30,7 +23,7 @@ class DetailTransactionController extends Controller
      */
     public function store(StoreDetailTransactionRequest $request)
     {
-        DetailTransaction::create($request->validated());
+        return new DetailTransactionResource(DetailTransaction::create($request->validated()));
     }
 
     /**
@@ -39,15 +32,7 @@ class DetailTransactionController extends Controller
     public function show(DetailTransaction $detailTransaction)
     {
         // intended to use with cart after item modified
-        DetailTransaction::with(['transaction', 'car'])->find($detailTransaction->id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DetailTransaction $detailTransaction)
-    {
-        //
+        return new DetailTransactionResource($detailTransaction);
     }
 
     /**
@@ -55,11 +40,7 @@ class DetailTransactionController extends Controller
      */
     public function update(UpdateDetailTransactionRequest $request, DetailTransaction $detailTransaction)
     {
-        $transaction = Transaction::find($detailTransaction->transaction_id);
-        $transaction->total = $transaction->total - $detailTransaction->total;
-        $transaction->save();
-
-        return $detailTransaction->update($request->validated());
+        return new DetailTransactionResource(tap($detailTransaction)->update($request->validated()));
     }
 
     /**
@@ -67,6 +48,7 @@ class DetailTransactionController extends Controller
      */
     public function destroy(DetailTransaction $detailTransaction)
     {
-        return $detailTransaction->delete();
+        $detailTransaction->delete();
+        return response()->noContent();
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\AdminResource;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -13,15 +15,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return Admin::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return AdminResource::collection(Admin::all());
     }
 
     /**
@@ -29,7 +23,13 @@ class AdminController extends Controller
      */
     public function store(StoreAdminRequest $request)
     {
-        return Admin::create($request->validated());
+        if ($request->validated()) {
+            $path = $request->file('image')->store('images/admins', 'public');
+            $file_name = explode('/', $path)[2];
+            $validated = $request->safe()->merge(['image' => $file_name]);
+
+            return new AdminResource(Admin::create($validated->all()));
+        }
     }
 
     /**
@@ -41,19 +41,24 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        return $admin->update($request->validated());
+        if ($request->validated()) {
+
+            $validated = $request->safe();
+            // if file exists, delete it
+            if ($request->hasFile('image')) {
+                File::delete(public_path('storage/images/admins/' . $admin->image));
+
+                $path = $request->file('image')->store('images/admins', 'public');
+                $file_name = explode('/', $path)[2];
+                $validated = $request->safe()->merge(['image' => $file_name]);
+            }
+
+            return new AdminResource(tap($admin)->update($validated->all()));
+        }
     }
 
     /**
@@ -61,6 +66,7 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        return $admin->delete();
+        $admin->delete();
+        return response()->noContent();
     }
 }

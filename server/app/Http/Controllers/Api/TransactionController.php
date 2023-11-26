@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Car;
 use App\Models\DetailTransaction;
 
@@ -17,15 +18,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return Transaction::with(['user', 'verifiedBy'])->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return TransactionResource::collection(Transaction::all());
     }
 
     /**
@@ -126,15 +119,7 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        return $transaction->load(['user', 'verifiedBy']);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
+        return new TransactionResource($transaction);
     }
 
     /**
@@ -143,7 +128,6 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         // ONLY FOR USER TRANSACTION
-        return'op';
         try {
             dump($request->payment_method);
             // get all request body data
@@ -173,6 +157,7 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        return $transaction->delete();
+        $transaction->delete();
+        return response()->noContent();
     }
 }

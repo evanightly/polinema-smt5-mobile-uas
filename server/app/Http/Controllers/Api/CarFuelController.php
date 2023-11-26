@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\CarFuel;
 use App\Http\Requests\StoreCarFuelRequest;
 use App\Http\Requests\UpdateCarFuelRequest;
+use App\Http\Resources\CarFuelResource;
 
 class CarFuelController extends Controller
 {
@@ -13,21 +14,7 @@ class CarFuelController extends Controller
      */
     public function index()
     {
-        return CarFuel::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return CarFuelResource::collection(CarFuel::all());
     }
 
     /**
@@ -35,7 +22,7 @@ class CarFuelController extends Controller
      */
     public function store(StoreCarFuelRequest $request)
     {
-        return CarFuel::create($request->validated());
+        return new CarFuelResource(CarFuel::create($request->validated()));
     }
 
     /**
@@ -47,19 +34,11 @@ class CarFuelController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CarFuel $carFuel)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCarFuelRequest $request, CarFuel $carFuel)
     {
-        return $carFuel->update($request->validated());
+        return new CarFuelResource(tap($carFuel)->update($request->validated()));
     }
 
     /**
@@ -67,6 +46,7 @@ class CarFuelController extends Controller
      */
     public function destroy(CarFuel $carFuel)
     {
-        return $carFuel->delete();
+        $carFuel->delete();
+        return response()->noContent();
     }
 }

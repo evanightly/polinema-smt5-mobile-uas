@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\CarBrand;
 use App\Http\Requests\StoreCarBrandRequest;
 use App\Http\Requests\UpdateCarBrandRequest;
+use App\Http\Resources\CarBrandResource;
 
 class CarBrandController extends Controller
 {
@@ -13,21 +14,7 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        return CarBrand::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return CarBrandResource::collection(CarBrand::all());
     }
 
     /**
@@ -35,7 +22,7 @@ class CarBrandController extends Controller
      */
     public function store(StoreCarBrandRequest $request)
     {
-        return CarBrand::create($request->validated());
+        return new CarBrandResource(CarBrand::create($request->validated()));
     }
 
     /**
@@ -47,19 +34,11 @@ class CarBrandController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CarBrand $carBrand)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateCarBrandRequest $request, CarBrand $carBrand)
     {
-        return $carBrand->update($request->validated());
+        return new CarBrandResource(tap($carBrand)->update($request->validated()));
     }
 
     /**
@@ -67,6 +46,7 @@ class CarBrandController extends Controller
      */
     public function destroy(CarBrand $carBrand)
     {
-        return $carBrand->delete();
+        $carBrand->delete();
+        return response()->noContent();
     }
 }
