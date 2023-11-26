@@ -42,12 +42,15 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               child: Row(
                 children: [
                   Text(
-                    'Total: \$${carts?.formattedTotal}',
+                    'Total: \$${carts?.formattedTotal ?? 0}',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: checkout,
+                    onPressed: carts?.detailTransactions == null ||
+                            carts!.detailTransactions!.isEmpty
+                        ? null
+                        : checkout,
                     child: const Text('Checkout'),
                   ),
                 ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:client/models/admin.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,6 +10,7 @@ part 'admins.g.dart';
 class Admins extends _$Admins {
   @override
   Future<List<Admin>> build() async {
+    log('Building Admins');
     return await get();
   }
 

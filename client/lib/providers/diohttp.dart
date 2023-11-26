@@ -7,6 +7,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'diohttp.g.dart';
 
 final ipv4 = dotenv.env['LOCAL_IPv4'];
+const receiveTimeout = Duration(seconds: 5);
+const connectTimeout = Duration(seconds: 5);
 
 @Riverpod(keepAlive: true)
 class DioHttp extends _$DioHttp {
@@ -18,30 +20,32 @@ class DioHttp extends _$DioHttp {
     return Dio(
       BaseOptions(
         baseUrl: _serverBaseUrl,
-        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: receiveTimeout,
+        connectTimeout: connectTimeout,
       ),
     );
   }
 
   Dio get http {
+    Dio dio;
     final isAdminLoggedIn = ref.read(adminAuthProvider);
     final isUserLoggedIn = ref.read(userAuthProvider);
 
     // Default options
-    BaseOptions options = BaseOptions(baseUrl: _serverBaseUrl);
+    BaseOptions options = BaseOptions(
+      baseUrl: _serverBaseUrl,
+      receiveTimeout: receiveTimeout,
+      connectTimeout: connectTimeout,
+    );
 
     if (isAdminLoggedIn != null) {
-      options = BaseOptions(
-        baseUrl: _serverBaseUrl,
-        headers: {'Authorization': 'Bearer ${isAdminLoggedIn.token}'},
-      );
+      options.headers = {'Authorization': 'Bearer ${isAdminLoggedIn.token}'};
     } else if (isUserLoggedIn != null) {
-      options = BaseOptions(
-        baseUrl: _serverBaseUrl,
-        headers: {'Authorization': 'Bearer ${isUserLoggedIn.token}'},
-      );
+      options.headers = {'Authorization': 'Bearer ${isUserLoggedIn.token}'};
     }
 
-    return Dio(options);
+    dio = Dio(options);
+
+    return dio;
   }
 }

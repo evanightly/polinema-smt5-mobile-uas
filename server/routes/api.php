@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminAuthController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\CarBodyTypeController;
 use App\Http\Controllers\Api\CarBrandController;
@@ -23,10 +24,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
 Route::post('/user/login', [UserAuthController::class, 'login']);
 Route::post('/user/register', [UserAuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
     Route::post('/user/logout', [UserAuthController::class, 'logout']);
 
     Route::apiResource('cars', CarController::class);

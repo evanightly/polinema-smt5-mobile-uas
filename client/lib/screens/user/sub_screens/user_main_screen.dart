@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
@@ -102,7 +100,11 @@ class UserMainScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final car = cars.asData?.value[index];
                     return InkWell(
-                      onTap: () => openCarDetailsScreen(car),
+                      onTap: car!.stock <= 0
+                          ? null
+                          : () {
+                              openCarDetailsScreen(car);
+                            },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -129,9 +131,6 @@ class UserMainScreen extends ConsumerWidget {
                                   fit: BoxFit.cover,
                                   image: CachedNetworkImageProvider(
                                     car!.imageUrl,
-                                    errorListener: (p0) {
-                                      log(p0.toString());
-                                    },
                                   ),
                                 ),
                               ),
@@ -183,7 +182,19 @@ class UserMainScreen extends ConsumerWidget {
                                               ),
                                         ),
                                       ),
-                                      Text('Stock: ${car.stock}')
+                                      Text(
+                                        car.stock <= 0
+                                            ? 'Out of stock'
+                                            : 'Available: ${car.stock}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: car.stock <= 0
+                                                  ? Colors.red
+                                                  : Colors.black87,
+                                            ),
+                                      )
                                     ],
                                   )
                                 ],

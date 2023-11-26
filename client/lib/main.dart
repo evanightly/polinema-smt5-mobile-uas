@@ -33,7 +33,7 @@ class App extends ConsumerWidget {
     ref.read(sharedPreferenceProvider.notifier).init(prefs);
     return MaterialApp(
       title: 'Mein App',
-      initialRoute: '/user/login',
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       theme:
           ref.watch(settingsProvider).darkMode ? darkThemeData : lightThemeData,

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:client/models/user_detail_transaction.dart';
@@ -111,7 +112,7 @@ class UserCart extends _$UserCart {
         }
       }
     } on DioException catch (_) {
-      print(_);
+      log(_.toString());
     }
   }
 

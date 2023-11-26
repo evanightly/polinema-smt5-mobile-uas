@@ -20,14 +20,15 @@ class AdminCarScreen extends ConsumerWidget {
     final cars = ref.watch(carsProvider);
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
-    Future<void> reload() async {
+    Future<void> refresh() async {
       await ref.read(carsProvider.notifier).refresh();
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        final dashboardActions =
-            ref.read(adminDashboardActionsProvider.notifier);
+        final dashboardActions = ref.read(
+          adminDashboardActionsProvider.notifier,
+        );
 
         final isLoadingCarData = cars.maybeWhen(
           loading: () => true,
@@ -54,7 +55,7 @@ class AdminCarScreen extends ConsumerWidget {
       data: (data) {
         return LiquidPullToRefresh(
           key: refreshIndicatorKey,
-          onRefresh: reload,
+          onRefresh: refresh,
           child: ListView.builder(
             itemCount: data.length,
             itemBuilder: (ctx, index) {

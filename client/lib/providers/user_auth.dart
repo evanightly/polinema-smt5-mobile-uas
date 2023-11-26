@@ -41,10 +41,9 @@ class UserAuth extends _$UserAuth {
           duration: const Duration(seconds: 5),
         );
       }
-    } on DioException catch (e) {
-      print(e);
-      EasyLoading.showError('Failed with error, user not found');
     }
+
+    EasyLoading.dismiss();
   }
 
   void registerUser(
