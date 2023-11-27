@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Car;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use App\Http\Resources\CarBrandResource;
 use App\Http\Resources\CarResource;
 use Illuminate\Support\Facades\File;
 
@@ -16,17 +17,7 @@ class CarController extends Controller
     public function index()
     {
         // Display all available cars
-        return CarResource::collection(Car::with([
-            'brand' => function ($brand) {
-                $brand->select('id', 'name');
-            },
-            'fuel' => function ($fuel) {
-                $fuel->select('id', 'name');
-            },
-            'bodyType' => function ($bodyType) {
-                $bodyType->select('id', 'name');
-            }
-        ])->latest()->get());
+        return CarResource::collection(Car::with(['brand', 'bodyType', 'fuel'])->latest()->get());
     }
 
     /**

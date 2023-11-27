@@ -11,6 +11,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Joined At</th>
+                <th>Address</th>
                 <th></th>
             </tr>
         </thead>
@@ -29,6 +30,7 @@
                     </td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->joinedAt }}</td>
+                    <td>{{ $user->address }}</td>
                     <td>
                         <div class="flex gap-3">
                             <dialog id="confirmDeleteModal{{ $loop->index }}" class="modal">

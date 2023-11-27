@@ -25,6 +25,11 @@
                 </div>
             </div>
             <div class="form-control">
+                <label for="address" class="label">Address</label>
+                <input id="address" type="text" placeholder="Address" name="address" class="input"
+                    value="{{ $user->address }}" />
+            </div>
+            <div class="form-control">
                 <label for="image" class="label">User Picture</label>
                 <input id="image" type="file" name="image" class="file-input" placeholder="User Picture" />
             </div>

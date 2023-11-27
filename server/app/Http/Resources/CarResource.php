@@ -37,7 +37,6 @@ class CarResource extends JsonResource
             'car_brand' => new CarBrandResource($this->whenLoaded('brand')),
             'car_body_type' => new CarBodyTypeResource($this->whenLoaded('bodyType')),
             'car_fuel' => new CarFuelResource($this->whenLoaded('fuel')),
-            // 'detail_transactions' => DetailTransactionResource::collection($this->detailTransactions),
         ];
     }
 }
