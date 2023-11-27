@@ -23,21 +23,21 @@
                         Ambatucar
                     </span>
                 </li>
-                <li><a href="/">Dashboard</a></li>
-                <li><a href="/admins">Admins</a></li>
-                <li><a href="/users">Users</a></li>
+                <li><a href="/"><i class="fa-solid fa-house"></i>Dashboard</a></li>
+                <li><a href="/admins"><i class="fa-solid fa-users-gear"></i>Admins</a></li>
+                <li><a href="/users"><i class="fa-solid fa-user-group"></i>Users</a></li>
                 <li>
                     <details open>
-                        <summary>Cars</summary>
+                        <summary><i class="fa-solid fa-car"></i>Cars</summary>
                         <ul>
-                            <li><a href="/cars">Cars</a></li>
-                            <li><a href="/car-body-types">Car body types</a></li>
-                            <li><a href="/car-brands">Car brands</a></li>
-                            <li><a href="/car-fuels">Car fuels</a></li>
+                            <li><a href="/cars"><i class="fa-solid fa-car-rear"></i>Cars</a></li>
+                            <li><a href="/car-body-types"><i class="fa-solid fa-car-side"></i>Car body types</a></li>
+                            <li><a href="/car-brands"><i class="fa-solid fa-copyright"></i>Car brands</a></li>
+                            <li><a href="/car-fuels"><i class="fa-solid fa-gas-pump"></i>Car fuels</a></li>
                         </ul>
                     </details>
                 </li>
-                <li><a href="/transactions">Transactions</a></li>
+                <li><a href="/transactions"><i class="fa-solid fa-handshake"></i>Transactions</a></li>
             </ul>
         </div>
     </div>
