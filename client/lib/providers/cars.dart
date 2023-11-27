@@ -26,7 +26,6 @@ class Cars extends _$Cars {
 
       return cars;
     } catch (e) {
-      print(e);
       return [];
     }
   }
@@ -52,7 +51,7 @@ class Cars extends _$Cars {
         'condition': car.condition.name,
         'transmission': car.transmission.name,
         'status': car.status.name,
-        'image': await MultipartFile.fromFile(car.uploadImage!.path),
+        'image': await MultipartFile.fromFile(car.upload_image!.path),
       });
 
       final response = await dio.http.post('/cars', data: formData);
@@ -73,7 +72,7 @@ class Cars extends _$Cars {
     try {
       final dio = ref.read(dioHttpProvider.notifier);
       FormData formData;
-      if (car.uploadImage != null) {
+      if (car.upload_image != null) {
         formData = FormData.fromMap({
           'name': car.name,
           'brand_id': car.brand.id,
@@ -87,7 +86,7 @@ class Cars extends _$Cars {
           'condition': car.condition.name,
           'transmission': car.transmission.name,
           'status': car.status.name,
-          'image': await MultipartFile.fromFile(car.uploadImage!.path),
+          'image': await MultipartFile.fromFile(car.upload_image!.path),
         });
       } else {
         formData = FormData.fromMap({
@@ -125,7 +124,7 @@ class Cars extends _$Cars {
   Future<bool> delete(String id) async {
     final dio = ref.read(dioHttpProvider.notifier);
     final response = await dio.http.delete('/cars/$id');
-    if (response.statusCode == 200) {
+    if (response.statusCode == 204) {
       state = AsyncValue.data(state.value!..removeWhere((car) => car.id == id));
       return true;
     }

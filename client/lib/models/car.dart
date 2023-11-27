@@ -2,10 +2,10 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/models/car_body_type.dart';
 import 'package:client/models/car_brand.dart';
 import 'package:client/models/car_fuel.dart';
-import 'package:client/providers/diohttp.dart';
 import 'package:flutter/material.dart';
 
 enum CarTransmission { Automatic, Manual }
@@ -24,8 +24,8 @@ class Car {
   num km_max;
   CarFuel fuel;
   num price;
-  String? image;
-  File? uploadImage;
+  String? image_url;
+  File? upload_image;
   String? description;
   CarCondition condition;
   CarTransmission transmission;
@@ -43,8 +43,8 @@ class Car {
     required this.km_max,
     required this.fuel,
     required this.price,
-    this.image,
-    this.uploadImage,
+    this.image_url,
+    this.upload_image,
     this.description,
     required this.condition,
     required this.transmission,
@@ -52,24 +52,11 @@ class Car {
     required this.stock,
   });
 
-  String get imageUrl {
-    String imageUrl = '';
-    if (image == null) {
-      return imageUrl;
-    }
-
-    if (image!.startsWith('http')) {
-      return image!;
-    } else {
-      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$image';
-    }
-  }
-
   ImageProvider get imageProviderWidget {
-    if (image == null) {
+    if (image_url == 'null') {
       return const AssetImage('assets/images/car1_MustangGT.jpg');
     }
-    return NetworkImage(imageUrl);
+    return CachedNetworkImageProvider(image_url!);
   }
 
   // convert json to object
@@ -83,7 +70,7 @@ class Car {
     final km_max = num.parse(json['km_max'].toString());
     final fuel = CarFuel.fromJson(json['car_fuel']);
     final price = num.parse(json['price'].toString());
-    final image = json['image'].toString();
+    final image_url = json['image_url'].toString();
     final description = json['description'].toString();
     final transmission =
         CarTransmission.values.byName(json['transmission'].toString());
@@ -101,7 +88,7 @@ class Car {
       km_max: km_max,
       fuel: fuel,
       price: price,
-      image: image,
+      image_url: image_url,
       description: description,
       condition: condition,
       transmission: transmission,
@@ -121,7 +108,7 @@ class Car {
       'km_max': km_max,
       'fuel': fuel.name,
       'price': price,
-      'image': image,
+      'image_url': image_url,
       'description': description,
       'condition': condition.name.toString(),
       'transmission': transmission.name.toString(),

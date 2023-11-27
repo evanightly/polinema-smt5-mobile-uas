@@ -66,7 +66,7 @@ class AdminCarFuelScreen extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                   ),
-                  trailing: auth!.isSuperAdmin
+                  trailing: auth!.is_super_admin
                       ? _CarFuelActions(item)
                       : const SizedBox.shrink(),
                 );

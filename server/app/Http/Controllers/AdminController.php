@@ -16,7 +16,7 @@ class AdminController extends Controller
     public function index()
     {
         return view('admins.index', [
-            'admins' => AdminResource::collection(Admin::all())
+            'admins' => AdminResource::collection(Admin::latest()->get())
         ]);
     }
 

@@ -63,7 +63,7 @@ class AdminCarBrandScreen extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
-                trailing: auth!.isSuperAdmin
+                trailing: auth!.is_super_admin
                     ? _CarBrandActions(item)
                     : const SizedBox.shrink(),
               );

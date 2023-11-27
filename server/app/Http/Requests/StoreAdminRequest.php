@@ -23,9 +23,9 @@ class StoreAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:admins'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string'],
             'image' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'isSuperAdmin' => ['nullable', 'boolean'],
         ];

@@ -22,7 +22,7 @@
                         <div class="flex items-center gap-5">
                             <div class="avatar">
                                 <div class="w-12 rounded-full">
-                                    <img src="{{ $user->imageUrl }}" alt="{{ $user->name }}'Photo">
+                                    <img src="{{ $user->image_url }}" alt="{{ $user->name }}'Photo">
                                 </div>
                             </div>
                             <p>{{ $user->name }}</p>

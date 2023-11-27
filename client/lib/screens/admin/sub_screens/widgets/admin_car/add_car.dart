@@ -1,6 +1,4 @@
-// import required packages
 import 'dart:io';
-
 import 'package:client/models/car.dart';
 import 'package:client/models/car_body_type.dart';
 import 'package:client/models/car_brand.dart';
@@ -149,7 +147,7 @@ class _AddCarState extends ConsumerState<AddCar> {
         km_max: _kmMax,
         fuel: _fuel,
         price: _price,
-        uploadImage: _file,
+        upload_image: _file,
         description: _description,
         condition: _condition,
         transmission: _transmission,

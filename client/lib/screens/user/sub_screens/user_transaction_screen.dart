@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
-import 'package:client/models/car.dart';
 import 'package:client/models/user_transaction.dart';
 import 'package:client/providers/user_transactions.dart';
 import 'package:flutter/material.dart';
@@ -130,12 +128,12 @@ class UserTransactionScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 32),
                     if (transaction.paymentProof != null)
-                      CachedNetworkImage(
-                        imageUrl: transaction.imageUrl,
+                      Image(
+                        image: transaction.imageProviderWidget,
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,
-                        errorWidget: (context, url, error) {
+                        errorBuilder: (context, error, stackTrace) {
                           return const Row(
                             children: [
                               Icon(Icons.error),
@@ -144,7 +142,7 @@ class UserTransactionScreen extends ConsumerWidget {
                             ],
                           );
                         },
-                      )
+                      ),
                   ],
                 ),
               ),
@@ -163,7 +161,16 @@ class UserTransactionScreen extends ConsumerWidget {
                   transaction.detailTransactions!.isNotEmpty)
                 for (var i = 0; i < transaction.detailTransactions!.length; i++)
                   ListTile(
-                    leading: _CarImage(transaction.detailTransactions![i].car),
+                    leading: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(_circularRadius),
+                        bottomLeft: Radius.circular(_circularRadius),
+                      ),
+                      child: Image(
+                        image: transaction
+                            .detailTransactions![i].car.imageProviderWidget,
+                      ),
+                    ),
                     title: Text(transaction.detailTransactions![i].car.name),
                     subtitle: Text(
                       '\$ ${formatNumber(transaction.detailTransactions![i].car.price)}',
@@ -209,30 +216,5 @@ class UserTransactionScreen extends ConsumerWidget {
         );
       },
     );
-  }
-}
-
-class _CarImage extends StatelessWidget {
-  const _CarImage(this.car);
-
-  final Car car;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget image = const SizedBox.shrink();
-
-    if (car.image != null) {
-      image = ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(_circularRadius),
-          bottomLeft: Radius.circular(_circularRadius),
-        ),
-        child: CachedNetworkImage(
-          imageUrl: car.imageUrl,
-        ),
-      );
-    }
-
-    return image;
   }
 }

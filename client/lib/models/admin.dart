@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 class Admin {
@@ -5,9 +7,9 @@ class Admin {
   final String name;
   final String email;
   final String password;
-  final bool isSuperAdmin;
-  final String? imageUrl;
-  final String? uploadImage;
+  final bool is_super_admin;
+  final String? image_url;
+  final String? upload_image;
   final String? token;
 
   const Admin({
@@ -15,17 +17,17 @@ class Admin {
     required this.name,
     required this.email,
     required this.password,
-    required this.isSuperAdmin,
-    this.imageUrl,
-    this.uploadImage,
+    required this.is_super_admin,
+    this.image_url,
+    this.upload_image,
     this.token,
   });
 
   ImageProvider get imageProviderWidget {
-    if (imageUrl == 'null') {
+    if (image_url == 'null') {
       return const AssetImage('assets/images/person1.jpg');
     }
-    return NetworkImage(imageUrl!);
+    return NetworkImage(image_url!);
   }
 
   factory Admin.fromAuthJson(Map<String, dynamic> json) {
@@ -33,8 +35,8 @@ class Admin {
     final name = json['admin']['name'].toString();
     final email = json['admin']['email'].toString();
     final password = json['admin']['password'].toString();
-    final isSuperAdmin = json['admin']['isSuperAdmin'] == 1 ? true : false;
-    final imageUrl = json['admin']['imageUrl'].toString();
+    final is_super_admin = json['admin']['is_super_admin'] == 1 ? true : false;
+    final image_url = json['admin']['image_url'].toString();
     final token = json['token'].toString();
 
     final admin = Admin(
@@ -42,8 +44,8 @@ class Admin {
       name: name,
       email: email,
       password: password,
-      isSuperAdmin: isSuperAdmin,
-      imageUrl: imageUrl,
+      is_super_admin: is_super_admin,
+      image_url: image_url,
       token: token,
     );
 
@@ -55,16 +57,16 @@ class Admin {
     final name = json['name'].toString();
     final email = json['email'].toString();
     final password = json['password'].toString();
-    final isSuperAdmin = json['isSuperAdmin'] == 1 ? true : false;
-    final imageUrl = json['imageUrl'].toString();
+    final is_super_admin = json['is_super_admin'] == 1 ? true : false;
+    final image_url = json['image_url'].toString();
 
     final admin = Admin(
       id: id,
       name: name,
       email: email,
       password: password,
-      isSuperAdmin: isSuperAdmin,
-      imageUrl: imageUrl,
+      is_super_admin: is_super_admin,
+      image_url: image_url,
     );
 
     return admin;
@@ -76,8 +78,8 @@ class Admin {
       'name': name,
       'email': email,
       'password': password,
-      'isSuperAdmin': isSuperAdmin,
-      'imageUrl': imageUrl,
+      'is_super_admin': is_super_admin,
+      'image_url': image_url,
     };
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/admin.dart';
@@ -43,7 +43,7 @@ class UserTransaction {
   get verifiedDate => verifiedAt.toString().split(' ')[0];
   get formattedTotal => formatNumber(total);
 
-  String get imageUrl {
+  String get image_url {
     // print(paymentProof.runtimeType);
     // print(paymentProof);
     if (paymentProof == null) {
@@ -61,7 +61,7 @@ class UserTransaction {
     if (paymentProof == null) {
       return const AssetImage('assets/images/car1_MustangGT.jpg');
     }
-    return NetworkImage(imageUrl);
+    return NetworkImage(image_url);
   }
 
   factory UserTransaction.fromJson(dynamic json) {

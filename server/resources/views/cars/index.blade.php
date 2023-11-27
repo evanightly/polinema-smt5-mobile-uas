@@ -29,7 +29,7 @@
                         <div class="flex gap-5 items-center">
                             <div class="avatar">
                                 <div class="w-32 h-20">
-                                    <img src="{{ $car->imageUrl }}" alt="{{ $car->name }}'Photo">
+                                    <img src="{{ $car->image_url }}" alt="{{ $car->name }}'Photo">
                                 </div>
                             </div>
                         </div>

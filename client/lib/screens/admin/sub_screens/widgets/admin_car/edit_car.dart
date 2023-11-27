@@ -50,9 +50,12 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
   @override
   void initState() {
     super.initState();
-    if (widget.car.image != null) {
-      _selectedImage =
-          Image.network(widget.car.imageUrl, height: 240, fit: BoxFit.cover);
+    if (widget.car.image_url != null) {
+      _selectedImage = Image(
+        image: widget.car.imageProviderWidget,
+        height: 240,
+        fit: BoxFit.cover,
+      );
     }
   }
 
@@ -144,8 +147,7 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
         km_max: _kmMax,
         fuel: _fuel,
         price: _price,
-        uploadImage: _file,
-        image: widget.car.image,
+        upload_image: _file,
         description: _description,
         condition: _condition,
         transmission: _transmission,

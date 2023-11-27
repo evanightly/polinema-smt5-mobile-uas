@@ -26,7 +26,7 @@ class UserResource extends JsonResource
             'transaction' => new TransactionResource($this->whenLoaded('transaction')),
 
             // custom attributes used in view
-            'imageUrl' => $this->imageUrl,
+            'image_url' => $this->imageUrl,
         ];
     }
 }

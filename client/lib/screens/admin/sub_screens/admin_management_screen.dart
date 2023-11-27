@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/providers/admin_auth.dart';
 import 'package:client/providers/admins.dart';
@@ -20,7 +19,9 @@ class AdminManagementScreen extends ConsumerWidget {
           itemBuilder: (ctx, index) {
             final item = data[index];
             return ListTile(
-              leading: _AdminAvatar(item),
+              leading: CircleAvatar(
+                backgroundImage: item.imageProviderWidget,
+              ),
               title: Text(
                 item.name,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -28,14 +29,14 @@ class AdminManagementScreen extends ConsumerWidget {
                     ),
               ),
               subtitle: Text(
-                item.isSuperAdmin ? 'Super Admin' : 'Admin',
+                item.is_super_admin ? 'Super Admin' : 'Admin',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: item.isSuperAdmin
+                      color: item.is_super_admin
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.secondary,
                     ),
               ),
-              trailing: auth!.isSuperAdmin
+              trailing: auth!.is_super_admin
                   ? _AdminActions(item)
                   : const SizedBox.shrink(),
             );
@@ -47,22 +48,6 @@ class AdminManagementScreen extends ConsumerWidget {
     }, loading: () {
       return const Center(child: CircularProgressIndicator());
     });
-  }
-}
-
-class _AdminAvatar extends StatelessWidget {
-  const _AdminAvatar(this.admin);
-  final Admin admin;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget image = const SizedBox.shrink();
-    if (admin.imageUrl?.isNotEmpty ?? false) {
-      image = CircleAvatar(
-        backgroundImage: CachedNetworkImageProvider(admin.imageUrl!),
-      );
-    }
-    return image;
   }
 }
 
@@ -147,7 +132,7 @@ class _AdminActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget actions = const SizedBox.shrink();
-    if (!admin.isSuperAdmin) {
+    if (!admin.is_super_admin) {
       actions = Row(
         mainAxisSize: MainAxisSize.min,
         children: [

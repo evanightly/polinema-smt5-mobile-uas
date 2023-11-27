@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/models/user_detail_transaction.dart';
 import 'package:client/providers/user_cart.dart';
 import 'package:flutter/material.dart';
@@ -75,8 +74,7 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
             height: 60,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image:
-                    CachedNetworkImageProvider(detailTransaction!.car.imageUrl),
+                image: detailTransaction!.car.imageProviderWidget,
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(12),

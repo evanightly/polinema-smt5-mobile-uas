@@ -17,13 +17,32 @@ class DioHttp extends _$DioHttp {
 
   @override
   Dio build() {
-    return Dio(
+    Dio dio = Dio(
       BaseOptions(
         baseUrl: _serverBaseUrl,
         receiveTimeout: receiveTimeout,
         connectTimeout: connectTimeout,
       ),
     );
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // Do something before request is sent
+          return handler.next(options); //continue
+        },
+        onResponse: (response, handler) {
+          // Do something with response data
+          // print(response);
+          return handler.next(response); // continue
+        },
+        onError: (DioException e, handler) {
+          print(e.message);
+          // Do something with response error
+          return handler.next(e); //continue
+        },
+      ),
+    );
+    return dio;
   }
 
   Dio get http {
@@ -45,6 +64,25 @@ class DioHttp extends _$DioHttp {
     }
 
     dio = Dio(options);
+
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // Do something before request is sent
+          return handler.next(options); //continue
+        },
+        onResponse: (response, handler) {
+          // Do something with response data
+          print(response);
+          return handler.next(response); // continue
+        },
+        onError: (DioException e, handler) {
+          print(e.message);
+          // Do something with response error
+          return handler.next(e); //continue
+        },
+      ),
+    );
 
     return dio;
   }

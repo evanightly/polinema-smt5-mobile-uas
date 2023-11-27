@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
@@ -129,9 +128,7 @@ class UserMainScreen extends ConsumerWidget {
                                 ),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: CachedNetworkImageProvider(
-                                    car.imageUrl,
-                                  ),
+                                  image: car.imageProviderWidget,
                                 ),
                               ),
                             ),

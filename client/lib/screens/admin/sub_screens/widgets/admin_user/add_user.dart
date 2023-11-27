@@ -18,6 +18,7 @@ class _AddUserState extends ConsumerState<AddUser> {
   late String _name;
   late String _email;
   late String _password;
+  late String _address;
   File? _file;
   Widget? _selectedImage;
   final _formKey = GlobalKey<FormState>();
@@ -27,15 +28,22 @@ class _AddUserState extends ConsumerState<AddUser> {
     void showAddUserDialog() {
       void add() {
         final isValid = _formKey.currentState!.validate();
-        if (!isValid && _file == null) {
-          return;
+        if (!isValid || _file?.path.isEmpty != false) {
+          return ElegantNotification.error(
+            title: const Text("Validation Error"),
+            description: const Text(
+              "All fields must be supplied (including image), only address is optional",
+            ),
+            background: Theme.of(context).colorScheme.background,
+          ).show(context);
         }
 
         final newUser = User(
           name: _name,
           email: _email,
           password: _password,
-          uploadImage: _file,
+          address: _address,
+          upload_image: _file,
         );
 
         ref.read(usersProvider.notifier).add(newUser);
@@ -70,9 +78,19 @@ class _AddUserState extends ConsumerState<AddUser> {
         return null;
       }
 
+      // This field is optional
+
+      // String? addressValidator(String? value) {
+      //   if (value!.trim().isEmpty) {
+      //     return 'Address cannot be empty';
+      //   }
+      //   return null;
+      // }
+
       void setName(String value) => setState(() => _name = value);
       void setEmail(String value) => setState(() => _email = value);
       void setPassword(String value) => setState(() => _password = value);
+      void setAddress(String value) => setState(() => _address = value);
 
       void selectImage(StateSetter setState) async {
         final isConfirmed = await showDialog<bool>(
@@ -194,6 +212,13 @@ class _AddUserState extends ConsumerState<AddUser> {
                           decoration: const InputDecoration(hintText: 'Email'),
                           validator: emailValidator,
                           onChanged: setEmail,
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          autocorrect: false,
+                          decoration:
+                              const InputDecoration(hintText: 'Address'),
+                          onChanged: setAddress,
                         ),
                         const SizedBox(height: 20),
                         TextFormField(

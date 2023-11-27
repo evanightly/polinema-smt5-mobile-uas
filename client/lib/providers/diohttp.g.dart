@@ -6,7 +6,7 @@ part of 'diohttp.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dioHttpHash() => r'cd0d968c6f68f7e0596a1e785cc019fd8a7c0415';
+String _$dioHttpHash() => r'574cd57375a2507154fe2a1036f5125fd17e90f0';
 
 /// See also [DioHttp].
 @ProviderFor(DioHttp)

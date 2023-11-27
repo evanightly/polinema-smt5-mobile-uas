@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 
@@ -6,10 +8,9 @@ class User {
   final String name;
   final String email;
   final String password;
-  final String? phone;
   final String? address;
-  final String? imageUrl;
-  final File? uploadImage;
+  final String? image_url;
+  final File? upload_image;
   final String? token;
 
   User({
@@ -17,18 +18,17 @@ class User {
     required this.name,
     required this.email,
     required this.password,
-    this.phone,
-    this.imageUrl,
-    this.uploadImage,
+    this.image_url,
+    this.upload_image,
     this.token,
     this.address,
   });
 
   ImageProvider get imageProviderWidget {
-    if (imageUrl == 'null') {
+    if (image_url == 'null') {
       return const AssetImage('assets/images/person2.jpg');
     }
-    return NetworkImage(imageUrl!);
+    return NetworkImage(image_url!);
   }
 
   factory User.fromAuthJson(Map<String, dynamic> json) {
@@ -36,8 +36,7 @@ class User {
     final name = json['user']['name'].toString();
     final email = json['user']['email'].toString();
     final password = json['user']['password'].toString();
-    final phone = json['user']['phone'].toString();
-    final imageUrl = json['user']['imageUrl'].toString();
+    final image_url = json['user']['image_url'].toString();
     final token = json['token'].toString();
     final address = json['user']['address'].toString();
 
@@ -46,8 +45,7 @@ class User {
       name: name,
       email: email,
       password: password,
-      phone: phone,
-      imageUrl: imageUrl,
+      image_url: image_url,
       token: token,
       address: address,
     );
@@ -60,8 +58,7 @@ class User {
     final name = json['name'].toString();
     final email = json['email'].toString();
     final password = json['password'].toString();
-    final phone = json['phone'].toString();
-    final imageUrl = json['imageUrl'].toString();
+    final image_url = json['image_url'].toString();
     final address = json['address'].toString();
 
     final admin = User(
@@ -69,8 +66,7 @@ class User {
       name: name,
       email: email,
       password: password,
-      phone: phone,
-      imageUrl: imageUrl,
+      image_url: image_url,
       address: address,
     );
 

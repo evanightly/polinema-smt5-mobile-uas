@@ -34,32 +34,29 @@ class Users extends _$Users {
   }
 
   void add(User user) async {
-    try {
-      EasyLoading.show(
-        indicator: const CircularProgressIndicator(),
-        status: 'Loading...',
-      );
-      final dio = ref.read(dioHttpProvider.notifier);
-      final formData = FormData.fromMap({
-        'name': user.name,
-        'email': user.email,
-        'password': user.password,
-        'image': await MultipartFile.fromFile(user.uploadImage!.path),
-      });
+    EasyLoading.show(
+      indicator: const CircularProgressIndicator(),
+      status: 'Loading...',
+    );
+    final dio = ref.read(dioHttpProvider.notifier);
+    final formData = FormData.fromMap({
+      'name': user.name,
+      'email': user.email,
+      'password': user.password,
+      'address': user.address,
+      'image': await MultipartFile.fromFile(user.upload_image!.path),
+    });
 
-      final response = await dio.http.post('/users', data: formData);
-      if (response.statusCode == 200) {
-        await Future.delayed(const Duration(seconds: 3));
-        refresh();
-      } else {
-        // state = AsyncValue.error('Failed to add users', StackTrace.current);
-        // Force reload data
-        refresh();
-      }
-      EasyLoading.dismiss();
-    } catch (e) {
-      state = AsyncValue.error('Failed to add users', StackTrace.current);
+    final response = await dio.http.post('/users', data: formData);
+    if (response.statusCode == 200) {
+      await Future.delayed(const Duration(seconds: 3));
+      refresh();
+    } else {
+      // state = AsyncValue.error('Failed to add users', StackTrace.current);
+      // Force reload data
+      refresh();
     }
+    EasyLoading.dismiss();
   }
 
   void put(User user) async {
@@ -71,18 +68,20 @@ class Users extends _$Users {
 
       FormData formData;
 
-      if (user.uploadImage != null) {
+      if (user.upload_image != null) {
         formData = FormData.fromMap({
           'name': user.name,
           'email': user.email,
           'password': user.password,
-          'image': await MultipartFile.fromFile(user.uploadImage!.path),
+          'address': user.address,
+          'image': await MultipartFile.fromFile(user.upload_image!.path),
         });
       } else {
         formData = FormData.fromMap({
           'name': user.name,
           'email': user.email,
           'password': user.password,
+          'address': user.address,
         });
       }
 

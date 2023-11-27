@@ -12,7 +12,7 @@
         <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full">
-                    <img alt="User Profile" src="{{ auth()->user()->imageUrl }}" />
+                    <img alt="User Profile" src="{{ auth()->user()->image_url }}" />
                 </div>
             </label>
             <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">

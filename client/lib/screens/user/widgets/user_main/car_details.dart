@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/user_transactions.dart';
@@ -82,9 +81,7 @@ class CarDetails extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          CachedNetworkImage(
-            imageUrl: car.imageUrl,
-          ),
+          Image(image: car.imageProviderWidget),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.only(top: 16, left: 16, right: 16),

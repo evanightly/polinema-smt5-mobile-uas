@@ -20,15 +20,15 @@ class AdminResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
-            'isSuperAdmin' => $this->isSuperAdmin,
+            'is_super_admin' => $this->isSuperAdmin,
             'image' => $this->image,
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
 
             // custom attributes used in view
-            'imageUrl' => $this->imageUrl,
-            'joinedAt' => $this->created_at->format('d M Y'),
-            'isSuperAdminLabel' => $this->isSuperAdmin ? 'Yes' : 'No',
+            'image_url' => $this->image_url,
+            'joined_at' => $this->created_at->format('d M Y'),
+            'is_super_admin_label' => $this->isSuperAdmin ? 'Yes' : 'No',
         ];
     }
 }

@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         return view('users.index', [
-            'users' => UserResource::collection(User::all())
+            'users' => UserResource::collection(User::latest()->get())
         ]);
     }
 
