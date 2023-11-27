@@ -84,11 +84,11 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 - Admin
   - login ✔
   - Admin Management
-    - Create
+    - Create ✔
     - Read ✔
-    - Update
-    - Delete
-  - User Management ✔
+    - Update ✔
+    - Delete ✔
+  - User Management
     - Create ✔
     - Read ✔
     - Update ✔
@@ -132,6 +132,8 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 
 - Settings ✔
   - Dark Mode ✔
+- Website Profile
+  - Update Profile
 - Profile
   - Update Profile
 
