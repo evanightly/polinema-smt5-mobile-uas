@@ -8,6 +8,7 @@ import 'package:client/providers/car_brands.dart';
 import 'package:client/providers/car_fuels.dart';
 import 'package:client/providers/cars.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,6 +31,7 @@ class _AddCarState extends ConsumerState<AddCar> {
   late num _kmMax;
   late CarFuel _fuel;
   late num _price;
+  late int _stock;
   late File? _file;
   late String? _description;
   late CarCondition _condition;
@@ -152,12 +154,18 @@ class _AddCarState extends ConsumerState<AddCar> {
         condition: _condition,
         transmission: _transmission,
         status: _status,
-        stock: 1,
+        stock: _stock,
       );
 
       ref.read(carsProvider.notifier).add(newCar);
 
       Navigator.pop(context);
+
+      ElegantNotification.success(
+        title: const Text("Success"),
+        description: Text("${newCar.name} added!"),
+        background: Theme.of(context).colorScheme.background,
+      ).show(context);
     }
 
     void showAddDialog() {
@@ -449,6 +457,22 @@ class _AddCarState extends ConsumerState<AddCar> {
                           },
                           onChanged: (newValue) {
                             setState(() => _price = num.parse(newValue));
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            hintText: 'Stock',
+                            label: Text('Stock'),
+                          ),
+                          validator: (value) {
+                            return value!.isEmpty
+                                ? 'Please enter a stock'
+                                : null;
+                          },
+                          onChanged: (newValue) {
+                            setState(() => _stock = int.parse(newValue));
                           },
                         ),
                         const SizedBox(height: 16),

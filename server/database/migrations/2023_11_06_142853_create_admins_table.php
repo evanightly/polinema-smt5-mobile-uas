@@ -19,7 +19,7 @@ return new class extends Migration
             $table->rememberToken();
 
             // Restrict to one super admin only, (defined in DatabaseSeeder.php)
-            $table->boolean("isSuperAdmin")->default(false);
+            $table->boolean("is_super_admin")->default(false);
             $table->string('image')->nullable();
             $table->timestamps();
         });

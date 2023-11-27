@@ -15,27 +15,16 @@ Future<void> deleteCar(BuildContext context, WidgetRef ref, Car car) async {
         'You are about to delete car ${car.name}\n\nWarning: this operation will delete all data related to this car',
     btnCancelOnPress: () {},
     btnOkOnPress: () async {
-      try {
-        final isDeleted = await ref.read(carsProvider.notifier).delete(car.id!);
-        ref.read(carsProvider.notifier).refresh();
+      ref.read(carsProvider.notifier)
+        ..delete(car.id!)
+        ..refresh();
 
-        if (isDeleted) {
-          if (context.mounted) {
-            ElegantNotification.success(
-              title: const Text("Success"),
-              description: Text("${car.name} deleted!"),
-              background: Theme.of(context).colorScheme.background,
-            ).show(context);
-          }
-        }
-      } catch (e) {
-        if (context.mounted) {
-          ElegantNotification.error(
-            title: const Text("Failed"),
-            description: Text("Failed to delete ${car.name}"),
-            background: Theme.of(context).colorScheme.background,
-          ).show(context);
-        }
+      if (context.mounted) {
+        ElegantNotification.success(
+          title: const Text("Success"),
+          description: Text("${car.name} deleted!"),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
       }
     },
   ).show();

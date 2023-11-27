@@ -40,7 +40,7 @@ class User {
     final token = json['token'].toString();
     final address = json['user']['address'].toString();
 
-    final admin = User(
+    final user = User(
       id: id,
       name: name,
       email: email,
@@ -50,7 +50,7 @@ class User {
       address: address,
     );
 
-    return admin;
+    return user;
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -61,7 +61,7 @@ class User {
     final image_url = json['image_url'].toString();
     final address = json['address'].toString();
 
-    final admin = User(
+    final user = User(
       id: id,
       name: name,
       email: email,
@@ -70,6 +70,6 @@ class User {
       address: address,
     );
 
-    return admin;
+    return user;
   }
 }

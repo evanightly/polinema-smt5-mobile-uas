@@ -23,8 +23,8 @@
                 </div>
             </div>
             <div class="form-control flex flex-row items-center gap-3">
-                <label for="isSuperAdmin" class="label">Super Admin</label>
-                <input id="isSuperAdmin" type="checkbox" name="isSuperAdmin" {{ old('isSuperAdmin') ? 'checked' : '' }}
+                <label for="is_super_admin" class="label">Super Admin</label>
+                <input id="is_super_admin" type="checkbox" name="is_super_admin" {{ old('is_super_admin') ? 'checked' : '' }}
                     class="checkbox checkbox-primary" />
             </div>
             <div class="form-control">

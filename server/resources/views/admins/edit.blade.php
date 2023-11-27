@@ -25,9 +25,9 @@
                 </div>
             </div>
             <div class="form-control flex flex-row items-center gap-3">
-                <label for="isSuperAdmin" class="label">Super Admin</label>
-                <input id="isSuperAdmin" type="checkbox" name="isSuperAdmin" class="checkbox checkbox-primary"
-                    {{ $admin->isSuperAdmin ? 'checked' : '' }} />
+                <label for="is_super_admin" class="label">Super Admin</label>
+                <input id="is_super_admin" type="checkbox" name="is_super_admin" class="checkbox checkbox-primary"
+                    {{ $admin->is_super_admin ? 'checked' : '' }} />
             </div>
             <div class="form-control">
                 <label for="image" class="label">Employee Picture</label>

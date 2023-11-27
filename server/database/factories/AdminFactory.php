@@ -21,7 +21,7 @@ class AdminFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->email(),
             'password' => Hash::make('admin'),
-            'isSuperAdmin' => fake()->randomElement([false]),
+            'is_super_admin' => fake()->randomElement([false]),
             'image' => fake()->imageUrl(),
         ];
     }

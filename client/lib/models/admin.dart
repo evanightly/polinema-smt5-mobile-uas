@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class Admin {
@@ -9,7 +11,7 @@ class Admin {
   final String password;
   final bool is_super_admin;
   final String? image_url;
-  final String? upload_image;
+  final File? upload_image;
   final String? token;
 
   const Admin({

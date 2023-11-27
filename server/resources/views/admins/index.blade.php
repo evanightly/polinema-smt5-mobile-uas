@@ -30,7 +30,7 @@
                     </td>
                     <td>{{ $admin->email }}</td>
                     <td>
-                        @if ($admin->isSuperAdmin)
+                        @if ($admin->is_super_admin)
                             <span class="badge badge-primary">Super Admin</span>
                         @else
                             <span class="badge badge-secondary">Admin</span>

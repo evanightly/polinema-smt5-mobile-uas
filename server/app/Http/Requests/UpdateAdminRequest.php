@@ -28,12 +28,15 @@ class UpdateAdminRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('admins')->ignore($this->admin)],
             'password' => ['nullable', 'string', 'min:8'],
             'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'isSuperAdmin' => ['nullable', 'boolean'],
+            'is_super_admin' => ['nullable'], // checkbox value is either null or 'on'
         ];
     }
 
-    protected function passedValidation(): void
+    protected function prepareForValidation(): void
     {
-        $this->replace(['password' => Hash::make($this->password)]);
+        $this->merge([
+            'is_super_admin' => $this->has('is_super_admin') && $this->is_super_admin === 'on' ? true : false,
+            'password' => Hash::make($this->password)
+        ]);
     }
 }

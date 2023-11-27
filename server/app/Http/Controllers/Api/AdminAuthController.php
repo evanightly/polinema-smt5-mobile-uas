@@ -24,11 +24,6 @@ class AdminAuthController extends Controller
 
             $token = $admin->createToken('admin-token')->plainTextToken;
 
-            dump(response()->json([
-                'message' => 'Login success',
-                'admin' => new AdminResource($admin),
-                'token' => $token
-            ]));
             return response()->json([
                 'message' => 'Login success',
                 'admin' => new AdminResource($admin),

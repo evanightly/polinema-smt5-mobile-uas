@@ -15,7 +15,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return AdminResource::collection(Admin::all());
+        return AdminResource::collection(Admin::latest()->get());
     }
 
     /**

@@ -47,6 +47,7 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
+        dump($request->validated());
         if ($request->validated()) {
 
             $validated = $request->safe();

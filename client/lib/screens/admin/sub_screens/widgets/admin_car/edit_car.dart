@@ -9,6 +9,7 @@ import 'package:client/providers/car_brands.dart';
 import 'package:client/providers/car_fuels.dart';
 import 'package:client/providers/cars.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -158,6 +159,12 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
       ref.read(carsProvider.notifier).put(newCar);
 
       Navigator.pop(context);
+
+      ElegantNotification.success(
+        title: const Text("Update"),
+        description: Text("${newCar.name} has been updated!"),
+        background: Theme.of(context).colorScheme.background,
+      ).show(context);
     }
 
     return StatefulBuilder(
@@ -426,6 +433,21 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                     },
                     onChanged: (newValue) {
                       setState(() => _price = num.parse(newValue));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    initialValue: widget.car.stock.toString(),
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      hintText: 'Stock',
+                      label: Text('Stock'),
+                    ),
+                    validator: (value) {
+                      return value!.isEmpty ? 'Please enter a stock' : null;
+                    },
+                    onChanged: (newValue) {
+                      setState(() => widget.car.stock = int.parse(newValue));
                     },
                   ),
                   const SizedBox(height: 16),

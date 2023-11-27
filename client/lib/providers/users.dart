@@ -1,11 +1,19 @@
+import 'package:client/components/loading_indicator.dart';
 import 'package:client/models/user.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'users.g.dart';
+
+dynamic generateUserMetadata(User user) {
+  return {
+    'name': user.name,
+    'email': user.email,
+    'password': user.password,
+    'address': user.address,
+  };
+}
 
 @Riverpod(keepAlive: true)
 class Users extends _$Users {
@@ -19,104 +27,76 @@ class Users extends _$Users {
     final dio = ref.read(dioHttpProvider.notifier);
     final response = await dio.http.get('/users');
     final data = response.data as List<dynamic>;
-    final users = data.map(
-      (user) {
-        return User.fromJson(user);
-      },
-    ).toList();
+    final users = data.map((user) => User.fromJson(user)).toList();
 
     return users;
   }
 
-  Future<void> refresh() async {
+  refresh() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
   }
 
   void add(User user) async {
-    EasyLoading.show(
-      indicator: const CircularProgressIndicator(),
-      status: 'Loading...',
-    );
     final dio = ref.read(dioHttpProvider.notifier);
-    final formData = FormData.fromMap({
-      'name': user.name,
-      'email': user.email,
-      'password': user.password,
-      'address': user.address,
-      'image': await MultipartFile.fromFile(user.upload_image!.path),
-    });
 
-    final response = await dio.http.post('/users', data: formData);
-    if (response.statusCode == 200) {
-      await Future.delayed(const Duration(seconds: 3));
+    try {
+      LoadingIndicator.show();
+
+      final formData = FormData.fromMap({
+        ...generateUserMetadata(user),
+        'image': await MultipartFile.fromFile(user.upload_image!.path),
+      });
+
+      await dio.http.post('/users', data: formData);
+
       refresh();
-    } else {
-      // state = AsyncValue.error('Failed to add users', StackTrace.current);
-      // Force reload data
-      refresh();
+
+      LoadingIndicator.dismiss();
+    } catch (_) {
+      // LoadingIndicator.showError('Failed to add user');
     }
-    EasyLoading.dismiss();
   }
 
   void put(User user) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+
     try {
-      EasyLoading.show(
-        indicator: const CircularProgressIndicator(),
-        status: 'Loading...',
-      );
+      LoadingIndicator.show();
 
-      FormData formData;
+      FormData formData = FormData.fromMap(generateUserMetadata(user));
 
+      // If user uploaded a new image, then add it to the form data
       if (user.upload_image != null) {
         formData = FormData.fromMap({
-          'name': user.name,
-          'email': user.email,
-          'password': user.password,
-          'address': user.address,
+          ...generateUserMetadata(user),
           'image': await MultipartFile.fromFile(user.upload_image!.path),
         });
-      } else {
-        formData = FormData.fromMap({
-          'name': user.name,
-          'email': user.email,
-          'password': user.password,
-          'address': user.address,
-        });
       }
 
-      final dio = ref.read(dioHttpProvider.notifier);
+      await dio.http.post('/users/${user.id}?_method=PUT', data: formData);
 
-      final response =
-          await dio.http.post('/users/${user.id}?_method=PUT', data: formData);
-      if (response.statusCode == 200) {
-        refresh();
-      } else {
-        refresh();
-      }
-      EasyLoading.dismiss();
-    } catch (e) {
-      EasyLoading.showError('Failed to update users');
-      // state = AsyncValue.error(e.toString(), StackTrace.current);
+      refresh();
+
+      LoadingIndicator.dismiss();
+    } catch (_) {
+      // LoadingIndicator.showError('Failed to update user');
     }
   }
 
-  Future<bool> delete(String id) async {
-    EasyLoading.show(
-      indicator: const CircularProgressIndicator(),
-      status: 'Loading...',
-    );
-
+  void delete(User user) async {
     final dio = ref.read(dioHttpProvider.notifier);
-    final response = await dio.http.delete('/users/$id');
-    if (response.statusCode == 204) {
-      await Future.delayed(const Duration(seconds: 3));
+
+    try {
+      LoadingIndicator.show();
+
+      await dio.http.delete('/users/${user.id}');
+
       refresh();
-      EasyLoading.dismiss();
-      return true;
-    } else {
-      EasyLoading.showError('Failed to delete users');
-      return false;
+
+      LoadingIndicator.dismiss();
+    } catch (_) {
+      // LoadingIndicator.showError('Failed to delete user');
     }
   }
 }

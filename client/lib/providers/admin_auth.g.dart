@@ -6,7 +6,7 @@ part of 'admin_auth.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adminAuthHash() => r'035bbbd21be80b815b14513bd7e45141dd8717eb';
+String _$adminAuthHash() => r'9d6fc7eca40b83b4c11bb0fbb8207fb61fa14d55';
 
 /// See also [AdminAuth].
 @ProviderFor(AdminAuth)

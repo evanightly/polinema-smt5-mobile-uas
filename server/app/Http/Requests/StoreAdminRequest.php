@@ -27,14 +27,14 @@ class StoreAdminRequest extends FormRequest
             'email' => ['required', 'email', 'unique:admins'],
             'password' => ['required', 'string'],
             'image' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'isSuperAdmin' => ['nullable', 'boolean'],
+            'is_super_admin' => ['nullable'],  // checkbox value is either null or 'on'
         ];
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'isSuperAdmin' => $this->has('isSuperAdmin') && $this->isSuperAdmin === 'on' ? true : false,
+            'is_super_admin' => $this->has('is_super_admin') && $this->is_super_admin === 'on' ? true : false,
             'password' => Hash::make($this->password)
         ]);
     }

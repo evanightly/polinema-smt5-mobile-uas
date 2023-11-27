@@ -56,15 +56,16 @@ class UserManagementScreen extends ConsumerWidget {
           child: ListView.builder(
             itemCount: data.length,
             itemBuilder: (context, index) {
+              final user = data[index];
               return Padding(
                 padding: const EdgeInsets.all(4),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundImage:
-                        CachedNetworkImageProvider(data[index].image_url!),
+                        CachedNetworkImageProvider(user.image_url!),
                   ),
                   title: Text(
-                    data[index].name,
+                    user.name,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
@@ -72,10 +73,9 @@ class UserManagementScreen extends ConsumerWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      DeleteUser(user: data[index]),
+                      DeleteUser(user: user),
                       IconButton(
-                        onPressed: () =>
-                            openEditUserDialog(context, data[index]),
+                        onPressed: () => openEditUserDialog(context, user),
                         icon: const Icon(Icons.edit),
                         color: Colors.blue.shade400,
                       )
