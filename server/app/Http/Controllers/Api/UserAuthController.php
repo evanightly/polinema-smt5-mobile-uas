@@ -13,28 +13,23 @@ class UserAuthController extends Controller
 {
     public function login(ApiUserAuthRequest $request)
     {
-        try {
-            if ($request->validated()) {
-                $user = User::where('email', $request->email)->first();
+        if ($request->validated()) {
+            $user = User::where('email', $request->email)->first();
 
-                if (!$user || !Hash::check($request->password, $user->password)) {
-                    dump($request->all());
-                    return response()->json([
-                        'message' => 'Login failed',
-                        'error' => 'The provided credentials are incorrect.'
-                    ], 401);
-                }
-
-                $token = $user->createToken('user-token')->plainTextToken;
-
+            if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json([
-                    'message' => 'Login success',
-                    'user' => new UserResource($user),
-                    'token' => $token
-                ]);
+                    'message' => 'Login failed',
+                    'error' => 'The provided credentials are incorrect.'
+                ], 401);
             }
-        } catch (\Throwable $th) {
-            dump($th);
+
+            $token = $user->createToken('user-token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Login success',
+                'user' => new UserResource($user),
+                'token' => $token
+            ]);
         }
     }
 
