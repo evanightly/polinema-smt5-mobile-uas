@@ -21,10 +21,7 @@ class DashboardBottomMenu {
   final SalomonBottomBarItem menu;
   final Widget? page;
 
-  const DashboardBottomMenu({
-    required this.menu,
-    this.page,
-  });
+  const DashboardBottomMenu({required this.menu, this.page});
 }
 
 class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {

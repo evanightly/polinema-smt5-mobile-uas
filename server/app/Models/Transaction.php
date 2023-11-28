@@ -32,9 +32,9 @@ class Transaction extends Model
         return $this->belongsTo(Admin::class, 'verified_by');
     }
 
-    public function detailTransactions()
+    public function detailTransaction()
     {
-        return $this->hasMany(DetailTransaction::class);
+        return $this->hasMany(DetailTransaction::class, 'transaction_id', 'id');
     }
 
     // public function getPaymentProofAttribute($value)

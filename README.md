@@ -76,9 +76,14 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Waiting for confirmation
     - Complete
     - Cancelled
+4. Unused db property
+    - Cars
+      - km_min
+      - status
 
 ## Bugs
 - Navbar light mode button not sync properly
+- Cart quantity field doubled when added then closed
 
 ## Progress
 - Admin

@@ -15,6 +15,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final carts = ref.watch(userCartProvider);
+
+    if (carts == null) {
+      return const IconButton(onPressed: null, icon: Icon(Icons.shopping_cart));
+    }
+
     void openCartScreen() {
       void checkout() {
         Navigator.pop(context);
@@ -42,13 +47,13 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               child: Row(
                 children: [
                   Text(
-                    'Total: \$${carts?.formattedTotal ?? 0}',
+                    'Total: \$${carts.total}',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: carts?.detailTransactions == null ||
-                            carts!.detailTransactions!.isEmpty
+                    onPressed: carts.detailTransactions == null ||
+                            carts.detailTransactions!.isEmpty
                         ? null
                         : checkout,
                     child: const Text('Checkout'),
@@ -61,8 +66,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               child: ListView(
                 children: [
                   // loop carts detail transactions
-                  if (carts != null &&
-                      carts.detailTransactions != null &&
+                  if (carts.detailTransactions != null &&
                       carts.detailTransactions!.isNotEmpty)
                     for (final cart in carts.detailTransactions!)
                       UserCartItem(
@@ -80,9 +84,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
     return IconButton(
       onPressed: openCartScreen,
       icon: Badge(
-        label: carts == null || carts.detailTransactions == null
-            ? null
-            : Text(carts.detailTransactions!.length.toString()),
+        label: Text(carts.detailTransactions!.length.toString()),
         child: const Icon(Icons.shopping_cart),
       ),
     );

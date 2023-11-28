@@ -50,9 +50,14 @@ class User extends Authenticatable
     protected $keyType = 'string';
     public $incrementing = false;
 
-    public function transactions()
+    public function transaction()
     {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Transaction::class, 'user_id', 'id')->where('status', 'On Going');
     }
 
     public function getJoinedAtAttribute()

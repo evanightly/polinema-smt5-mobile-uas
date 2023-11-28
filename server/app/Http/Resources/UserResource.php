@@ -22,7 +22,9 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'transaction' => new TransactionResource($this->whenLoaded('transaction')),
+            'transaction' =>  TransactionResource::collection($this->whenLoaded('transaction')),
+            // user cart with transaction status 'On Going'
+            'cart' => new TransactionResource($this->whenLoaded('cart')),
 
             // custom attributes used in view
             'image_url' => $this->imageUrl,

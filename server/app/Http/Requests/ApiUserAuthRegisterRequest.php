@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
-class StoreTransactionRequest extends FormRequest
+class ApiUserAuthRegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +22,17 @@ class StoreTransactionRequest extends FormRequest
      */
     public function rules(): array
     {
-
-        // ONLY FOR USER TRANSACTION
         return [
-            'user_id' => ['required', 'exists:users,id'],
-            'car_id' => ['required', 'exists:cars,id'],
-            'qty' => ['required', 'numeric', 'min:1'],
+            'email' => 'required|email|unique:users,email',
+            'name' => 'required',
+            'password' => 'required|min:6'
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'password' => Hash::make($this->password)
+        ]);
     }
 }

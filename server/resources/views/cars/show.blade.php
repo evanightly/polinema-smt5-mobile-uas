@@ -3,7 +3,7 @@
 @section('content-dashboard')
     <div class="container flex flex-col gap-5">
         <div class="flex gap-14">
-            <img src="{{ $car->image }}" alt="{{ $car->name }}'Photo" class="h-96">
+            <img src="{{ $car->image_url }}" alt="{{ $car->name }}'Photo" class="h-96">
             <div class="container flex flex-col gap-5">
                 <h1 class="text-4xl">{{ $car->name }}</h1>
                 <div class="columns-3 space-y-5 gap-5">

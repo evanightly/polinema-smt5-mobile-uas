@@ -67,45 +67,31 @@ class UserTransaction {
   factory UserTransaction.fromJson(dynamic json) {
     try {
       final id = json['id'].toString();
-      // print("id ${id}");
       final userId = json['user_id'].toString();
-      // print("userId ${userId}");
       final paymentMethod = json['payment_method'] != null
           ? PaymentMethod.values.byName(
               json['payment_method'],
             )
           : null;
-      // print("paymentMethod ${paymentMethod}");
 
       final paymentProof = json['payment_proof']?.toString() ?? '';
-      // print("paymentProof ${paymentProof}");
       final paymentDate = json['payment_date']?.toString() ?? '';
-      // print("paymentDate ${paymentDate}");
       final total = json['total'];
-      // print("total ${total}");
-      final status = Status.values.byName(
-        json['status'],
-      );
-      // print("status ${status}");
+      final status = Status.values.byName(json['status']);
       final verifiedBy = json['verified_by'] != null
           ? Admin.fromJson(json['verified_by'])
           : null;
-      // print("verifiedBy ${verifiedBy}");
-      final verifiedAt = DateTime.tryParse(json['verified_at'].toString());
-      // print("verifiedAt ${verifiedAt}");
+      final verifiedAt = json['verified_at'] != null
+          ? DateTime.tryParse(json['verified_at'].toString())
+          : null;
       final createdAt = DateTime.parse(json['created_at'].toString());
-      // print("createdAt ${createdAt}");
-      final detailTransactions = json['detail_transactions'] as List<dynamic>;
-      // print("detailTransactions ${detailTransactions}");
+      final detailTransactions = json['detail_transaction'] as List<dynamic>;
       final deliveryAddress = json['delivery_address']?.toString() ?? '';
-      // print("deliveryAddress ${deliveryAddress}");
       final userDetailTransactions = detailTransactions.map(
         (detailTransaction) {
-          // print("detailTransaction ${detailTransaction}");
           return UserDetailTransaction.fromJson(detailTransaction);
         },
       ).toList();
-      // print("userDetailTransactions ${userDetailTransactions}");
       final userTransaction = UserTransaction(
         id: id,
         userId: userId,

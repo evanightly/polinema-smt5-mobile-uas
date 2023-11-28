@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\StoreDetailTransactionRequest;
 use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Resources\DetailTransactionResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Car;
 use App\Models\DetailTransaction;
@@ -26,92 +28,103 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
+        // ONLY FOR USER TRANSACTION
         try {
-            $defaultStockThreshold = 2;
-            $userId = $request->user_id;
-            $carId = $request['car']['id'];
+            if ($request->validated()) {
+                dump($qty = $request->qty);
+                // Check if qty is 0, then delete detail transaction, then check if its only one detail transaction, if so, then delete transaction
+                if ($qty < 1) {
+                    $detail_transaction = DetailTransaction::where('transaction_id', $request->transaction_id)
+                        ->where('car_id', $request->car_id)->first();
+                    $detail_transaction->delete();
 
-            // search user transaction with status 'OnGoing'
-            $userTransaction = Transaction::where('user_id', $userId)->where('status', 'OnGoing')->first();
-            if ($userTransaction) {
-                /**
-                 * Update detail transaction with the selected car, and check if the selected car is exist in detail transaction,
-                 * - if it exist, check the car stock if more than 1, if it is, then update the detail transaction qty and decrease the car stock
-                 * - if not exist, check the car stock if more than 1, if it is, then create new detail transaction and decrease the car stock
-                 */
+                    $transaction = Transaction::find($request->transaction_id);
 
-                $detailTransaction = DetailTransaction::where(['transaction_id' => $userTransaction->id, 'car_id' => $carId])->first();
-                $selectedCar = Car::where('id', $carId)->first();
-                if ($detailTransaction) {
-                    // dump('Car already exist in detail transaction', $detailTransaction);
-                    if ($selectedCar->stock > $defaultStockThreshold) {
-                        $selectedCar->update(['stock' => $selectedCar->stock - 1]);
-                        // update transaction with the selected car
-                        $detailTransaction->update(['qty' => $detailTransaction->qty + 1]);
-                    } else {
-                        return response()->json([
-                            'message' => 'Stock is not enough'
-                        ], 400);
+                    // Check if transaction only have one detail transaction, then delete transaction
+                    if (count($transaction->detailTransaction) == 0) {
+                        $transaction->delete();
                     }
-                } else {
-                    // dump('Car not exist in detail transaction', $detailTransaction);
-                    if ($selectedCar->stock > $defaultStockThreshold) {
-                        $selectedCar->update(['stock' => $selectedCar->stock - 1]);
-                        // create new detail transaction with the selected car
-                        $detailTransaction = DetailTransaction::create([
-                            'transaction_id' => $userTransaction->id,
-                            'car_id' => $carId,
-                            'qty' => 1,
-                            'car_price' => $selectedCar->price,
-                            'subtotal' => $selectedCar->price
+                    return response()->json(['message' => 'Transaction success'], 201);
+                }
+
+                // Check if user already have transaction
+                $transaction = Transaction::where('user_id', $request->user_id)->first();
+                $car = Car::find($request->car_id);
+                if ($transaction) {
+                    // dump('transaction exists');
+
+                    // Check if detail transaction with current car exists in user transaction
+                    $detail_transaction = DetailTransaction::where('transaction_id', $transaction->id)
+                        ->where('car_id', $request->car_id)->first();
+
+                    // dump(empty($detail_transaction));
+                    if (!empty($detail_transaction)) {
+
+                        // check if $detail_transaction is empty
+                        // if (empty($detail_transaction)) {
+                        //     // dump('detail transaction is empty');
+                        //     // Create new detail transaction and append it into transaction
+                        //     $detail_transaction = DetailTransaction::create([
+                        //         'transaction_id' => $transaction->id,
+                        //         'car_id' => $request->car_id,
+                        //         'car_price' => $car->price,
+                        //         'qty' => $qty,
+                        //         'subtotal' => $car->price * $qty
+                        //     ]);
+
+                        //     return response()->json(['message' => 'Transaction success'], 201);
+                        // }
+
+                        // dump('detail transaction exists');
+                        // Update detail transaction
+                        $calculated_subtotal = $car->price * $qty;
+                        $updated_qty = $detail_transaction->qty + $qty;
+                        $updated_subtotal = $detail_transaction->subtotal + $calculated_subtotal;
+                        $updated_total = $transaction->total + $calculated_subtotal;
+                        $detail_transaction->update(['qty' => $updated_qty, 'subtotal' => $updated_subtotal]);
+
+                        // Update transaction
+                        $transaction->update(['total' => $updated_total]);
+                        return response()->json(['message' => 'Transaction success'], 201);
+                    } else {
+                        // dump('detail transaction not exists');
+                        // Create new detail transaction and append it into transaction
+                        $detail_transaction = DetailTransaction::create([
+                            'transaction_id' => $transaction->id,
+                            'car_id' => $request->car_id,
+                            'car_price' => $car->price,
+                            'qty' => $qty,
+                            'subtotal' => $car->price * $qty
+
                         ]);
 
-                        $total = $userTransaction->total + $selectedCar->price;
-
-                        // update transaction with the selected car, append the detail transaction to
-                        $userTransaction->update(['total' => $total]);
-                    } else {
-                        return response()->json([
-                            'message' => 'Stock is not enough'
-                        ], 400);
+                        return response()->json(['message' => 'Transaction success'], 201);
                     }
-                }
-            } else {
-                $selectedCar = Car::where('id', $request->car)->first();
-                if ($selectedCar->stock > $defaultStockThreshold) {
-                    $selectedCar->update(['stock' => $selectedCar->stock - 1]);
-                    $transaction = Transaction::create($request->validated() + ['user_id' => $userId] + ['total' => $selectedCar->price]);
-                    $transactionId = $transaction->id;
+                } else {
+                    // dump('transaction not exists');
 
-                    $detailTransaction = DetailTransaction::create([
-                        'transaction_id' => $transactionId,
-                        'car_id' => $selectedCar->id,
-                        'car_price' => $selectedCar->price,
-                        'qty' => 1,
-                        'subtotal' => $selectedCar->price
+                    // Subtotal, because this is the first transaction
+                    $subtotal = $car->price * $qty;
+
+                    $transaction = Transaction::create([
+                        'user_id' => $request->user_id,
+                        'total' => $subtotal
                     ]);
 
-                    $total = $transaction->total + $selectedCar->price;
-                } else {
-                    return response()->json([
-                        'message' => 'Stock is not enough'
-                    ], 400);
+                    $detail_transaction = DetailTransaction::create([
+                        'transaction_id' => $transaction->id,
+                        'car_id' => $request->car_id,
+                        'car_price' => $car->price,
+                        'qty' => $qty,
+                        'subtotal' => $subtotal
+                    ]);
+
+                    return response()->json(['message' => 'Transaction success'], 201);
                 }
             }
-
-            return response()->json([
-                'message' => 'Added to cart'
-            ], 200);
         } catch (\Throwable $th) {
+            dump($th);
         }
-
-        // if ($userTransaction) {
-        //     $userTransaction->update(['status' => 'Canceled']);
-        // }
-        // $transaction = Transaction::create($request->validated());
-        // return $transaction;
-
-        // return Transaction::create($request->validated());
     }
 
     /**
@@ -144,9 +157,7 @@ class TransactionController extends Controller
                     'status' => 'Pending'
                 ]);
             }
-            return response()->json([
-                'message' => 'Image not found'
-            ], 400);
+            return response()->json(['message' => 'Image not found'], 400);
         } catch (\Throwable $th) {
             dump($th);
         }

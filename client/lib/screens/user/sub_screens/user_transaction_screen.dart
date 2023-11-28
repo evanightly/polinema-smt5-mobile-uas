@@ -15,6 +15,7 @@ class UserTransactionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     final userTransactions = ref.watch(userTransactionsProvider);
+
     Future<void> onRefresh() async {
       await ref.read(userTransactionsProvider.notifier).refresh();
     }

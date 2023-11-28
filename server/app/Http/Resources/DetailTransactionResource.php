@@ -18,10 +18,11 @@ class DetailTransactionResource extends JsonResource
             'id' => $this->id,
             'transaction_id' => $this->transaction_id,
             'car_id' => $this->car_id,
-            'quantity' => $this->quantity,
-            'price' => $this->price,
+            'qty' => $this->qty,
+            'car_price' => $this->car_price,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'subtotal' => $this->subtotal,
             'transaction' => new TransactionResource($this->whenLoaded('transaction')),
             'car' => new CarResource($this->whenLoaded('car'))
         ];

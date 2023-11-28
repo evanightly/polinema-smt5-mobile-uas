@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\ApiUserAuthRequest;
+use App\Http\Requests\ApiUserAuthLoginRequest;
+use App\Http\Requests\ApiUserAuthRegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class UserAuthController extends Controller
 {
-    public function login(ApiUserAuthRequest $request)
+    public function login(ApiUserAuthLoginRequest $request)
     {
         if ($request->validated()) {
             $user = User::where('email', $request->email)->first();
@@ -33,20 +33,10 @@ class UserAuthController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function register(ApiUserAuthRegisterRequest $request)
     {
         try {
-            $request->validate([
-                'email' => 'required|email|unique:users,email',
-                'name' => 'required',
-                'password' => 'required|min:6',
-            ]);
-
-            $user = User::create([
-                'email' => $request->email,
-                'name' => $request->name,
-                'password' => Hash::make($request->password)
-            ]);
+            $user = User::create($request->validated());
 
             return response()->json([
                 'message' => 'Register success',
@@ -62,8 +52,6 @@ class UserAuthController extends Controller
             ], 401);
         }
     }
-
-    // logout
 
     public function logout(Request $request)
     {

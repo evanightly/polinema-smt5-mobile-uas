@@ -14,10 +14,13 @@ class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if (strpos($this->image, 'http') === 0) {
-            $imageUrl = $this->image;
-        } else if (!$this->image) {
-            $imageUrl = asset('storage/images/payment_proof/' . $this->image);
+        $payment_proof = null;
+        if ($this->payment_proof != null) {
+            if (strpos($this->payment_proof, 'http') === 0) {
+                $payment_proof = $this->payment_proof;
+            } else if (!$this->payment_proof) {
+                $payment_proof = asset('storage/images/payment_proof/' . $this->payment_proof);
+            }
         }
 
         return [
@@ -28,13 +31,13 @@ class TransactionResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'payment_method' => $this->payment_method,
-            'payment_proof' => $imageUrl,
+            'payment_proof' => $payment_proof,
             'payment_date' => $this->payment_date,
             'delivery_address' => $this->delivery_address,
             'verified_at' => $this->verified_at,
-            'detail_transactions' => DetailTransactionResource::collection($this->detailTransactions),
-            'user' => new UserResource($this->user),
-            'verifiedBy' =>  new AdminResource($this->verifiedBy)
+            'detail_transaction' => DetailTransactionResource::collection($this->whenLoaded('detailTransaction')),
+            'user' => new UserResource($this->whenLoaded('user')),
+            'verifiedBy' =>  new AdminResource($this->whenLoaded('verifiedBy'))
         ];
     }
 }

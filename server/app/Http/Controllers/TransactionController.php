@@ -146,7 +146,6 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
         // ONLY FOR USER TRANSACTION
-        return 'op';
         try {
             dump($request->payment_method);
             // get all request body data

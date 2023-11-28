@@ -1,7 +1,8 @@
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
-import 'package:client/providers/user_transactions.dart';
+import 'package:client/providers/user_cart.dart';
 import 'package:client/screens/user/widgets/cart/cart_screen.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,9 +17,13 @@ class CarDetails extends ConsumerWidget {
     }
 
     void addToCart() async {
-      await ref.read(userTransactionsProvider.notifier).add(context, car);
+      await ref.read(userCartProvider.notifier).add(context, car);
       if (context.mounted) {
-        Navigator.pop(context);
+        ElegantNotification.success(
+          title: const Text("Success"),
+          description: Text('${car.name} added to cart'),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
         Navigator.pop(context);
       }
     }

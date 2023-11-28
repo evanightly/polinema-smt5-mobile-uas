@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('payment_method', ['Cash', 'CreditCard', 'DebitCard'])->nullable();
             $table->string('payment_proof')->nullable();
             $table->date('payment_date')->nullable();
-            $table->bigInteger('total')->default(0);
+            $table->unsignedBigInteger('total')->default(0);
             $table->enum('status', ['OnGoing', 'Pending', 'Rejected', 'Verified', 'Finished'])->default('OnGoing');
             $table->foreignUuid('verified_by')->nullable()->constrained('admins')->onDelete('cascade');
             $table->dateTime('verified_at')->nullable();

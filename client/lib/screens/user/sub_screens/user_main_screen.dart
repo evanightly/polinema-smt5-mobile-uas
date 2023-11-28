@@ -1,7 +1,6 @@
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
-import 'package:client/providers/user_cart.dart';
 import 'package:client/providers/user_transactions.dart';
 import 'package:client/screens/user/widgets/user_main/car_details.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +13,10 @@ class UserMainScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     final cars = ref.watch(carsProvider);
+
     Future<void> onRefresh() async {
       await ref.read(carsProvider.notifier).refresh();
       await ref.read(userTransactionsProvider.notifier).refresh();
-      ref.read(userCartProvider.notifier).refresh();
     }
 
     void openCarDetailsScreen(Car car) {

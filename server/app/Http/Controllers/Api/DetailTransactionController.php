@@ -48,6 +48,7 @@ class DetailTransactionController extends Controller
      */
     public function destroy(DetailTransaction $detailTransaction)
     {
+        dump($detailTransaction);
         $detailTransaction->delete();
         return response()->noContent();
     }
