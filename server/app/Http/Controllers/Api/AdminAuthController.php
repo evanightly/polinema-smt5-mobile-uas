@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\ApiAuthAdminRequest;
+use App\Http\Requests\ApiAdminAuthRequest;
 use App\Http\Resources\AdminResource;
 use App\Models\Admin;
 use Illuminate\Http\Request;
@@ -11,15 +11,16 @@ use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
 {
-    public function login(ApiAuthAdminRequest $request)
+    public function login(ApiAdminAuthRequest $request)
     {
         if ($request->validated()) {
             $admin = Admin::where('email', $request->email)->first();
 
             if (!$admin || !Hash::check($request->password, $admin->password)) {
-                throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.']
-                ]);
+                return response()->json([
+                    'message' => 'Login failed',
+                    'error' => 'The provided credentials are incorrect.'
+                ], 401);
             }
 
             $token = $admin->createToken('admin-token')->plainTextToken;

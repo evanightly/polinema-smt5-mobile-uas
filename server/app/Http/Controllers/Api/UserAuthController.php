@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ApiUserAuthRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -9,37 +11,30 @@ use Illuminate\Validation\ValidationException;
 
 class UserAuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(ApiUserAuthRequest $request)
     {
         try {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+            if ($request->validated()) {
+                $user = User::where('email', $request->email)->first();
 
-            $user = User::where('email', $request->email)->first();
-            // dump($request);
+                if (!$user || !Hash::check($request->password, $user->password)) {
+                    dump($request->all());
+                    return response()->json([
+                        'message' => 'Login failed',
+                        'error' => 'The provided credentials are incorrect.'
+                    ], 401);
+                }
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                // dump($request);
-                return ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
+                $token = $user->createToken('user-token')->plainTextToken;
+
+                return response()->json([
+                    'message' => 'Login success',
+                    'user' => new UserResource($user),
+                    'token' => $token
                 ]);
             }
-
-            return response()->json([
-                'message' => 'Login success',
-                'data' => [
-                    'user' => $user,
-                    'token' => $user->createToken($user->id)->plainTextToken
-                ],
-            ]);
         } catch (\Throwable $th) {
-            // dump($th);
-            return response()->json([
-                'message' => 'Login failed',
-                'error' => $th->getMessage()
-            ], 401);
+            dump($th);
         }
     }
 

@@ -23,7 +23,7 @@ class UserAuth extends _$UserAuth {
 
       final data = response.data as Map<String, dynamic>;
 
-      final user = User.fromAuthJson(data['data']);
+      final user = User.fromAuthJson(data);
 
       state = user;
 
