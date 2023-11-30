@@ -4,6 +4,7 @@ import 'package:client/screens/settings_screen.dart';
 import 'package:client/screens/user/sub_screens/user_main_screen.dart';
 import 'package:client/screens/user/sub_screens/user_transaction_screen.dart';
 import 'package:client/screens/user/widgets/cart/cart_screen.dart';
+import 'package:client/screens/user/widgets/user_main/car_weighted_search.dart';
 import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,6 +73,7 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
         automaticallyImplyLeading: false,
         actions: [
           // show cart and user profile
+          const CarWeightedSearch(),
           if (user != null) const CartScreen(),
           const UserDashboardAppBarProfile()
         ],

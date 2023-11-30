@@ -111,4 +111,27 @@ class Cars extends _$Cars {
       // LoadingIndicator.showError('Failed to delete car');
     }
   }
+
+  void search(double priceWeight, double yearWeight, double mileageWeight) {
+    final dio = ref.read(dioHttpProvider.notifier);
+
+    try {
+      LoadingIndicator.show();
+
+      dio.http.get('/cars/search', queryParameters: {
+        'price_weight': priceWeight,
+        'year_weight': yearWeight,
+        'km_max_weight': mileageWeight,
+      }).then((response) {
+        final data = response.data as List<dynamic>;
+        final cars = data.map((car) => Car.fromJson(car)).toList();
+
+        state = AsyncValue.data(cars);
+
+        LoadingIndicator.dismiss();
+      });
+    } catch (_) {
+      // LoadingIndicator.showError('Failed to search car');
+    }
+  }
 }

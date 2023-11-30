@@ -117,12 +117,12 @@ class UserCarts extends _$UserCarts {
   Future<void> checkout(BuildContext context, String address,
       PaymentMethod paymentMethod, File? file) async {
     try {
-      final dio = ref.read(dioHttpProvider.notifier);
-      final formData = FormData.fromMap({
-        'delivery_address': address,
-        'payment_method': paymentMethod.name,
-        'payment_proof': await MultipartFile.fromFile(file!.path),
-      });
+      // final dio = ref.read(dioHttpProvider.notifier);
+      // final formData = FormData.fromMap({
+      //   'delivery_address': address,
+      //   'payment_method': paymentMethod.name,
+      //   'payment_proof': await MultipartFile.fromFile(file!.path),
+      // });
 
       // print('Token');
       // print(dio.http.options.headers);

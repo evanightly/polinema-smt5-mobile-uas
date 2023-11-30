@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Car;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use App\Http\Requests\WeightedSearchCarRequest;
 use App\Http\Resources\CarBrandResource;
 use App\Http\Resources\CarResource;
 use Illuminate\Support\Facades\File;
@@ -71,5 +72,32 @@ class CarController extends Controller
         File::delete(public_path('storage/images/cars/' . $car->image));
         $car->delete();
         return response()->noContent();
+    }
+
+    /**
+     * Weighted search using topsis method
+     */
+    public function weightedSearch(WeightedSearchCarRequest $request)
+    {
+        if ($request->validated()) {
+            $price_weight = $request->price_weight;
+            $year_weight = $request->year_weight;
+            $km_max_weight = $request->km_max_weight;
+
+            return [
+                'price_weight' => $price_weight,
+                'year_weight' => $year_weight,
+                'km_max_weight' => $km_max_weight];
+
+            // $cars = Car::all();
+            // $cars->map(function ($car) {
+            //     $car->weight = $car->weight();
+            //     return $car;
+            // });
+            // $cars = $cars->sortByDesc('weight');
+            // return view('cars.index', [
+            //     'cars' => CarResource::collection($cars)
+            // ]);
+        }
     }
 }

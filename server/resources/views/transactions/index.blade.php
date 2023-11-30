@@ -34,8 +34,8 @@
                     <td>{{ $transaction->status }}</td>
                     <td>{{ $transaction->verifiedBy->name ?? '' }}</td>
                     <td>
-                        <button class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="btn btn-error"><i class="fa-solid fa-trash-can"></i></button>
+                        <button class="btn btn-primary" disabled><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn btn-error" disabled><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
             @endforeach
