@@ -1,6 +1,6 @@
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
-import 'package:client/providers/user_cart.dart';
+import 'package:client/providers/user_carts.dart';
 import 'package:client/screens/user/widgets/cart/cart_screen.dart';
 import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class CarDetails extends ConsumerWidget {
     }
 
     void addToCart() async {
-      await ref.read(userCartProvider.notifier).add(context, car);
+      await ref.read(userCartsProvider.notifier).add(context, car);
       if (context.mounted) {
         ElegantNotification.success(
           title: const Text("Success"),
@@ -330,7 +330,9 @@ class CarDetails extends ConsumerWidget {
                       elevation: 6,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 18),
+                          horizontal: 16,
+                          vertical: 18,
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,15 +425,16 @@ class CarDetails extends ConsumerWidget {
                             Text(
                               'Status',
                               style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground),
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                              ),
                             ),
                             const Spacer(),
                             Text(
                               car.status.name,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),

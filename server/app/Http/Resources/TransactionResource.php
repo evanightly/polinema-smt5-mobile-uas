@@ -35,9 +35,15 @@ class TransactionResource extends JsonResource
             'payment_date' => $this->payment_date,
             'delivery_address' => $this->delivery_address,
             'verified_at' => $this->verified_at,
-            'detail_transaction' => DetailTransactionResource::collection($this->whenLoaded('detailTransaction')),
+            'detail_transactions' => DetailTransactionResource::collection($this->whenLoaded('detailTransactions')),
             'user' => new UserResource($this->whenLoaded('user')),
-            'verifiedBy' =>  new AdminResource($this->whenLoaded('verifiedBy'))
+            'verifiedBy' =>  new AdminResource($this->whenLoaded('verifiedBy')),
+
+            // custom attributes used in view
+            'payment_proof_url' => $this->payment_proof_url,
+            'formatted_created_at' => $this->formatted_created_at,
+            'formatted_verified_at' => $this->formatted_verified_at,
+            'formatted_total' => $this->formatted_total,
         ];
     }
 }

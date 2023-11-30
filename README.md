@@ -80,10 +80,17 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Cars
       - km_min
       - status
+    - Transaction
+      - status = OnGoing
 
 ## Bugs
 - Navbar light mode button not sync properly
-- Cart quantity field doubled when added then closed
+- Cart 
+    - Quantity field doubled when added then closed - Fixed
+    - Null check if qty input empty, I disabled it for now
+    - Cart total not synced after changing car qty
+- Register User
+  - User already created, but not redirecting
 
 ## Progress
 - Admin

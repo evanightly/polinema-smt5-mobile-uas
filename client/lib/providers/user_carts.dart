@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:client/components/loading_indicator.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
-import 'package:client/models/user_detail_transaction.dart';
-import 'package:client/models/user_transaction.dart';
+import 'package:client/models/cart.dart';
+import 'package:client/models/cart_item.dart';
+import 'package:client/models/detail_transaction.dart';
+import 'package:client/models/transaction.dart';
 import 'package:client/providers/cars.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:client/providers/user_auth.dart';
@@ -15,30 +17,37 @@ import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'user_cart.g.dart';
+part 'user_carts.g.dart';
 
 @Riverpod(keepAlive: true)
-class UserCart extends _$UserCart {
+class UserCarts extends _$UserCarts {
   @override
-  UserTransaction? build() {
-    state = null;
-    ref.listen(userTransactionsProvider, (previous, next) {
-      next.maybeWhen(
-          data: (data) {
-            if (data.isEmpty) {
-              return null;
-            }
-            // get user transaction with status OnGoing
-            final userTransaction = data.firstWhere(
-              (transaction) => transaction.status == Status.OnGoing,
-            );
+  Future<Cart> build() async {
+    print('build');
+    final s = await get();
+    print(s);
+    return s;
+  }
 
-            state = userTransaction;
-          },
-          orElse: () => state = null);
-    });
+  // get
+  Future<Cart> get() async {
+    try {
+      final user = ref.read(userAuthProvider);
+      final dio = ref.read(dioHttpProvider.notifier);
+      final response =
+          await dio.http.get('/users/${user!.id}/carts') as dynamic;
+      final data = response.data as dynamic;
 
-    return state;
+      return Cart.fromJson(data);
+    } catch (e) {
+      print(e);
+      return num.parse(e.toString()) as Cart;
+    }
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => get());
   }
 
   // watch total price
@@ -55,7 +64,7 @@ class UserCart extends _$UserCart {
   }
 
   Future<void> deleteCartItem(
-      BuildContext context, UserDetailTransaction detailTransaction) async {
+      BuildContext context, DetailTransaction detailTransaction) async {
     try {
       // print('deleted');
       final dio = ref.read(dioHttpProvider.notifier);
@@ -82,7 +91,7 @@ class UserCart extends _$UserCart {
   }
 
   Future<void> modifyCartItemQty(BuildContext context,
-      UserDetailTransaction detailTransaction, num qty) async {
+      DetailTransaction detailTransaction, num qty) async {
     try {
       final dio = ref.read(dioHttpProvider.notifier);
       // print('Token');
@@ -120,23 +129,23 @@ class UserCart extends _$UserCart {
       // print('URL');
       // print('${dio.http.options.baseUrl}/users/${userTransaction.id}?_method=PUT');
 
-      final response = await dio.http.post(
-        '/transactions/${state!.id}?_method=PUT',
-        data: formData,
-      );
+      // final response = await dio.http.post(
+      //   '/transactions/${state!.id}?_method=PUT',
+      //   data: formData,
+      // );
 
-      if (response.statusCode == 200) {
-        ref.read(userTransactionsProvider.notifier).refresh();
-        if (context.mounted) {
-          Navigator.pop(context);
-        }
-      }
+      // if (response.statusCode == 200) {
+      //   ref.read(userTransactionsProvider.notifier).refresh();
+      //   if (context.mounted) {
+      //     Navigator.pop(context);
+      //   }
+      // }
     } on DioException catch (_) {
       log(_.toString());
     }
   }
 
-  Future<void> add(BuildContext context, Car car, [int qty = 1]) async {
+  Future<void> add(BuildContext context, Car car, [int quantity = 1]) async {
     final user = ref.read(userAuthProvider);
     final dio = ref.read(dioHttpProvider.notifier);
 
@@ -144,8 +153,8 @@ class UserCart extends _$UserCart {
       LoadingIndicator.show();
 
       final response = await dio.http.post(
-        '/transactions',
-        data: {'user_id': user!.id, 'car_id': car.id, 'qty': qty},
+        '/carts',
+        data: {'user_id': user!.id, 'car_id': car.id, 'quantity': quantity},
       );
 
       // print(response.statusCode);
@@ -154,6 +163,7 @@ class UserCart extends _$UserCart {
       if (response.statusCode == 201) {
         await ref.read(carsProvider.notifier).refresh();
         await ref.read(userTransactionsProvider.notifier).refresh();
+        await refresh();
       }
 
       // final data = response.data as dynamic;
@@ -178,18 +188,38 @@ class UserCart extends _$UserCart {
     }
   }
 
-  Future<void> delete(
-      BuildContext context, UserDetailTransaction detailTransaction) async {
+  Future<void> put(BuildContext context, CartItem cartItem) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
       LoadingIndicator.show();
-      final response = await dio.http
-          .delete('/detail-transactions/${detailTransaction.id} ');
+
+      final response = await dio.http.post(
+        '/carts/${cartItem.id}?_method=PUT',
+        data: cartItem.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        await refresh();
+      }
+
+      LoadingIndicator.dismiss();
+    } on DioException catch (_) {
+      // print(_);
+    }
+  }
+
+  Future<void> delete(BuildContext context, CartItem cartItem) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+
+    try {
+      LoadingIndicator.show();
+      final response = await dio.http.delete('/carts/${cartItem.id}');
 
       if (response.statusCode == 204) {
-        await ref.read(userTransactionsProvider.notifier).refresh();
+        await refresh();
       }
+
       LoadingIndicator.dismiss();
       return;
     } on DioException catch (_) {}

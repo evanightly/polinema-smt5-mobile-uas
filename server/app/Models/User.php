@@ -50,14 +50,14 @@ class User extends Authenticatable
     protected $keyType = 'string';
     public $incrementing = false;
 
-    public function transaction()
+    public function transactions()
     {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
     }
 
-    public function cart()
+    public function carts()
     {
-        return $this->hasOne(Transaction::class, 'user_id', 'id')->where('status', 'On Going');
+        return $this->hasMany(Cart::class, 'user_id', 'id');
     }
 
     public function getJoinedAtAttribute()
@@ -72,5 +72,15 @@ class User extends Authenticatable
             return $this->image;
         }
         return asset('storage/images/users/' . $this->image);
+    }
+
+    public function getCartTotalAttribute()
+    {
+        return $this->carts->sum('subtotal');
+    }
+
+    public function getFormattedCartTotalAttribute()
+    {
+        return number_format($this->cartTotal, 0, ',', '.');
     }
 }

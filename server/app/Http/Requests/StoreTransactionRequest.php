@@ -24,9 +24,9 @@ class StoreTransactionRequest extends FormRequest
 
         // ONLY FOR USER TRANSACTION
         return [
-            'user_id' => ['required', 'exists:users,id'],
-            'car_id' => ['required', 'exists:cars,id'],
-            'qty' => ['required', 'numeric', 'min:1'],
+            // 'user_id' => ['required', 'exists:users,id'],
+            // 'car_id' => ['required', 'exists:cars,id'],
+            // 'qty' => ['required', 'numeric', 'min:1'],
         ];
     }
 }

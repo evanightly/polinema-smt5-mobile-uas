@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CarBodyTypeController;

@@ -22,9 +22,10 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'transaction' =>  TransactionResource::collection($this->whenLoaded('transaction')),
-            // user cart with transaction status 'On Going'
-            'cart' => new TransactionResource($this->whenLoaded('cart')),
+            'transactions' => TransactionResource::collection($this->whenLoaded('transactions')),
+            'carts' => CartResource::collection($this->whenLoaded('carts')),
+            'cart_total' => $this->cartTotal,
+            'formatted_cart_total' => $this->formattedCartTotal,
 
             // custom attributes used in view
             'image_url' => $this->imageUrl,

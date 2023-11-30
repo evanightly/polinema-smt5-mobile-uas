@@ -41,14 +41,13 @@ class UserController extends Controller
         return new UserResource($user->load([
             'transaction' => [
                 'detailTransaction' => [
-                    'car' => [
-                        'brand',
-                        'bodyType',
-                        'fuel',
-                    ]
-                ]
+                    'car' => ['brand', 'bodyType', 'fuel']
+                ],
+            ],
 
-            ], 'cart'
+            'cart' => [
+                'car' => ['brand', 'bodyType', 'fuel']
+            ]
         ]));
     }
 
@@ -81,5 +80,21 @@ class UserController extends Controller
         File::delete(public_path('storage/images/users/' . $user->image));
         $user->delete();
         return response()->noContent();
+    }
+
+    /**
+     * Display transactions of the specified user.
+     */
+    public function transactions(User $user)
+    {
+        return new UserResource($user->load(['transactions' => ['detailTransactions' => ['car' => ['brand', 'bodyType', 'fuel']]]]));
+    }
+
+    /**
+     * Display carts of the specified user.
+     */
+    public function carts(User $user)
+    {
+        return new UserResource($user->load(['carts' => ['car' => ['brand', 'bodyType', 'fuel']]]));
     }
 }

@@ -21,6 +21,11 @@ class Transaction extends Model
         'delivery_address',
     ];
 
+    protected $casts = [
+        'payment_date' => 'datetime',
+        'verified_at' => 'datetime',
+    ];
+
     // User has many transaction of car
     public function user()
     {
@@ -32,9 +37,35 @@ class Transaction extends Model
         return $this->belongsTo(Admin::class, 'verified_by');
     }
 
-    public function detailTransaction()
+    public function detailTransactions()
     {
         return $this->hasMany(DetailTransaction::class, 'transaction_id', 'id');
+    }
+
+    public function getPaymentProofUrlAttribute()
+    {
+        // check if image starts with http
+        if (strpos($this->payment_proof, 'http') === 0) {
+            return $this->payment_proof;
+        }
+        return asset('storage/images/payment_proof/' . $this->payment_proof);
+    }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->format('d F Y');
+    }
+
+    public function getFormattedVerifiedAtAttribute()
+    {
+        // return formatted verified at date, but if null return empty string
+        return $this->verified_at ? $this->verified_at->format('d F Y') : '';
+        // return $this->verified_at->format('d F Y');
+    }
+
+    public function getFormattedTotalAttribute()
+    {
+        return number_format($this->total, 0, ',', '.');
     }
 
     // public function getPaymentProofAttribute($value)

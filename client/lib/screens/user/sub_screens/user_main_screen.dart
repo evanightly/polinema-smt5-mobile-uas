@@ -1,6 +1,7 @@
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
+import 'package:client/providers/user_carts.dart';
 import 'package:client/providers/user_transactions.dart';
 import 'package:client/screens/user/widgets/user_main/car_details.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class UserMainScreen extends ConsumerWidget {
     Future<void> onRefresh() async {
       await ref.read(carsProvider.notifier).refresh();
       await ref.read(userTransactionsProvider.notifier).refresh();
+      await ref.read(userCartsProvider.notifier).refresh();
     }
 
     void openCarDetailsScreen(Car car) {

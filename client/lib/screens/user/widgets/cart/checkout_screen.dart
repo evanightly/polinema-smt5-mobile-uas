@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:client/models/user_transaction.dart';
+import 'package:client/models/transaction.dart';
 import 'package:client/providers/user_auth.dart';
-import 'package:client/providers/user_cart.dart';
+import 'package:client/providers/user_carts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +33,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       }
       print('validated');
 
-      await ref.read(userCartProvider.notifier).checkout(
+      await ref.read(userCartsProvider.notifier).checkout(
             context,
             _address,
             _paymentMethod,

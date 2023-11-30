@@ -44,7 +44,8 @@ class TransactionController extends Controller
                     if (count($transaction->detailTransaction) == 0) {
                         $transaction->delete();
                     }
-                    return response()->json(['message' => 'Transaction success'], 201);
+
+                    return response()->json(['message' => 'Transaction success'], 200);
                 }
 
                 // Check if user already have transaction
@@ -72,7 +73,7 @@ class TransactionController extends Controller
                         //         'subtotal' => $car->price * $qty
                         //     ]);
 
-                        //     return response()->json(['message' => 'Transaction success'], 201);
+                        //     return response()->json(['message' => 'Transaction success'], 200);
                         // }
 
                         // dump('detail transaction exists');
@@ -85,7 +86,7 @@ class TransactionController extends Controller
 
                         // Update transaction
                         $transaction->update(['total' => $updated_total]);
-                        return response()->json(['message' => 'Transaction success'], 201);
+                        return response()->json(['message' => 'Transaction success'], 200);
                     } else {
                         // dump('detail transaction not exists');
                         // Create new detail transaction and append it into transaction
@@ -98,7 +99,7 @@ class TransactionController extends Controller
 
                         ]);
 
-                        return response()->json(['message' => 'Transaction success'], 201);
+                        return response()->json(['message' => 'Transaction success'], 200);
                     }
                 } else {
                     // dump('transaction not exists');
@@ -119,7 +120,7 @@ class TransactionController extends Controller
                         'subtotal' => $subtotal
                     ]);
 
-                    return response()->json(['message' => 'Transaction success'], 201);
+                    return response()->json(['message' => 'Transaction success'], 200);
                 }
             }
         } catch (\Throwable $th) {
