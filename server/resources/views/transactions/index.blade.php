@@ -28,11 +28,11 @@
                         {{ $transaction->total }}
                     </td>
                     <td>
-                        <img src="{{ $transaction->payment_proof }}" alt="" class="w-32">
+                        <img src="{{ $transaction->payment_proof_url }}" alt="" class="w-32">
                     </td>
                     <td>{{ $transaction->payment_date }}</td>
                     <td>{{ $transaction->status }}</td>
-                    <td>{{ $transaction->verifiedBy->name }}</td>
+                    <td>{{ $transaction->verifiedBy->name ?? '' }}</td>
                     <td>
                         <button class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button class="btn btn-error"><i class="fa-solid fa-trash-can"></i></button>

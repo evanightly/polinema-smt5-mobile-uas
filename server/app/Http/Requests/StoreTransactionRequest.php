@@ -22,11 +22,15 @@ class StoreTransactionRequest extends FormRequest
     public function rules(): array
     {
 
-        // ONLY FOR USER TRANSACTION
         return [
-            // 'user_id' => ['required', 'exists:users,id'],
-            // 'car_id' => ['required', 'exists:cars,id'],
-            // 'qty' => ['required', 'numeric', 'min:1'],
+            'user_id' => 'required|exists:users,id',
+            'payment_method' => 'required|in:Cash,CreditCard,DebitCard',
+            'payment_proof' => 'image|max:2048',
+            /**
+             * Total is not required because it will be calculated from the cart
+             * 'total' => 'required|numeric|min:0',
+             */
+            'delivery_address' => 'required|string|max:255',
         ];
     }
 }

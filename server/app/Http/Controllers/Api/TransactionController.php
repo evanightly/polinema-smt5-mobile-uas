@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateTransactionRequest;
 use App\Http\Resources\DetailTransactionResource;
 use App\Http\Resources\TransactionResource;
 use App\Models\Car;
+use App\Models\Cart;
 use App\Models\DetailTransaction;
 
 
@@ -28,103 +29,36 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        // ONLY FOR USER TRANSACTION
-        try {
-            if ($request->validated()) {
-                dump($qty = $request->qty);
-                // Check if qty is 0, then delete detail transaction, then check if its only one detail transaction, if so, then delete transaction
-                if ($qty < 1) {
-                    $detail_transaction = DetailTransaction::where('transaction_id', $request->transaction_id)
-                        ->where('car_id', $request->car_id)->first();
-                    $detail_transaction->delete();
+        if ($request->validated()) {
+            $path = $request->file('payment_proof')->store('images/payment_proofs', 'public');
+            $file_name = explode('/', $path)[2];
+            $validated = $request->safe()->merge(['payment_proof' => $file_name]);
 
-                    $transaction = Transaction::find($request->transaction_id);
+            // create transaction for detail transaction reference
+            $transaction = Transaction::create($validated->all());
 
-                    // Check if transaction only have one detail transaction, then delete transaction
-                    if (count($transaction->detailTransaction) == 0) {
-                        $transaction->delete();
-                    }
-
-                    return response()->json(['message' => 'Transaction success'], 200);
-                }
-
-                // Check if user already have transaction
-                $transaction = Transaction::where('user_id', $request->user_id)->first();
-                $car = Car::find($request->car_id);
-                if ($transaction) {
-                    // dump('transaction exists');
-
-                    // Check if detail transaction with current car exists in user transaction
-                    $detail_transaction = DetailTransaction::where('transaction_id', $transaction->id)
-                        ->where('car_id', $request->car_id)->first();
-
-                    // dump(empty($detail_transaction));
-                    if (!empty($detail_transaction)) {
-
-                        // check if $detail_transaction is empty
-                        // if (empty($detail_transaction)) {
-                        //     // dump('detail transaction is empty');
-                        //     // Create new detail transaction and append it into transaction
-                        //     $detail_transaction = DetailTransaction::create([
-                        //         'transaction_id' => $transaction->id,
-                        //         'car_id' => $request->car_id,
-                        //         'car_price' => $car->price,
-                        //         'qty' => $qty,
-                        //         'subtotal' => $car->price * $qty
-                        //     ]);
-
-                        //     return response()->json(['message' => 'Transaction success'], 200);
-                        // }
-
-                        // dump('detail transaction exists');
-                        // Update detail transaction
-                        $calculated_subtotal = $car->price * $qty;
-                        $updated_qty = $detail_transaction->qty + $qty;
-                        $updated_subtotal = $detail_transaction->subtotal + $calculated_subtotal;
-                        $updated_total = $transaction->total + $calculated_subtotal;
-                        $detail_transaction->update(['qty' => $updated_qty, 'subtotal' => $updated_subtotal]);
-
-                        // Update transaction
-                        $transaction->update(['total' => $updated_total]);
-                        return response()->json(['message' => 'Transaction success'], 200);
-                    } else {
-                        // dump('detail transaction not exists');
-                        // Create new detail transaction and append it into transaction
-                        $detail_transaction = DetailTransaction::create([
-                            'transaction_id' => $transaction->id,
-                            'car_id' => $request->car_id,
-                            'car_price' => $car->price,
-                            'qty' => $qty,
-                            'subtotal' => $car->price * $qty
-
-                        ]);
-
-                        return response()->json(['message' => 'Transaction success'], 200);
-                    }
-                } else {
-                    // dump('transaction not exists');
-
-                    // Subtotal, because this is the first transaction
-                    $subtotal = $car->price * $qty;
-
-                    $transaction = Transaction::create([
-                        'user_id' => $request->user_id,
-                        'total' => $subtotal
-                    ]);
-
-                    $detail_transaction = DetailTransaction::create([
-                        'transaction_id' => $transaction->id,
-                        'car_id' => $request->car_id,
-                        'car_price' => $car->price,
-                        'qty' => $qty,
-                        'subtotal' => $subtotal
-                    ]);
-
-                    return response()->json(['message' => 'Transaction success'], 200);
-                }
+            // loops user carts and store to detail transaction
+            $user_id = $request->user_id;
+            $carts = Cart::where('user_id', $user_id)->get();
+            foreach ($carts as $cart) {
+                $car = Car::find($cart->car_id);
+                DetailTransaction::create([
+                    'transaction_id' => $transaction->id,
+                    'car_id' => $cart->car_id,
+                    'qty' => $cart->quantity,
+                    'car_price' => $car->price,
+                    'subtotal' => $cart->quantity * $car->price
+                ]);
             }
-        } catch (\Throwable $th) {
-            dump($th);
+
+            // update transaction total
+            $total = DetailTransaction::where('transaction_id', $transaction->id)->sum('subtotal');
+            $transaction->update(['total' => $total]);
+
+            // delete all user cart after transaction
+            $user_id = $request->user_id;
+            Cart::where('user_id', $user_id)->delete();
+            return response()->json(['message' => 'Transaction success'], 201);
         }
     }
 

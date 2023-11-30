@@ -48,7 +48,7 @@ class Transaction extends Model
         if (strpos($this->payment_proof, 'http') === 0) {
             return $this->payment_proof;
         }
-        return asset('storage/images/payment_proof/' . $this->payment_proof);
+        return asset('storage/images/payment_proofs/' . $this->payment_proof);
     }
 
     public function getFormattedCreatedAtAttribute()

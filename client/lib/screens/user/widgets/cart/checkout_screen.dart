@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:client/models/transaction.dart';
 import 'package:client/providers/user_auth.dart';
 import 'package:client/providers/user_carts.dart';
+import 'package:client/providers/user_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,19 +27,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final formKey = GlobalKey<FormState>();
 
     void checkout() async {
-      print(_paymentMethod.name.runtimeType);
-      print('checkout');
-      if (!formKey.currentState!.validate()) {
+      if (!formKey.currentState!.validate() || _file?.path.isEmpty != false) {
         return;
       }
       print('validated');
 
-      await ref.read(userCartsProvider.notifier).checkout(
-            context,
-            _address,
-            _paymentMethod,
-            _file,
-          );
+      await ref
+          .read(userTransactionsProvider.notifier)
+          .post(context, _loggedUser!, _address, _paymentMethod, _file!);
     }
 
     void changeAddress(String value) {

@@ -11,7 +11,7 @@ enum PaymentMethod { Cash, CreditCard, DebitCard }
 enum Status { OnGoing, Pending, Rejected, Verified, Finished }
 
 class Transaction {
-  final String? id;
+  final int? id;
   final String user_id;
   final PaymentMethod? payment_method;
   final String? payment_proof;
@@ -55,10 +55,10 @@ class Transaction {
   // get formattedTotal => formatNumber(total);
 
   ImageProvider get imageProviderWidget {
-    if (payment_proof == null) {
+    if (payment_proof_url == null) {
       return const AssetImage('assets/images/car1_MustangGT.jpg');
     }
-    return NetworkImage(payment_proof!);
+    return NetworkImage(payment_proof_url!);
   }
 
   factory Transaction.fromJson(dynamic json) {
@@ -85,7 +85,7 @@ class Transaction {
       final formatted_verified_at = json['formatted_verified_at'];
       final formatted_total = json['formatted_total'];
       final detail_transactions =
-          (json['detail_transaction'] as List<dynamic>).map(
+          (json['detail_transactions'] as List<dynamic>).map(
         (detailTransaction) {
           return DetailTransaction.fromJson(detailTransaction);
         },

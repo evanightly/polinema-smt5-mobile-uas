@@ -80,7 +80,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Payment Date:'),
-                trailing: Text(transaction.payment_date ?? ''),
+                trailing: Text(transaction.formatted_created_at ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
@@ -128,7 +128,7 @@ class UserTransactionScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    if (transaction.payment_proof != null)
+                    if (transaction.payment_proof_url != null)
                       Image(
                         image: transaction.imageProviderWidget,
                         width: double.infinity,
