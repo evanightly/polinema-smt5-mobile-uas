@@ -83,7 +83,8 @@ class UserTransactions extends _$UserTransactions {
           'delivery_address': userTransaction.delivery_address,
           'payment_method': userTransaction.payment_method,
           'payment_proof': await MultipartFile.fromFile(
-              userTransaction.upload_payment_proof!.path),
+            userTransaction.upload_payment_proof!.path,
+          ),
         });
       }
 

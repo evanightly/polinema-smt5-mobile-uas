@@ -128,22 +128,21 @@ class UserTransactionScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    if (transaction.payment_proof_url != null)
-                      Image(
-                        image: transaction.imageProviderWidget,
-                        width: double.infinity,
-                        height: 200,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Row(
-                            children: [
-                              Icon(Icons.error),
-                              SizedBox(width: 8),
-                              Text('No payment proof'),
-                            ],
-                          );
-                        },
-                      ),
+                    Image(
+                      image: transaction.imageProviderWidget,
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Row(
+                          children: [
+                            Icon(Icons.error),
+                            SizedBox(width: 8),
+                            Text('No payment proof'),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
