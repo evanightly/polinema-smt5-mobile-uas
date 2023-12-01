@@ -24,7 +24,7 @@ class CarFactory extends Factory
             'km_min' => fake()->numberBetween(0, 100000),
             'km_max' => fake()->numberBetween(100000, 200000),
             'fuel_id' => fake()->numberBetween(1, 8),
-            'price' => fake()->numberBetween(100000000, 200000000),
+            'price' => fake()->numberBetween(15000, 100000),
             'image' => fake()->imageUrl(),
             'description' => fake()->text,
             'condition' => fake()->randomElement(['Used', 'New']),

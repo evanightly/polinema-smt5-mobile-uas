@@ -35,7 +35,7 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
 
     Route::get('/users/{user}/transactions', [UserController::class, 'transactions']);
     Route::get('/users/{user}/carts', [UserController::class, 'carts']);
-    Route::post('/cars/weighted-search', [CarController::class, 'weightedSearch']);
+    Route::post('/cars/search', [CarController::class, 'search']);
 
     Route::apiResource('cars', CarController::class);
     Route::apiResource('users', UserController::class);

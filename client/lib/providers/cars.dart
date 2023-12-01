@@ -1,5 +1,6 @@
 import 'package:client/components/loading_indicator.dart';
 import 'package:client/models/car.dart';
+import 'package:client/models/car_filter.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -112,24 +113,23 @@ class Cars extends _$Cars {
     }
   }
 
-  void search(double priceWeight, double yearWeight, double mileageWeight) {
+  void filter(CarFilter carFilter) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
       LoadingIndicator.show();
+      print(carFilter.toJson());
+      final response =
+          await dio.http.post('/cars/search', data: carFilter.toJson());
 
-      dio.http.get('/cars/search', queryParameters: {
-        'price_weight': priceWeight,
-        'year_weight': yearWeight,
-        'km_max_weight': mileageWeight,
-      }).then((response) {
-        final data = response.data as List<dynamic>;
-        final cars = data.map((car) => Car.fromJson(car)).toList();
+      state = const AsyncValue.loading();
 
-        state = AsyncValue.data(cars);
+      final data = response.data as List<dynamic>;
+      final cars = data.map((car) => Car.fromJson(car)).toList();
 
-        LoadingIndicator.dismiss();
-      });
+      state = AsyncData(cars);
+
+      LoadingIndicator.dismiss();
     } catch (_) {
       // LoadingIndicator.showError('Failed to search car');
     }

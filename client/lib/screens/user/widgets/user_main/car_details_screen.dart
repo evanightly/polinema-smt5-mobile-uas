@@ -6,8 +6,8 @@ import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CarDetails extends ConsumerWidget {
-  const CarDetails({required this.car, super.key});
+class CarDetailsScreen extends ConsumerWidget {
+  const CarDetailsScreen({required this.car, super.key});
   final Car car;
 
   @override

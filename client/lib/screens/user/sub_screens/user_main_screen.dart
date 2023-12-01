@@ -3,7 +3,7 @@ import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
 import 'package:client/providers/user_carts.dart';
 import 'package:client/providers/user_transactions.dart';
-import 'package:client/screens/user/widgets/user_main/car_details.dart';
+import 'package:client/screens/user/widgets/user_main/car_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -41,7 +41,7 @@ class UserMainScreen extends ConsumerWidget {
             );
           },
           pageBuilder: (context, _, __) {
-            return CarDetails(car: car);
+            return CarDetailsScreen(car: car);
           },
         ),
       );
