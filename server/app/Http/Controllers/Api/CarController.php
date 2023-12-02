@@ -78,7 +78,6 @@ class CarController extends Controller
      */
     public function search(SearchCarRequest $request)
     {
-        dump($request->all());
         if ($request->validated()) {
             /**
              * Search car by:
@@ -110,8 +109,8 @@ class CarController extends Controller
                 Car::all()
                     ->when($min_price, fn ($query, $min_price) => $query->where('price', '>=', $min_price))
                     ->when($max_price, fn ($query, $max_price) => $query->where('price', '<=', $max_price))
-                    ->when($min_km, fn ($query, $min_km) => $query->where('km_max', '>=', $min_km))
-                    ->when($max_km, fn ($query, $max_km) => $query->where('km_max', '<=', $max_km))
+                    ->when($min_km, fn ($query, $min_km) => $query->where('mileage', '>=', $min_km))
+                    ->when($max_km, fn ($query, $max_km) => $query->where('mileage', '<=', $max_km))
                     ->when($min_year, fn ($query, $min_year) => $query->where('year', '>=', $min_year))
                     ->when($max_year, fn ($query, $max_year) => $query->where('year', '<=', $max_year))
                     ->when($brand_id, fn ($query, $brand_id) => $query->where('brand_id', $brand_id))
@@ -120,11 +119,16 @@ class CarController extends Controller
                     ->when($condition, fn ($query, $condition) => $query->where('condition', $condition))
             );
 
+            if ($cars->isEmpty()) {
+                return [];
+            }
+
             $cars = $cars->map(function ($car) {
                 return [
+                    'name' => $car->name,
                     'price' => $car->price,
                     'year' => $car->year,
-                    'km_max' => $car->km_max,
+                    'mileage' => $car->mileage,
                     'stock' => $car->stock
                 ];
             });
@@ -142,16 +146,16 @@ class CarController extends Controller
 
             function calculate_divider($cars)
             {
-                $sum_price = $sum_year = $sum_km_max = $sum_stock = 0;
+                $sum_price = $sum_year = $sum_mileage = $sum_stock = 0;
 
-                $cars->map(function ($car) use (&$sum_price, &$sum_year, &$sum_km_max, &$sum_stock) {
+                $cars->map(function ($car) use (&$sum_price, &$sum_year, &$sum_mileage, &$sum_stock) {
                     $sum_price += pow($car['price'], 2);
                     $sum_year += pow($car['year'], 2);
-                    $sum_km_max += pow($car['km_max'], 2);
+                    $sum_mileage += pow($car['mileage'], 2);
                     $sum_stock += pow($car['stock'], 2);
                 });
 
-                return [sqrt($sum_price), sqrt($sum_year), sqrt($sum_km_max), sqrt($sum_stock)];
+                return [sqrt($sum_price), sqrt($sum_year), sqrt($sum_mileage), sqrt($sum_stock)];
             };
 
             function calculate_normalized_matrix($cars, $calculatedDivider)
@@ -162,7 +166,7 @@ class CarController extends Controller
                     $segment = [
                         $car['price'] / $calculatedDivider[0],
                         $car['year'] / $calculatedDivider[1],
-                        $car['km_max'] / $calculatedDivider[2],
+                        $car['mileage'] / $calculatedDivider[2],
                         $car['stock'] / $calculatedDivider[3]
                     ];
 
@@ -254,6 +258,7 @@ class CarController extends Controller
                 foreach ($cars as $key => $value) {
                     array_push($car_ids, [
                         'id' => $key + 1, // because the id substracted by 1 in line 143 (not a clean way)
+                        'name' => $value['name'],
                         'preferable_solution' => $calculated_preferable_solution[$iterable_index++]
                     ]);
                 }
@@ -292,7 +297,7 @@ class CarController extends Controller
             $car_ids = get_car_id($calculated_preferable_solution, $cars);
             $sorted_rank = sortByPreferableSolution($car_ids);
             $car_resources = getCarResources($sorted_rank);
-
+            dump($sorted_rank);
             return $car_resources;
 
             // $cars = CarResource::collection(

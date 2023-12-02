@@ -49,15 +49,9 @@
                 </div>
 
                 <div class="form-control flex-1">
-                    <label for="km_min" class="label">Km Min (Km)</label>
-                    <input id="km_min" type="number" placeholder="Km Min" name="km_min" class="input"
-                        value="{{ old('km_min') ?? 0 }}" required />
-                </div>
-
-                <div class="form-control flex-1">
-                    <label for="km_max" class="label">Km Max (Km)</label>
-                    <input id="km_max" type="number" placeholder="Km Max" name="km_max" class="input"
-                        value="{{ old('km_max') }}" required />
+                    <label for="mileage" class="label">Mileage (Km)</label>
+                    <input id="mileage" type="number" placeholder="Km Max" name="mileage" class="input"
+                        value="{{ old('mileage') }}" required />
                 </div>
 
                 <div class="form-control flex-1">
@@ -95,7 +89,6 @@
                         <option value="Used" {{ old('condition') === 'Used' ? 'selected' : '' }}>Used</option>
                     </select>
                 </div>
-
             </div>
 
             <div class="form-control">

@@ -69,14 +69,14 @@ class AdminManagementScreen extends ConsumerWidget {
                         ),
                   ),
                   subtitle: Text(
-                    admin.is_super_admin ? 'Super Admin' : 'Admin',
+                    admin.isSuperAdmin ? 'Super Admin' : 'Admin',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: admin.is_super_admin
+                          color: admin.isSuperAdmin
                               ? Theme.of(context).colorScheme.primary
                               : Theme.of(context).colorScheme.secondary,
                         ),
                   ),
-                  trailing: auth!.is_super_admin
+                  trailing: auth!.isSuperAdmin && auth.id != admin.id
                       ? Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

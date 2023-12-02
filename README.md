@@ -76,13 +76,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Waiting for confirmation
     - Complete
     - Cancelled
-4. Unused db property
-    - Cars
-      - km_min
-      - status
-    - Transaction
-      - status = OnGoing
-
+    
 ## Bugs
 - Navbar light mode button not sync properly
 - Cart 
@@ -137,9 +131,8 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
   - Dashboard
     - Home
       - List Barang ✔
-      - Filter Barang + SPK
+      - Filter Barang + SPK ✔
     - Cart
-    - Car Showcase (based on brand)
     - Transaction List ❓ (read [Note](#note) above)
 
 - Settings ✔

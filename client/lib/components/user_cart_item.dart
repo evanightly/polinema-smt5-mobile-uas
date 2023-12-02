@@ -91,7 +91,7 @@ class _UserCartItemState extends ConsumerState<UserCartItem> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Price: \$${cartItem.formatted_subtotal}',
+                  'Price: \$${cartItem.formattedSubtotal}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

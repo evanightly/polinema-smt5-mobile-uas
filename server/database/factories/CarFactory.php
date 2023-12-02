@@ -21,15 +21,13 @@ class CarFactory extends Factory
             'brand_id' => fake()->numberBetween(1, 10),
             'body_type_id' => fake()->numberBetween(1, 5),
             'year' => fake()->year,
-            'km_min' => fake()->numberBetween(0, 100000),
-            'km_max' => fake()->numberBetween(100000, 200000),
+            'mileage' => fake()->numberBetween(10000, 200000),
             'fuel_id' => fake()->numberBetween(1, 8),
             'price' => fake()->numberBetween(15000, 100000),
             'image' => fake()->imageUrl(),
             'description' => fake()->text,
             'condition' => fake()->randomElement(['Used', 'New']),
             'transmission' => fake()->randomElement(['Automatic', 'Manual']),
-            'status' => fake()->randomElement(['Available']),
             'stock' => fake()->numberBetween(0, 10)
         ];
     }

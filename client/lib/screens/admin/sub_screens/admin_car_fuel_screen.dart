@@ -66,7 +66,7 @@ class AdminCarFuelScreen extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                   ),
-                  trailing: auth!.is_super_admin
+                  trailing: auth!.isSuperAdmin
                       ? _CarFuelActions(item)
                       : const SizedBox.shrink(),
                 );
@@ -155,7 +155,7 @@ class _CarFuelActions extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (carFuel.cars.isEmpty)
+        if (carFuel.cars != null && carFuel.cars!.isEmpty)
           IconButton(
             onPressed: delete,
             icon: const Icon(Icons.delete),

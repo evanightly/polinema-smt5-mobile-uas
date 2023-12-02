@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/cars.dart';
 import 'package:client/providers/users.dart';
@@ -38,9 +37,7 @@ class UserManagementScreen extends ConsumerWidget {
                   const SizedBox(
                     height: 24,
                     width: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
+                    child: CircularProgressIndicator(strokeWidth: 2),
                   ),
                 ]
               : [const AddUser()],
@@ -61,8 +58,7 @@ class UserManagementScreen extends ConsumerWidget {
                 padding: const EdgeInsets.all(4),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundImage:
-                        CachedNetworkImageProvider(user.image_url!),
+                    backgroundImage: user.imageProviderWidget,
                   ),
                   title: Text(
                     user.name,

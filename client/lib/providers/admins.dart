@@ -13,7 +13,7 @@ dynamic generateAdminMetadata(Admin admin) {
     'name': admin.name,
     'email': admin.email,
     'password': admin.password,
-    'is_super_admin': admin.is_super_admin ? "on" : null,
+    'is_super_admin': admin.isSuperAdmin ? "on" : null,
   };
 }
 
@@ -46,7 +46,7 @@ class Admins extends _$Admins {
 
       final formData = FormData.fromMap({
         ...generateAdminMetadata(admin),
-        'image': await MultipartFile.fromFile(admin.upload_image!.path),
+        'image': await MultipartFile.fromFile(admin.uploadImage!.path),
       });
 
       await dio.http.post('/admins', data: formData);
@@ -67,10 +67,10 @@ class Admins extends _$Admins {
       FormData formData = FormData.fromMap(generateAdminMetadata(admin));
 
       // If admin uploaded a new image, then add it to the form data
-      if (admin.upload_image != null) {
+      if (admin.uploadImage != null) {
         formData = FormData.fromMap({
           ...generateAdminMetadata(admin),
-          'image': await MultipartFile.fromFile(admin.upload_image!.path),
+          'image': await MultipartFile.fromFile(admin.uploadImage!.path),
         });
       }
 

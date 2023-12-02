@@ -3,23 +3,29 @@
 import 'package:client/models/cart_item.dart';
 
 class Cart {
-  String user_id;
-  String formatted_cart_total;
+  String userId;
+  String formattedCartTotal;
   List<CartItem> carts;
 
   Cart({
-    required this.user_id,
-    required this.formatted_cart_total,
+    required this.userId,
+    required this.formattedCartTotal,
     required this.carts,
   });
 
   factory Cart.fromJson(Map<String, dynamic> json) {
+    final List<CartItem> parsedCarts = json['carts'] != null
+        ? (json['carts'] as List<dynamic>).map(
+            (cart) {
+              return CartItem.fromJson(cart);
+            },
+          ).toList()
+        : [];
+
     return Cart(
-      user_id: json["id"],
-      formatted_cart_total: json["formatted_cart_total"],
-      carts: (json["carts"] as List<dynamic>)
-          .map((cart) => CartItem.fromJson(cart))
-          .toList(),
+      userId: json["id"],
+      formattedCartTotal: json["formatted_cart_total"],
+      carts: parsedCarts,
     );
   }
 }

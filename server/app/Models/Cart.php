@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    use HasFactory;
-
     // https://discuss.educative.io/t/relationship-between-cart-user/33795
+
+    use HasFactory;
 
     protected $fillable = [
         'user_id',

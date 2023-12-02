@@ -15,7 +15,7 @@ class Transaction extends Model
         'payment_proof',
         'payment_date',
         'total',
-        'status', // ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished']
+        'status', // ['Pending', 'Rejected', 'Verified', 'Finished']
         'verified_by', // Admin
         'verified_at',
         'delivery_address',
@@ -58,9 +58,7 @@ class Transaction extends Model
 
     public function getFormattedVerifiedAtAttribute()
     {
-        // return formatted verified at date, but if null return empty string
         return $this->verified_at ? $this->verified_at->format('d F Y') : '';
-        // return $this->verified_at->format('d F Y');
     }
 
     public function getFormattedTotalAttribute()

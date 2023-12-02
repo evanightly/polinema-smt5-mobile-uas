@@ -4,41 +4,41 @@ import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 
 class DetailTransaction {
-  final String id;
-  final String transaction_id;
-  final String car_id;
-  final num car_price;
+  final int id;
+  final int transactionId;
+  final int carId;
+  final num carPrice;
   final int qty;
   final num subtotal;
   final Car car;
 
   const DetailTransaction({
     required this.id,
-    required this.transaction_id,
-    required this.car_id,
-    required this.car_price,
+    required this.transactionId,
+    required this.carId,
+    required this.carPrice,
     required this.qty,
     required this.subtotal,
     required this.car,
   });
 
-  get formattedCarPrice => formatNumber(car_price);
+  get formattedCarPrice => formatNumber(carPrice);
   get formattedSubtotal => formatNumber(subtotal);
 
   factory DetailTransaction.fromJson(Map<String, dynamic> json) {
-    final id = json['id'].toString();
-    final transaction_id = json['transaction_id'].toString();
-    final car_id = json['car_id'].toString();
-    final car_price = json['car_price'];
+    final id = json['id'];
+    final transactionId = json['transaction_id'];
+    final carId = json['car_id'];
+    final carPrice = json['car_price'];
     final qty = json['qty'];
     final subtotal = json['subtotal'];
     final car = Car.fromJson(json['car']);
 
     return DetailTransaction(
       id: id,
-      transaction_id: transaction_id,
-      car_id: car_id,
-      car_price: car_price,
+      transactionId: transactionId,
+      carId: carId,
+      carPrice: carPrice,
       qty: qty,
       subtotal: subtotal,
       car: car,
@@ -48,9 +48,9 @@ class DetailTransaction {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'transaction_id': transaction_id,
-      'car_id': car_id,
-      'car_price': car_price,
+      'transaction_id': transactionId,
+      'car_id': carId,
+      'car_price': carPrice,
       'qty': qty,
       'subtotal': subtotal,
       'car': car.toJson(),

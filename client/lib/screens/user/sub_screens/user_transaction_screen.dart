@@ -62,7 +62,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Transaction Date:'),
-                trailing: Text(transaction.formatted_created_at ?? ''),
+                trailing: Text(transaction.formattedCreatedAt ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
@@ -74,25 +74,25 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Payment Method:'),
-                trailing: Text(transaction.payment_method?.name ?? ''),
+                trailing: Text(transaction.paymentMethod?.name ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Payment Date:'),
-                trailing: Text(transaction.formatted_created_at ?? ''),
+                trailing: Text(transaction.formattedCreatedAt ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Verified By:'),
-                trailing: Text(transaction.verified_by?.name ?? ''),
+                trailing: Text(transaction.verifiedBy?.name ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Verified At:'),
-                trailing: Text(transaction.formatted_verified_at ?? ''),
+                trailing: Text(transaction.formattedVerifiedAt ?? ''),
               ),
               Padding(
                 padding: const EdgeInsets.all(_leftPadding),
@@ -103,7 +103,7 @@ class UserTransactionScreen extends ConsumerWidget {
                         style: Theme.of(context).textTheme.bodyLarge),
                     const SizedBox(height: 8),
                     Text(
-                      transaction.delivery_address ?? '',
+                      transaction.deliveryAddress ?? '',
                       style: Theme.of(context).textTheme.bodyLarge,
                     )
                   ],
@@ -157,11 +157,9 @@ class UserTransactionScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              if (transaction.detail_transactions != null &&
-                  transaction.detail_transactions!.isNotEmpty)
-                for (var i = 0;
-                    i < transaction.detail_transactions!.length;
-                    i++)
+              if (transaction.detailTransactions != null &&
+                  transaction.detailTransactions!.isNotEmpty)
+                for (var i = 0; i < transaction.detailTransactions!.length; i++)
                   ListTile(
                     leading: ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -170,15 +168,15 @@ class UserTransactionScreen extends ConsumerWidget {
                       ),
                       child: Image(
                         image: transaction
-                            .detail_transactions![i].car.imageProviderWidget,
+                            .detailTransactions![i].car.imageProviderWidget,
                       ),
                     ),
-                    title: Text(transaction.detail_transactions![i].car.name),
+                    title: Text(transaction.detailTransactions![i].car.name),
                     subtitle: Text(
-                      '\$ ${formatNumber(transaction.detail_transactions![i].car.price)}',
+                      '\$ ${formatNumber(transaction.detailTransactions![i].car.price)}',
                     ),
                     trailing: Text(
-                      'x ${transaction.detail_transactions![i].qty}',
+                      'x ${transaction.detailTransactions![i].qty}',
                     ),
                   ),
             ],
@@ -199,7 +197,7 @@ class UserTransactionScreen extends ConsumerWidget {
                   ListTile(
                     onTap: () => showDetailTransaction(data[i]),
                     leading: Text((i + 1).toString()),
-                    title: Text(data[i].formatted_created_at ?? ''),
+                    title: Text(data[i].formattedCreatedAt ?? ''),
                     subtitle: statusText(data[i].status.name),
                     trailing: Text('Total: \$ ${formatNumber(data[i].total)}'),
                   ),

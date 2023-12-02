@@ -136,7 +136,7 @@ class _ProfileBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSuperAdmin = ref.watch(adminAuthProvider)!.is_super_admin;
+    final isSuperAdmin = ref.watch(adminAuthProvider)!.isSuperAdmin;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),

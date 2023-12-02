@@ -6,13 +6,13 @@ class CartItem {
   int id;
   Car car;
   int quantity;
-  String formatted_subtotal;
+  String formattedSubtotal;
 
   CartItem({
     required this.id,
     required this.car,
     required this.quantity,
-    required this.formatted_subtotal,
+    required this.formattedSubtotal,
   });
 
   factory CartItem.fromJson(Map<String, dynamic> json) {
@@ -20,7 +20,7 @@ class CartItem {
       id: json["id"],
       car: Car.fromJson(json["car"]),
       quantity: json["quantity"],
-      formatted_subtotal: json["formatted_subtotal"],
+      formattedSubtotal: json["formatted_subtotal"],
     );
   }
 

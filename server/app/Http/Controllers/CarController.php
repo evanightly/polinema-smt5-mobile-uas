@@ -22,7 +22,7 @@ class CarController extends Controller
     public function index()
     {
         return view('cars.index', [
-            'cars' => CarResource::collection(Car::latest()->get())
+            'cars' => CarResource::collection(Car::latest()->paginate(10))
         ]);
     }
 

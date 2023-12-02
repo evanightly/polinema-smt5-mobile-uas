@@ -37,12 +37,12 @@ class UserAuthController extends Controller
     {
         try {
             $user = User::create($request->validated());
-
+            $token = $user->createToken($user->id)->plainTextToken;
             return response()->json([
                 'message' => 'Register success',
                 'data' => [
-                    'user' => $user,
-                    'token' => $user->createToken($user->id)->plainTextToken
+                    'user' => new UserResource($user),
+                    'token' => $token
                 ],
             ]);
         } catch (\Throwable $th) {

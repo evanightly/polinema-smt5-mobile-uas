@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:io';
-
 import 'package:client/components/loading_indicator.dart';
 import 'package:client/models/transaction.dart';
 import 'package:client/models/user.dart';
@@ -73,17 +72,17 @@ class UserTransactions extends _$UserTransactions {
       LoadingIndicator.show();
 
       FormData formData = FormData.fromMap({
-        'delivery_address': userTransaction.delivery_address,
-        'payment_method': userTransaction.payment_method,
+        'delivery_address': userTransaction.deliveryAddress,
+        'payment_method': userTransaction.paymentMethod,
       });
 
       // If user uploaded a new image, then add it to the form data
-      if (userTransaction.upload_payment_proof != null) {
+      if (userTransaction.uploadPaymentProof != null) {
         formData = FormData.fromMap({
-          'delivery_address': userTransaction.delivery_address,
-          'payment_method': userTransaction.payment_method,
+          'delivery_address': userTransaction.deliveryAddress,
+          'payment_method': userTransaction.paymentMethod,
           'payment_proof': await MultipartFile.fromFile(
-            userTransaction.upload_payment_proof!.path,
+            userTransaction.uploadPaymentProof!.path,
           ),
         });
       }

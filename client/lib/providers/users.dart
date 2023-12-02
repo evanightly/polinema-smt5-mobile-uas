@@ -45,7 +45,7 @@ class Users extends _$Users {
 
       final formData = FormData.fromMap({
         ...generateUserMetadata(user),
-        'image': await MultipartFile.fromFile(user.upload_image!.path),
+        'image': await MultipartFile.fromFile(user.uploadImage!.path),
       });
 
       await dio.http.post('/users', data: formData);
@@ -67,10 +67,10 @@ class Users extends _$Users {
       FormData formData = FormData.fromMap(generateUserMetadata(user));
 
       // If user uploaded a new image, then add it to the form data
-      if (user.upload_image != null) {
+      if (user.uploadImage != null) {
         formData = FormData.fromMap({
           ...generateUserMetadata(user),
-          'image': await MultipartFile.fromFile(user.upload_image!.path),
+          'image': await MultipartFile.fromFile(user.uploadImage!.path),
         });
       }
 

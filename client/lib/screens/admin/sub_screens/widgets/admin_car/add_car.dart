@@ -27,8 +27,7 @@ class _AddCarState extends ConsumerState<AddCar> {
   late CarBrand _brand;
   late CarBodyType _bodyType;
   late String _year;
-  late num _kmMin;
-  late num _kmMax;
+  late double _mileage;
   late CarFuel _fuel;
   late num _price;
   late int _stock;
@@ -36,31 +35,6 @@ class _AddCarState extends ConsumerState<AddCar> {
   late String? _description;
   late CarCondition _condition;
   late CarTransmission _transmission;
-  late CarStatus _status;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getLostData();
-  // }
-
-  // Future<void> getLostData() async {
-  //   final ImagePicker picker = ImagePicker();
-  //   final LostDataResponse response = await picker.retrieveLostData();
-  //   if (response.isEmpty) {
-  //     return;
-  //   }
-  //   final List<XFile>? files = response.files;
-  //   if (files != null) {
-  //     setState(() {
-  //       _file = File(files[0].path);
-  //     });
-
-  //     if (mounted) {
-  //       Navigator.pop(context);
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +108,7 @@ class _AddCarState extends ConsumerState<AddCar> {
 
     void add() {
       final isValid = _formKey.currentState!.validate();
-      if (!isValid) {
+      if (!isValid || _file == null) {
         return;
       }
 
@@ -143,17 +117,15 @@ class _AddCarState extends ConsumerState<AddCar> {
       final newCar = Car(
         name: _name,
         brand: _brand,
-        body_type: _bodyType,
+        bodyType: _bodyType,
         year: _year,
-        km_min: _kmMin,
-        km_max: _kmMax,
+        mileage: _mileage,
         fuel: _fuel,
         price: _price,
-        upload_image: _file,
+        uploadImage: _file,
         description: _description,
         condition: _condition,
         transmission: _transmission,
-        status: _status,
         stock: _stock,
       );
 
@@ -350,32 +322,17 @@ class _AddCarState extends ConsumerState<AddCar> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
-                            hintText: 'Min Kilometer',
-                            label: Text('Min Kilometer'),
+                            hintText: 'Mileage',
+                            label: Text('Mileage'),
                           ),
                           validator: (value) {
                             return value!.isEmpty
-                                ? 'Please enter a min kilometer'
+                                ? 'Please enter a mileage'
                                 : null;
                           },
                           onChanged: (newValue) {
-                            setState(() => _kmMin = num.tryParse(newValue)!);
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            hintText: 'Max Kilometer',
-                            label: Text('Max Kilometer'),
-                          ),
-                          validator: (value) {
-                            return value!.isEmpty
-                                ? 'Please enter a max kilometer'
-                                : null;
-                          },
-                          onChanged: (newValue) {
-                            setState(() => _kmMax = num.tryParse(newValue)!);
+                            setState(
+                                () => _mileage = double.tryParse(newValue)!);
                           },
                         ),
                         const SizedBox(height: 16),
@@ -534,28 +491,6 @@ class _AddCarState extends ConsumerState<AddCar> {
                           },
                           onChanged: (newValue) {
                             setState(() => _transmission = newValue!);
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        DropdownButtonFormField<CarStatus>(
-                          decoration: const InputDecoration(
-                            hintText: 'Status',
-                            label: Text('Status'),
-                          ),
-                          items: [
-                            for (final condition in CarStatus.values)
-                              DropdownMenuItem(
-                                value: condition,
-                                child: Text(condition.name),
-                              )
-                          ],
-                          validator: (value) {
-                            return value == null
-                                ? 'Please select a status'
-                                : null;
-                          },
-                          onChanged: (newValue) {
-                            setState(() => _status = newValue!);
                           },
                         ),
                         const SizedBox(height: 16),

@@ -42,7 +42,7 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
     _password = widget.user.password;
     _address = widget.user.address ?? '';
 
-    if (widget.user.image_url != null) {
+    if (widget.user.imageUrl != null) {
       _selectedImage = Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
@@ -71,7 +71,7 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
         email: _email,
         address: _address,
         password: _password,
-        upload_image: _file,
+        uploadImage: _file,
       );
 
       ref.read(usersProvider.notifier).put(newUser);

@@ -43,7 +43,7 @@ class _AddUserState extends ConsumerState<AddUser> {
           email: _email,
           password: _password,
           address: _address,
-          upload_image: _file,
+          uploadImage: _file,
         );
 
         ref.read(usersProvider.notifier).add(newUser);

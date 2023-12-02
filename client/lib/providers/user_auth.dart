@@ -33,13 +33,17 @@ class UserAuth extends _$UserAuth {
       }
     } on DioException catch (d) {
       if (d.type == DioExceptionType.connectionTimeout) {
-        LoadingIndicator.showError(
-          'Server timeout, probably wrong ip address supplied',
-        );
+        if (context.mounted) {
+          LoadingIndicator.showError(
+            'Server timeout, probably wrong ip address supplied',
+          );
+        }
+      } else {
+        if (context.mounted) {
+          LoadingIndicator.showError('Failed with error, wrong credentials');
+        }
       }
     }
-
-    LoadingIndicator.dismiss();
   }
 
   void registerUser(
@@ -59,7 +63,7 @@ class UserAuth extends _$UserAuth {
       state = user;
 
       if (context.mounted) {
-        Navigator.pushReplacementNamed(context, '/users');
+        Navigator.pushReplacementNamed(context, '/user');
         LoadingIndicator.dismiss();
       }
     } catch (e) {

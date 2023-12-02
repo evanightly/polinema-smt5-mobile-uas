@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'image' => $this->image,
             'transactions' => TransactionResource::collection($this->whenLoaded('transactions')),
             'carts' => CartResource::collection($this->whenLoaded('carts')),
             'cart_total' => $this->cartTotal,

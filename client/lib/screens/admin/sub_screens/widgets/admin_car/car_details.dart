@@ -12,7 +12,12 @@ void carDetails(BuildContext context, Car car) {
         ),
         body: Column(
           children: [
-            Image(image: car.imageProviderWidget),
+            Image(
+              image: car.imageProviderWidget,
+              fit: BoxFit.cover,
+              height: 300,
+              width: double.infinity,
+            ),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -176,7 +181,7 @@ void carDetails(BuildContext context, Car car) {
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
-                                      '${formatNumber(car.km_max)} km',
+                                      '${formatNumber(car.mileage)} km',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -214,7 +219,7 @@ void carDetails(BuildContext context, Car car) {
                               ),
                               const Spacer(),
                               Text(
-                                car.body_type.name,
+                                car.bodyType.name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -345,7 +350,7 @@ void carDetails(BuildContext context, Car car) {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
-                                car.status.name == 'Available'
+                                car.stock > 0
                                     ? Icons.check_circle
                                     : Icons.cancel,
                                 size: 32,
@@ -356,7 +361,7 @@ void carDetails(BuildContext context, Car car) {
                               ),
                               const Spacer(),
                               Text(
-                                'Status',
+                                'Availability',
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
@@ -364,9 +369,10 @@ void carDetails(BuildContext context, Car car) {
                               ),
                               const Spacer(),
                               Text(
-                                car.status.name,
+                                car.stock > 0 ? 'Ready' : 'Out of stock',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),

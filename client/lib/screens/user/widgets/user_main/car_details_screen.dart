@@ -86,7 +86,12 @@ class CarDetailsScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          Image(image: car.imageProviderWidget),
+          Image(
+            image: car.imageProviderWidget,
+            fit: BoxFit.cover,
+            height: 300,
+            width: double.infinity,
+          ),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
@@ -241,7 +246,7 @@ class CarDetailsScreen extends ConsumerWidget {
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
-                                    '${formatNumber(car.km_max)} km',
+                                    '${formatNumber(car.mileage)} km',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -279,7 +284,7 @@ class CarDetailsScreen extends ConsumerWidget {
                             ),
                             const Spacer(),
                             Text(
-                              car.body_type.name,
+                              car.bodyType.name,
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -412,9 +417,7 @@ class CarDetailsScreen extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
-                              car.status.name == 'Available'
-                                  ? Icons.check_circle
-                                  : Icons.cancel,
+                              car.stock > 0 ? Icons.check_circle : Icons.cancel,
                               size: 32,
                               color: Theme.of(context)
                                   .colorScheme
@@ -423,18 +426,17 @@ class CarDetailsScreen extends ConsumerWidget {
                             ),
                             const Spacer(),
                             Text(
-                              'Status',
+                              'Availability',
                               style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground),
                             ),
                             const Spacer(),
                             Text(
-                              car.status.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              car.stock > 0 ? 'Ready' : 'Sold Out',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),

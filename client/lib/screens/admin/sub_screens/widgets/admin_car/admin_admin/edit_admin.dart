@@ -41,9 +41,9 @@ class _UpdateAdminState extends ConsumerState<UpdateAdmin> {
     _name = widget.admin.name;
     _email = widget.admin.email;
     _password = widget.admin.password;
-    _is_super_admin = widget.admin.is_super_admin;
+    _is_super_admin = widget.admin.isSuperAdmin;
 
-    if (widget.admin.image_url != null) {
+    if (widget.admin.imageUrl != null) {
       _selectedImage = Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
@@ -71,8 +71,8 @@ class _UpdateAdminState extends ConsumerState<UpdateAdmin> {
         name: _name,
         email: _email,
         password: _password,
-        upload_image: _file,
-        is_super_admin: _is_super_admin,
+        uploadImage: _file,
+        isSuperAdmin: _is_super_admin,
       );
 
       ref.read(adminsProvider.notifier).put(newAdmin);

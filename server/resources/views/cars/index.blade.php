@@ -13,12 +13,11 @@
                 <th>Brand</th>
                 <th>Body Type</th>
                 <th>Year</th>
-                <th>Speed</th>
+                <th>Mileage</th>
                 <th>Fuel</th>
                 <th>Price</th>
                 <th>Condition</th>
                 <th>Transmission</th>
-                <th>Status</th>
                 <th>Stock</th>
             </tr>
         </thead>
@@ -40,12 +39,11 @@
                     <td>{{ $car->brand->name }}</td>
                     <td>{{ $car->bodyType->name }}</td>
                     <td>{{ $car->year }}</td>
-                    <td>0 - {{ $car->km_max }} Km</td>
+                    <td>0 - {{ $car->mileage }} Km</td>
                     <td>{{ $car->fuel->name }}</td>
                     <td>{{ $car->price }}</td>
                     <td>{{ $car->condition }}</td>
                     <td>{{ $car->transmission }}</td>
-                    <td>{{ $car->status }}</td>
                     <td>{{ $car->stock }}</td>
                     <td>
                         <div class="flex gap-3">
@@ -64,7 +62,8 @@
                                         <p>You are about to delete {{ $car->name }}</p>
                                         <p class="text-bold">
                                             <span class="text-warning">Warning</span>
-                                            <span>: this operation will delete all data related to this Car, <span class="font-bold text-error">including transactions!</span></span>
+                                            <span>: this operation will delete all data related to this Car, <span
+                                                    class="font-bold text-error">including transactions!</span></span>
                                         </p>
                                     </div>
 
@@ -95,4 +94,38 @@
             @endforeach
         </tbody>
     </table>
+
+    {{-- get each pagination element, so i can style it individually --}}
+    <div class="flex gap-2">
+        {{-- Previous Page Link --}}
+        @if ($cars->onFirstPage())
+            <span class="btn btn-disabled">
+                <i class="fa-solid fa-chevron-left"></i>
+            </span>
+        @else
+            <a href="{{ $cars->previousPageUrl() }}" class="btn btn-primary">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+        @endif
+
+        {{-- Pagination Elements --}}
+        {{-- @foreach ($cars->getUrlRange(1, $cars->lastPage()) as $page => $url)
+            @if ($page == $cars->currentPage())
+                <span class="btn btn-primary">{{ $page }}</span>
+            @else
+                <a href="{{ $url }}" class="btn btn-primary">{{ $page }}</a>
+            @endif
+        @endforeach --}}
+
+        {{-- Next Page Link --}}
+        @if ($cars->hasMorePages())
+            <a href="{{ $cars->nextPageUrl() }}" class="btn btn-primary">
+                <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        @else
+            <span class="btn btn-disabled">
+                <i class="fa-solid fa-chevron-right"></i>
+            </span>
+        @endif
+    </div>
 @endsection

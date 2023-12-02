@@ -7,6 +7,7 @@ class LoadingIndicator {
       indicator: const CircularProgressIndicator(),
       status: 'Loading...',
       dismissOnTap: true,
+      maskType: EasyLoadingMaskType.black,
     );
   }
 

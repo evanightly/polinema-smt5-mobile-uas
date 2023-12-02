@@ -9,9 +9,9 @@ class Admin {
   final String name;
   final String email;
   final String password;
-  final bool is_super_admin;
-  final String? image_url;
-  final File? upload_image;
+  final bool isSuperAdmin;
+  final String? imageUrl;
+  final File? uploadImage;
   final String? token;
 
   const Admin({
@@ -19,35 +19,35 @@ class Admin {
     required this.name,
     required this.email,
     required this.password,
-    required this.is_super_admin,
-    this.image_url,
-    this.upload_image,
+    required this.isSuperAdmin,
+    this.imageUrl,
+    this.uploadImage,
     this.token,
   });
 
   ImageProvider get imageProviderWidget {
-    if (image_url == 'null') {
+    if (imageUrl == 'null') {
       return const AssetImage('assets/images/person1.jpg');
     }
-    return NetworkImage(image_url!);
+    return NetworkImage(imageUrl!);
   }
 
   factory Admin.fromAuthJson(Map<String, dynamic> json) {
-    final id = json['admin']['id'].toString();
-    final name = json['admin']['name'].toString();
-    final email = json['admin']['email'].toString();
-    final password = json['admin']['password'].toString();
-    final is_super_admin = json['admin']['is_super_admin'] == 1 ? true : false;
-    final image_url = json['admin']['image_url'].toString();
-    final token = json['token'].toString();
+    final id = json['admin']['id'];
+    final name = json['admin']['name'];
+    final email = json['admin']['email'];
+    final password = json['admin']['password'];
+    final isSuperAdmin = json['admin']['is_super_admin'] == 1 ? true : false;
+    final imageUrl = json['admin']['image_url'];
+    final token = json['token'];
 
     final admin = Admin(
       id: id,
       name: name,
       email: email,
       password: password,
-      is_super_admin: is_super_admin,
-      image_url: image_url,
+      isSuperAdmin: isSuperAdmin,
+      imageUrl: imageUrl,
       token: token,
     );
 
@@ -55,20 +55,20 @@ class Admin {
   }
 
   factory Admin.fromJson(Map<String, dynamic> json) {
-    final id = json['id'].toString();
-    final name = json['name'].toString();
-    final email = json['email'].toString();
-    final password = json['password'].toString();
-    final is_super_admin = json['is_super_admin'] == 1 ? true : false;
-    final image_url = json['image_url'].toString();
+    final id = json['id'];
+    final name = json['name'];
+    final email = json['email'];
+    final password = json['password'];
+    final isSuperAdmin = json['is_super_admin'] == 1 ? true : false;
+    final imageUrl = json['image_url'];
 
     final admin = Admin(
       id: id,
       name: name,
       email: email,
       password: password,
-      is_super_admin: is_super_admin,
-      image_url: image_url,
+      isSuperAdmin: isSuperAdmin,
+      imageUrl: imageUrl,
     );
 
     return admin;
@@ -80,8 +80,8 @@ class Admin {
       'name': name,
       'email': email,
       'password': password,
-      'is_super_admin': is_super_admin,
-      'image_url': image_url,
+      'is_super_admin': isSuperAdmin,
+      'image_url': imageUrl,
     };
   }
 }

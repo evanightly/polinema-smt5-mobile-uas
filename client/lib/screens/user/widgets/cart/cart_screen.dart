@@ -48,7 +48,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                 children: [
                   if (userCarts.valueOrNull != null)
                     Text(
-                      'Total: \$${userCarts.asData!.value.formatted_cart_total}',
+                      'Total: \$${userCarts.asData!.value!.formattedCartTotal}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   const Spacer(),
@@ -81,10 +81,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
     return IconButton(
       onPressed: openCartScreen,
-      icon: Badge(
-        label: Text(userCarts.value!.carts.length.toString()),
-        child: const Icon(Icons.shopping_cart),
-      ),
+      icon: userCarts.value!.carts.isNotEmpty
+          ? Badge(
+              label: Text(userCarts.value!.carts.length.toString()),
+              child: const Icon(Icons.shopping_cart),
+            )
+          : const Icon(Icons.shopping_cart),
     );
   }
 }

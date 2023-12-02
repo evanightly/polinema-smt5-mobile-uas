@@ -63,7 +63,7 @@ class AdminCarBodyTypeScreen extends ConsumerWidget {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
-                trailing: auth!.is_super_admin
+                trailing: auth!.isSuperAdmin
                     ? _CarBodyTypeActions(item)
                     : const SizedBox.shrink(),
               );
@@ -149,7 +149,7 @@ class _CarBodyTypeActions extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (carBodyType.cars.isEmpty)
+        if (carBodyType.cars != null && carBodyType.cars!.isEmpty)
           IconButton(
             onPressed: delete,
             icon: const Icon(Icons.delete),

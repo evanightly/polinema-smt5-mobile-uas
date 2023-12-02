@@ -17,7 +17,6 @@ class CartFactory extends Factory
      */
     public function definition(): array
     {
-        $samplePortion = 5;
         $sampleUser = User::where('email', 'user@gmail.com')->get()->pluck('id')->toArray();
 
         return [

@@ -11,16 +11,14 @@ dynamic generateCarMetadata(Car car) {
   return {
     'name': car.name,
     'brand_id': car.brand.id,
-    'body_type_id': car.body_type.id,
+    'body_type_id': car.bodyType.id,
     'year': car.year,
-    'km_min': car.km_min,
-    'km_max': car.km_max,
+    'mileage': car.mileage,
     'fuel_id': car.fuel.id,
     'price': car.price,
     'description': car.description,
     'condition': car.condition.name,
     'transmission': car.transmission.name,
-    'status': car.status.name,
     'stock': car.stock,
   };
 }
@@ -59,7 +57,7 @@ class Cars extends _$Cars {
 
       final formData = FormData.fromMap({
         ...generateCarMetadata(car),
-        'image': await MultipartFile.fromFile(car.upload_image!.path),
+        'image': await MultipartFile.fromFile(car.uploadImage!.path),
       });
 
       await dio.http.post('/cars', data: formData);
@@ -81,10 +79,10 @@ class Cars extends _$Cars {
       FormData formData = FormData.fromMap(generateCarMetadata(car));
 
       // if image is not null, then add it to the form data
-      if (car.upload_image != null) {
+      if (car.uploadImage != null) {
         formData = FormData.fromMap({
           ...generateCarMetadata(car),
-          'image': await MultipartFile.fromFile(car.upload_image!.path),
+          'image': await MultipartFile.fromFile(car.uploadImage!.path),
         });
       }
 
@@ -118,7 +116,6 @@ class Cars extends _$Cars {
 
     try {
       LoadingIndicator.show();
-      print(carFilter.toJson());
       final response =
           await dio.http.post('/cars/search', data: carFilter.toJson());
 

@@ -44,8 +44,8 @@ class _AddAdminState extends ConsumerState<AddAdmin> {
           name: _name,
           email: _email,
           password: _password,
-          upload_image: _file,
-          is_super_admin: _is_super_admin,
+          uploadImage: _file,
+          isSuperAdmin: _is_super_admin,
         );
 
         ref.read(adminsProvider.notifier).add(newAdmin);

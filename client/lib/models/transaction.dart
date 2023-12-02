@@ -8,170 +8,133 @@ import 'package:flutter/material.dart';
 
 enum PaymentMethod { Cash, CreditCard, DebitCard }
 
-enum Status { OnGoing, Pending, Rejected, Verified, Finished }
+enum Status { Pending, Rejected, Verified, Finished }
 
 class Transaction {
   final int? id;
-  final String user_id;
-  final PaymentMethod? payment_method;
-  final String? payment_proof;
-  final String? payment_date;
+  final String userId;
+  final PaymentMethod? paymentMethod;
+  final String? paymentProof;
+  final String? paymentDate;
   final num total;
   final Status status;
-  final Admin? verified_by;
-  final DateTime? verified_at;
-  final DateTime created_at;
-  final String? delivery_address;
-  final String? payment_proof_url;
-  final String? formatted_created_at;
-  final String? formatted_verified_at;
-  final String? formatted_total;
-  final File? upload_payment_proof;
+  final Admin? verifiedBy;
+  final DateTime? verifiedAt;
+  final DateTime createdAt;
+  final String? deliveryAddress;
+  final String? paymentProofUrl;
+  final String? formattedCreatedAt;
+  final String? formattedVerifiedAt;
+  final String? formattedTotal;
+  final File? uploadPaymentProof;
 
-  final List<DetailTransaction>? detail_transactions;
+  final List<DetailTransaction>? detailTransactions;
 
   const Transaction({
     this.id,
-    required this.user_id,
-    this.payment_method,
-    this.payment_proof,
-    this.payment_date,
+    required this.userId,
+    this.paymentMethod,
+    this.paymentProof,
+    this.paymentDate,
     required this.total,
     required this.status,
-    this.verified_by,
-    this.verified_at,
-    required this.created_at,
-    this.delivery_address,
-    this.payment_proof_url,
-    this.formatted_created_at,
-    this.formatted_verified_at,
-    this.formatted_total,
-    this.detail_transactions,
-    this.upload_payment_proof,
+    this.verifiedBy,
+    this.verifiedAt,
+    required this.createdAt,
+    this.deliveryAddress,
+    this.paymentProofUrl,
+    this.formattedCreatedAt,
+    this.formattedVerifiedAt,
+    this.formattedTotal,
+    this.detailTransactions,
+    this.uploadPaymentProof,
   });
 
-  // get transactionDate => created_at.toString().split(' ')[0];
-  // get verifiedDate => verified_at.toString().split(' ')[0];
-  // get formattedTotal => formatNumber(total);
-
   ImageProvider get imageProviderWidget {
-    if (payment_proof_url == null) {
+    if (paymentProofUrl == null) {
       return const AssetImage('assets/images/car1_MustangGT.jpg');
     }
-    return NetworkImage(payment_proof_url!);
+    return NetworkImage(paymentProofUrl!);
   }
 
   factory Transaction.fromJson(dynamic json) {
-    try {
-      final id = json['id'];
-      final user_id = json['user_id'];
-      final payment_method = json['payment_method'] != null
-          ? PaymentMethod.values.byName(json['payment_method'])
-          : null;
-      final payment_proof = json['payment_proof'];
-      final payment_date = json['payment_date'];
-      final total = json['total'];
-      final status = Status.values.byName(json['status']);
-      final verified_by = json['verified_by'] != null
-          ? Admin.fromJson(json['verified_by'])
-          : null;
-      final verified_at = json['verified_at'] != null
-          ? DateTime.tryParse(json['verified_at'])
-          : null;
-      final created_at = DateTime.parse(json['created_at']);
-      final delivery_address = json['delivery_address'];
-      final payment_proof_url = json['payment_proof_url'];
-      final formatted_created_at = json['formatted_created_at'];
-      final formatted_verified_at = json['formatted_verified_at'];
-      final formatted_total = json['formatted_total'];
-      final detail_transactions =
-          (json['detail_transactions'] as List<dynamic>).map(
-        (detailTransaction) {
-          return DetailTransaction.fromJson(detailTransaction);
-        },
-      ).toList();
-      final userTransaction = Transaction(
-        id: id,
-        user_id: user_id,
-        payment_method: payment_method,
-        payment_proof: payment_proof,
-        payment_date: payment_date,
-        total: total,
-        status: status,
-        verified_by: verified_by,
-        verified_at: verified_at,
-        created_at: created_at,
-        delivery_address: delivery_address,
-        payment_proof_url: payment_proof_url,
-        formatted_created_at: formatted_created_at,
-        formatted_verified_at: formatted_verified_at,
-        formatted_total: formatted_total,
-        detail_transactions: detail_transactions,
-      );
+    final parsedPaymentMethod = json['payment_method'] != null
+        ? PaymentMethod.values.byName(json['payment_method'])
+        : null;
 
-      return userTransaction;
-    } catch (e) {
-      // print(e);
-      throw Exception('Failed to parse UserTransaction from JSON');
-    }
+    final parsedVerifiedBy = json['verified_by'] != null
+        ? Admin.fromJson(json['verified_by'])
+        : null;
+
+    final parsedVerifiedAt = json['verified_at'] != null
+        ? DateTime.tryParse(json['verified_at'])
+        : null;
+
+    final parsedDetailTransactions = json['detail_transactions'] != null
+        ? (json['detail_transactions'] as List<dynamic>)
+            .map((e) => DetailTransaction.fromJson(e))
+            .toList()
+        : null;
+
+    final id = json['id'];
+    final userId = json['user_id'];
+    final paymentMethod = parsedPaymentMethod;
+    final paymentProof = json['payment_proof'];
+    final paymentDate = json['payment_date'];
+    final total = json['total'];
+    final status = Status.values.byName(json['status']);
+    final verifiedBy = parsedVerifiedBy;
+    final verifiedAt = parsedVerifiedAt;
+    final createdAt = DateTime.parse(json['created_at']);
+    final deliveryAddress = json['delivery_address'];
+    final paymentProofUrl = json['payment_proof_url'];
+    final formattedCreatedAt = json['formatted_created_at'];
+    final formattedVerifiedAt = json['formatted_verified_at'];
+    final formattedTotal = json['formatted_total'];
+    final detailTransactions = parsedDetailTransactions;
+
+    final userTransaction = Transaction(
+      id: id,
+      userId: userId,
+      paymentMethod: paymentMethod,
+      paymentProof: paymentProof,
+      paymentDate: paymentDate,
+      total: total,
+      status: status,
+      verifiedBy: verifiedBy,
+      verifiedAt: verifiedAt,
+      createdAt: createdAt,
+      deliveryAddress: deliveryAddress,
+      paymentProofUrl: paymentProofUrl,
+      formattedCreatedAt: formattedCreatedAt,
+      formattedVerifiedAt: formattedVerifiedAt,
+      formattedTotal: formattedTotal,
+      detailTransactions: detailTransactions,
+    );
+
+    return userTransaction;
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'user_id': user_id,
-      'payment_method': payment_method?.name,
-      'payment_proof': payment_proof,
-      'payment_date': payment_date,
+      'user_id': userId,
+      'payment_method': paymentMethod?.name,
+      'payment_proof': paymentProof,
+      'payment_date': paymentDate,
       'total': total,
       'status': status.name,
-      'verified_by': verified_by?.toJson(),
-      'verified_at': verified_at.toString(),
-      'created_at': created_at.toString(),
-      'delivery_address': delivery_address,
-      'payment_proof_url': payment_proof_url,
-      'formatted_created_at': formatted_created_at,
-      'formatted_verified_at': formatted_verified_at,
-      'formatted_total': formatted_total,
+      'verified_by': verifiedBy?.toJson(),
+      'verified_at': verifiedAt.toString(),
+      'created_at': createdAt.toString(),
+      'delivery_address': deliveryAddress,
+      'payment_proof_url': paymentProofUrl,
+      'formatted_created_at': formattedCreatedAt,
+      'formatted_verified_at': formattedVerifiedAt,
+      'formatted_total': formattedTotal,
       'detail_transactions':
-          detail_transactions?.map((e) => e.toJson()).toList(),
-      'upload_payment_proof': upload_payment_proof,
+          detailTransactions?.map((e) => e.toJson()).toList(),
+      'upload_payment_proof': uploadPaymentProof,
     };
   }
-
-  // try {
-  //   print('JSON');
-  //   print(json);
-  //   final id = json['id'].toString();
-  //   final userId = json['user_id'].toString();
-  //   final paymentMethod = PaymentMethod.values.byName(
-  //     json['payment_method'].toString(),
-  //   );
-  //   final paymentProof = json['payment_proof'].toString();
-  //   final paymentDate = json['payment_date'].toString();
-  //   final total = json['total'].toString();
-  //   final status = Status.values.byName(
-  //     json['status'].toString(),
-  //   );
-  //   final verifiedBy = Admin.fromJson(json['verified_by']);
-  //   final verifiedAt = DateTime.parse(json['status'].toString());
-  //   final createdAt = DateTime.parse(json['created_at'].toString());
-
-  //   final userTransaction = UserTransaction(
-  //     id: id,
-  //     userId: userId,
-  //     paymentMethod: paymentMethod,
-  //     paymentProof: paymentProof,
-  //     paymentDate: paymentDate,
-  //     total: total,
-  //     status: status,
-  //     verifiedBy: verifiedBy,
-  //     verifiedAt: verifiedAt,
-  //     createdAt: createdAt,
-  //   );
-
-  //   return userTransaction;
-  // } catch (e) {
-  //   print(e);
-  // }
 }

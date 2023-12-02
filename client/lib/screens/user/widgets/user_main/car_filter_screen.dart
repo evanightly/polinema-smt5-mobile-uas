@@ -11,11 +11,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 
-class CarFilterScreen extends ConsumerWidget {
+class CarFilterScreen extends ConsumerStatefulWidget {
   const CarFilterScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CarFilterScreen> createState() => _CarFilterScreenState();
+}
+
+class _CarFilterScreenState extends ConsumerState<CarFilterScreen>
+    with AutomaticKeepAliveClientMixin<CarFilterScreen> {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
     final _formKey = GlobalKey<FormState>();
     final carBrands = ref.watch(carBrandsProvider);
     final carBodyTypes = ref.watch(carBodyTypesProvider);
@@ -96,7 +106,9 @@ class CarFilterScreen extends ConsumerWidget {
                               decoration:
                                   const InputDecoration(labelText: 'Min Price'),
                               onSaved: (value) {
-                                minPrice = value;
+                                setState(() {
+                                  minPrice = value;
+                                });
                               },
                             ),
                           ),
@@ -106,8 +118,15 @@ class CarFilterScreen extends ConsumerWidget {
                               keyboardType: TextInputType.number,
                               decoration:
                                   const InputDecoration(labelText: 'Max Price'),
+                              onChanged: (value) {
+                                setState(() {
+                                  maxPrice = value;
+                                });
+                              },
                               onSaved: (value) {
-                                maxPrice = value;
+                                setState(() {
+                                  maxPrice = value;
+                                });
                               },
                             ),
                           ),
@@ -118,22 +137,38 @@ class CarFilterScreen extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: TextFormField(
+                              initialValue: minKm,
                               keyboardType: TextInputType.number,
                               decoration:
                                   const InputDecoration(labelText: 'Min km'),
+                              onChanged: (value) {
+                                setState(() {
+                                  minKm = value;
+                                });
+                              },
                               onSaved: (value) {
-                                minKm = value;
+                                setState(() {
+                                  minKm = value;
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: TextFormField(
+                              initialValue: maxKm,
                               keyboardType: TextInputType.number,
                               decoration:
                                   const InputDecoration(labelText: 'Max km'),
+                              onChanged: (value) {
+                                setState(() {
+                                  maxKm = value;
+                                });
+                              },
                               onSaved: (value) {
-                                maxKm = value;
+                                setState(() {
+                                  maxKm = value;
+                                });
                               },
                             ),
                           ),
@@ -144,22 +179,38 @@ class CarFilterScreen extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: TextFormField(
+                              initialValue: minYear,
                               keyboardType: TextInputType.number,
                               decoration:
                                   const InputDecoration(labelText: 'Min Year'),
+                              onChanged: (value) {
+                                setState(() {
+                                  minYear = value;
+                                });
+                              },
                               onSaved: (value) {
-                                minYear = value;
+                                setState(() {
+                                  minYear = value;
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: TextFormField(
+                              initialValue: maxYear,
                               keyboardType: TextInputType.number,
                               decoration:
                                   const InputDecoration(labelText: 'Max Year'),
+                              onChanged: (value) {
+                                setState(() {
+                                  maxYear = value;
+                                });
+                              },
                               onSaved: (value) {
-                                maxYear = value;
+                                setState(() {
+                                  maxYear = value;
+                                });
                               },
                             ),
                           ),
@@ -167,6 +218,7 @@ class CarFilterScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       DropdownSearch<CarBrand>(
+                        selectedItem: selectedBrand,
                         dropdownDecoratorProps: const DropDownDecoratorProps(
                           dropdownSearchDecoration: InputDecoration(
                             hintText: 'Brand',
@@ -220,13 +272,21 @@ class CarFilterScreen extends ConsumerWidget {
                         items: [
                           for (final brand in carBrands.asData!.value) brand
                         ],
+                        onChanged: (brand) {
+                          setState(() {
+                            selectedBrand = brand;
+                          });
+                        },
                         onSaved: (brand) {
-                          selectedBrand = brand;
+                          setState(() {
+                            selectedBrand = brand;
+                          });
                         },
                       ),
                       // car body type dropdown
                       const SizedBox(height: 16),
                       DropdownSearch<CarBodyType>(
+                        selectedItem: selectedBodyType,
                         dropdownDecoratorProps: const DropDownDecoratorProps(
                           dropdownSearchDecoration: InputDecoration(
                             hintText: 'Body Type',
@@ -281,13 +341,21 @@ class CarFilterScreen extends ConsumerWidget {
                           for (final bodyType in carBodyTypes.asData!.value)
                             bodyType
                         ],
+                        onChanged: (bodyType) {
+                          setState(() {
+                            selectedBodyType = bodyType;
+                          });
+                        },
                         onSaved: (bodyType) {
-                          selectedBodyType = bodyType;
+                          setState(() {
+                            selectedBodyType = bodyType;
+                          });
                         },
                       ),
                       // transmission dropdown
                       const SizedBox(height: 16),
                       DropdownButtonFormField<CarTransmission>(
+                        value: selectedTransmission,
                         decoration: const InputDecoration(
                           hintText: 'Transmission',
                           label: Text('Transmission'),
@@ -300,14 +368,19 @@ class CarFilterScreen extends ConsumerWidget {
                             )
                         ],
                         onChanged: (newValue) {
-                          selectedTransmission = newValue;
+                          setState(() {
+                            selectedTransmission = newValue;
+                          });
                         },
                         onSaved: (newValue) {
-                          selectedTransmission = newValue;
+                          setState(() {
+                            selectedTransmission = newValue;
+                          });
                         },
                       ),
                       const SizedBox(height: 16),
                       DropdownButtonFormField<CarCondition>(
+                        value: selectedCondition,
                         decoration: const InputDecoration(
                           hintText: 'Condition',
                           label: Text('Condition'),
@@ -320,7 +393,14 @@ class CarFilterScreen extends ConsumerWidget {
                             )
                         ],
                         onChanged: (newValue) {
-                          selectedCondition = newValue;
+                          setState(() {
+                            selectedCondition = newValue;
+                          });
+                        },
+                        onSaved: (newValue) {
+                          setState(() {
+                            selectedCondition = newValue;
+                          });
                         },
                       ),
                       const SizedBox(height: 16),

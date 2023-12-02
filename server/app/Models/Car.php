@@ -17,15 +17,13 @@ class Car extends Model
         'brand_id', // ['Toyota', 'Honda', 'Suzuki', 'Mitsubishi', 'Daihatsu', 'Mazda', 'Nissan', 'Mercedes-Benz', 'BMW', 'Audi', 'Lexus', 'Isuzu']
         'body_type_id', // ['SUV', 'Sedan', 'Hatchback', 'MPV', 'Wagon']
         'year',
-        'km_min', // 'km_min' and 'km_max' are used to determine the range of km
-        'km_max',
+        'mileage', // Jarak tempuh
         'fuel_id', // ['Pertamax', 'Solar']
         'price',
         'image',
         'description',
         'condition', // ['Used', 'New']
         'transmission', // ['Automatic', 'Manual']
-        'status', // ['Available', 'Sold']
         'stock'
     ];
 
