@@ -40,7 +40,11 @@
                             </div>
                         </td>
                         <td>{{ $dt->car->price }}</td>
-                        <td>{{ $dt->qty }} ({{ $dt->car->stock }} Available)</td>
+                        <td>{{ $dt->qty }}
+                            <span class="{{ $dt->qty > $dt->car->stock ? 'text-error' : 'text-success' }}">
+                                ({{ $dt->car->stock }} Available)
+                            </span>
+                        </td>
                         <td>{{ $dt->subtotal }}</td>
                     </tr>
                 @empty
