@@ -44,6 +44,7 @@ class TransactionResource extends JsonResource
             'formatted_created_at' => $this->formatted_created_at,
             'formatted_verified_at' => $this->formatted_verified_at,
             'formatted_total' => $this->formatted_total,
+            'formatted_payment_date' => $this->formatted_payment_date,
         ];
     }
 }

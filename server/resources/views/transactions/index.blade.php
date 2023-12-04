@@ -31,10 +31,22 @@
                         <img src="{{ $transaction->payment_proof_url }}" alt="" class="w-32">
                     </td>
                     <td>{{ $transaction->payment_date }}</td>
-                    <td>{{ $transaction->status }}</td>
+                    {{-- Status text with criteria: orange color if pending red color if rejected, blue color if verified, green color if finished --}}
+                    <td>
+                        @if ($transaction->status === 'Pending')
+                            <span class="badge badge-warning">{{ $transaction->status }}</span>
+                        @elseif($transaction->status === 'Rejected')
+                            <span class="badge badge-error">{{ $transaction->status }}</span>
+                        @elseif($transaction->status === 'Verified')
+                            <span class="badge badge-primary">{{ $transaction->status }}</span>
+                        @elseif($transaction->status === 'Finished')
+                            <span class="badge badge-success">{{ $transaction->status }}</span>
+                        @endif
+                    </td>
                     <td>{{ $transaction->verifiedBy->name ?? '' }}</td>
                     <td>
-                        <button class="btn btn-primary" disabled><i class="fa-solid fa-pen-to-square"></i></button>
+                        <a href="{{ route('transactions.edit', [$transaction]) }}" class="btn btn-primary"><i
+                                class="fa-solid fa-pen-to-square"></i></a>
                         <button class="btn btn-error" disabled><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>

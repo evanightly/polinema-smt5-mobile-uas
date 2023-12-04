@@ -66,6 +66,11 @@ class Transaction extends Model
         return number_format($this->total, 0, ',', '.');
     }
 
+    public function getFormattedPaymentDateAttribute()
+    {
+        return $this->payment_date ? $this->payment_date->format('d F Y') : '';
+    }
+
     // public function getPaymentProofAttribute($value)
     // {
     //     return asset('storage/transaction_proof' . $value);
