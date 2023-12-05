@@ -15,6 +15,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
@@ -32,8 +34,9 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(sharedPreferenceProvider.notifier).init(prefs);
     return MaterialApp(
+      navigatorKey: globalNavigatorKey,
       title: 'Mein App',
-      initialRoute: '/user/login',
+      initialRoute: '/',
       debugShowCheckedModeBanner: false,
       theme:
           ref.watch(settingsProvider).darkMode ? darkThemeData : lightThemeData,

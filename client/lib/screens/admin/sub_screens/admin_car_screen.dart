@@ -1,5 +1,4 @@
 import 'package:client/helpers/decimal_formatter.dart';
-import 'package:client/models/car.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/cars.dart';
 import 'package:client/screens/admin/sub_screens/widgets/admin_car/add_car.dart';
@@ -20,14 +19,15 @@ class AdminCarScreen extends ConsumerWidget {
     final cars = ref.watch(carsProvider);
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
-    Future<void> reload() async {
+    Future<void> refresh() async {
       await ref.read(carsProvider.notifier).refresh();
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        final dashboardActions =
-            ref.read(adminDashboardActionsProvider.notifier);
+        final dashboardActions = ref.read(
+          adminDashboardActionsProvider.notifier,
+        );
 
         final isLoadingCarData = cars.maybeWhen(
           loading: () => true,
@@ -54,7 +54,7 @@ class AdminCarScreen extends ConsumerWidget {
       data: (data) {
         return LiquidPullToRefresh(
           key: refreshIndicatorKey,
-          onRefresh: reload,
+          onRefresh: refresh,
           child: ListView.builder(
             itemCount: data.length,
             itemBuilder: (ctx, index) {
@@ -66,30 +66,7 @@ class AdminCarScreen extends ConsumerWidget {
                     editCar(context, car);
                     return false;
                   } else {
-                    final isConfirmed = await deleteCar(context);
-                    if (isConfirmed) {
-                      final isDeleted =
-                          await ref.read(carsProvider.notifier).delete(car.id!);
-                      if (isDeleted) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('${car.name} deleted'),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      } else {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Failed to delete ${car.name}'),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      }
-                    }
+                    deleteCar(context, ref, car);
                     return false;
                   }
                 },
@@ -139,9 +116,18 @@ class AdminCarScreen extends ConsumerWidget {
                       child: Flex(
                         direction: Axis.horizontal,
                         children: [
-                          car.image != null
-                              ? _CarImage(car)
-                              : const SizedBox.shrink(),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(_circularRadius),
+                              bottomLeft: Radius.circular(_circularRadius),
+                            ),
+                            child: Image(
+                              image: car.imageProviderWidget,
+                              fit: BoxFit.cover,
+                              width: 120,
+                              height: 80,
+                            ),
+                          ),
                           const SizedBox(
                             width: 16,
                           ),
@@ -153,6 +139,22 @@ class AdminCarScreen extends ConsumerWidget {
                               Text('\$ ${formatNumber(car.price)}'),
                             ],
                           ),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: car.stock <= 0
+                                ? Text(
+                                    'No Stock',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error),
+                                  )
+                                : Text('${car.stock.toString()} left'),
+                          )
                         ],
                       ),
                     ),
@@ -179,36 +181,5 @@ class AdminCarScreen extends ConsumerWidget {
         );
       },
     );
-  }
-}
-
-class _CarImage extends StatelessWidget {
-  const _CarImage(this.car);
-
-  final Car car;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget image = const SizedBox.shrink();
-
-    if (car.image != null) {
-      image = ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(_circularRadius),
-          bottomLeft: Radius.circular(_circularRadius),
-        ),
-        child: Image.network(
-          // imagePath.startsWith('http')
-          //     ? imagePath
-          //     : 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/cars/$imagePath',
-          car.imageUrl,
-          fit: BoxFit.cover,
-          width: 120,
-          height: 80,
-        ),
-      );
-    }
-
-    return image;
   }
 }

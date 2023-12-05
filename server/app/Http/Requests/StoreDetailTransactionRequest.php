@@ -25,7 +25,7 @@ class StoreDetailTransactionRequest extends FormRequest
             'transaction_id' => ['integer', 'exists:transactions,id'],
             'car_id' => ['integer', 'exists:cars,id'],
             'qty' => ['integer', 'min:1'],
-            'subtotal' => ['integer', 'min:100000'],
+            'subtotal' => ['integer'],
         ];
     }
 }

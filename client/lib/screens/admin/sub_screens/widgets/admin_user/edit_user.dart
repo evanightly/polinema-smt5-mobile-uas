@@ -28,7 +28,7 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
   late String _name;
   late String _email;
   late String _password;
-  late String _imagePath;
+  late String _address;
   File? _file;
   late Widget _selectedImage;
   final _formKey = GlobalKey<FormState>();
@@ -40,8 +40,9 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
     _name = widget.user.name;
     _email = widget.user.email;
     _password = widget.user.password;
-    _imagePath = widget.user.imageUrl;
-    if (widget.user.image != null) {
+    _address = widget.user.address ?? '';
+
+    if (widget.user.imageUrl != null) {
       _selectedImage = Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
@@ -68,8 +69,8 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
         id: widget.user.id,
         name: _name,
         email: _email,
+        address: _address,
         password: _password,
-        image: _imagePath,
         uploadImage: _file,
       );
 
@@ -105,9 +106,19 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
       return null;
     }
 
+    // This field is optional
+
+    // String? addressValidator(String? value) {
+    //   if (value!.trim().isEmpty) {
+    //     return 'Address cannot be empty';
+    //   }
+    //   return null;
+    // }
+
     void setName(String value) => setState(() => _name = value);
     void setEmail(String value) => setState(() => _email = value);
     void setPassword(String value) => setState(() => _password = value);
+    void setAddress(String value) => setState(() => _address = value);
 
     void selectImage() async {
       final isConfirmed = await showDialog<bool>(
@@ -220,6 +231,13 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
                 decoration: const InputDecoration(hintText: 'Email'),
                 validator: emailValidator,
                 onChanged: setEmail,
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                initialValue: _address,
+                autocorrect: false,
+                decoration: const InputDecoration(hintText: 'Address'),
+                onChanged: setAddress,
               ),
               const SizedBox(height: 20),
               TextFormField(

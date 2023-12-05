@@ -9,6 +9,7 @@ import 'package:client/providers/car_brands.dart';
 import 'package:client/providers/car_fuels.dart';
 import 'package:client/providers/cars.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,24 +36,25 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
   Widget _selectedImage = const SizedBox.shrink();
   late String _name = widget.car.name;
   late CarBrand _brand = widget.car.brand;
-  late CarBodyType _bodyType = widget.car.body_type;
+  late CarBodyType _bodyType = widget.car.bodyType;
   late String _year = widget.car.year;
-  late num _kmMin = widget.car.km_min;
-  late num _kmMax = widget.car.km_max;
+  late double _mileage = widget.car.mileage;
   late CarFuel _fuel = widget.car.fuel;
   late num _price = widget.car.price;
   File? _file;
   late String? _description = widget.car.description;
   late CarCondition _condition = widget.car.condition;
   late CarTransmission _transmission = widget.car.transmission;
-  late CarStatus _status = widget.car.status;
 
   @override
   void initState() {
     super.initState();
-    if (widget.car.image != null) {
-      _selectedImage =
-          Image.network(widget.car.imageUrl, height: 240, fit: BoxFit.cover);
+    if (widget.car.imageUrl != null) {
+      _selectedImage = Image(
+        image: widget.car.imageProviderWidget,
+        height: 240,
+        fit: BoxFit.cover,
+      );
     }
   }
 
@@ -128,7 +130,7 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
 
     void edit() {
       final isValid = _formKey.currentState!.validate();
-      if (!isValid) {
+      if (!isValid || _file == null) {
         return;
       }
 
@@ -138,24 +140,27 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
         id: widget.car.id,
         name: _name,
         brand: _brand,
-        body_type: _bodyType,
+        bodyType: _bodyType,
         year: _year,
-        km_min: _kmMin,
-        km_max: _kmMax,
+        mileage: _mileage,
         fuel: _fuel,
         price: _price,
         uploadImage: _file,
-        image: widget.car.image,
         description: _description,
         condition: _condition,
         transmission: _transmission,
-        status: _status,
         stock: widget.car.stock,
       );
 
       ref.read(carsProvider.notifier).put(newCar);
 
       Navigator.pop(context);
+
+      ElegantNotification.success(
+        title: const Text("Update"),
+        description: Text("${newCar.name} has been updated!"),
+        background: Theme.of(context).colorScheme.background,
+      ).show(context);
     }
 
     return StatefulBuilder(
@@ -233,7 +238,11 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                         );
                       },
                     ),
-                    items: [for (final brand in carBrands.asData!.value) brand],
+                    items: [
+                      if (carBrands.value != null &&
+                          carBrands.value!.isNotEmpty)
+                        for (final brand in carBrands.value!) brand
+                    ],
                     validator: (value) {
                       return value == null ? 'Please select a brand' : null;
                     },
@@ -292,8 +301,9 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                       },
                     ),
                     items: [
-                      for (final bodyType in carBodyTypes.asData!.value)
-                        bodyType
+                      if (carBodyTypes.value != null &&
+                          carBodyTypes.value!.isNotEmpty)
+                        for (final bodyType in carBodyTypes.value!) bodyType
                     ],
                     validator: (value) {
                       return value == null ? 'Please select a body type' : null;
@@ -322,36 +332,17 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    initialValue: _kmMin.toString(),
+                    initialValue: _mileage.toString(),
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
-                      hintText: 'Min Kilometer',
-                      label: Text('Min Kilometer'),
+                      hintText: 'Mileage',
+                      label: Text('Mileage'),
                     ),
                     validator: (value) {
-                      return value!.isEmpty
-                          ? 'Please enter a min kilometer'
-                          : null;
+                      return value!.isEmpty ? 'Please enter a mileage' : null;
                     },
                     onChanged: (newValue) {
-                      setState(() => _kmMin = num.tryParse(newValue)!);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    initialValue: _kmMax.toString(),
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      hintText: 'Max Kilometer',
-                      label: Text('Max Kilometer'),
-                    ),
-                    validator: (value) {
-                      return value!.isEmpty
-                          ? 'Please enter a max kilometer'
-                          : null;
-                    },
-                    onChanged: (newValue) {
-                      setState(() => _kmMax = num.tryParse(newValue)!);
+                      setState(() => _mileage = double.tryParse(newValue)!);
                     },
                   ),
                   const SizedBox(height: 16),
@@ -403,7 +394,10 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                         );
                       },
                     ),
-                    items: [for (final fuel in carFuels.asData!.value) fuel],
+                    items: [
+                      if (carFuels.value != null && carFuels.value!.isNotEmpty)
+                        for (final fuel in carFuels.value!) fuel
+                    ],
                     validator: (value) {
                       return value == null ? 'Please select a fuel' : null;
                     },
@@ -424,6 +418,21 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                     },
                     onChanged: (newValue) {
                       setState(() => _price = num.parse(newValue));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    initialValue: widget.car.stock.toString(),
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      hintText: 'Stock',
+                      label: Text('Stock'),
+                    ),
+                    validator: (value) {
+                      return value!.isEmpty ? 'Please enter a stock' : null;
+                    },
+                    onChanged: (newValue) {
+                      setState(() => widget.car.stock = int.parse(newValue));
                     },
                   ),
                   const SizedBox(height: 16),
@@ -486,27 +495,6 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
                     },
                     onChanged: (newValue) {
                       setState(() => _transmission = newValue!);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<CarStatus>(
-                    value: _status,
-                    decoration: const InputDecoration(
-                      hintText: 'Status',
-                      label: Text('Status'),
-                    ),
-                    items: [
-                      for (final condition in CarStatus.values)
-                        DropdownMenuItem(
-                          value: condition,
-                          child: Text(condition.name),
-                        )
-                    ],
-                    validator: (value) {
-                      return value == null ? 'Please select a status' : null;
-                    },
-                    onChanged: (newValue) {
-                      setState(() => _status = newValue!);
                     },
                   ),
                   const SizedBox(height: 16),

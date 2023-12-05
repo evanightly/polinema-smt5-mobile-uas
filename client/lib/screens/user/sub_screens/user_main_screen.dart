@@ -1,26 +1,57 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
 import 'package:client/models/car.dart';
 import 'package:client/providers/cars.dart';
-import 'package:client/providers/user_cart.dart';
+import 'package:client/providers/user_carts.dart';
 import 'package:client/providers/user_transactions.dart';
-import 'package:client/screens/user/widgets/user_main/car_details.dart';
+import 'package:client/screens/user/widgets/user_main/car_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class UserMainScreen extends ConsumerWidget {
+class UserMainScreen extends ConsumerStatefulWidget {
   const UserMainScreen({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UserMainScreen> createState() => _UserMainScreenState();
+}
+
+class _UserMainScreenState extends ConsumerState<UserMainScreen> {
+  bool _isLoading = false;
+  int _page = 1;
+  final _listViewKey = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() {
+          _page++;
+          _isLoading = true;
+        });
+        print('page: $_page');
+        print('Getting page: $_page');
+        await ref
+            .read(carsProvider.notifier)
+            .getPagination(_page)
+            .then((value) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      }
+    });
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     final cars = ref.watch(carsProvider);
+
     Future<void> onRefresh() async {
+      setState(() {
+        _page = 1;
+      });
       await ref.read(carsProvider.notifier).refresh();
       await ref.read(userTransactionsProvider.notifier).refresh();
-      ref.read(userCartProvider.notifier).refresh();
+      await ref.read(userCartsProvider.notifier).refresh();
     }
 
     void openCarDetailsScreen(Car car) {
@@ -43,7 +74,7 @@ class UserMainScreen extends ConsumerWidget {
             );
           },
           pageBuilder: (context, _, __) {
-            return CarDetails(car: car);
+            return CarDetailsScreen(car: car);
           },
         ),
       );
@@ -53,6 +84,8 @@ class UserMainScreen extends ConsumerWidget {
       key: refreshIndicatorKey,
       onRefresh: onRefresh,
       child: ListView(
+        key: _listViewKey,
+        controller: scrollController,
         children: [
           Container(
             height: 140,
@@ -102,7 +135,11 @@ class UserMainScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final car = cars.asData?.value[index];
                     return InkWell(
-                      onTap: () => openCarDetailsScreen(car),
+                      onTap: car!.stock <= 0
+                          ? null
+                          : () {
+                              openCarDetailsScreen(car);
+                            },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -127,12 +164,7 @@ class UserMainScreen extends ConsumerWidget {
                                 ),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: CachedNetworkImageProvider(
-                                    car!.imageUrl,
-                                    errorListener: (p0) {
-                                      log(p0.toString());
-                                    },
-                                  ),
+                                  image: car.imageProviderWidget,
                                 ),
                               ),
                             ),
@@ -183,7 +215,19 @@ class UserMainScreen extends ConsumerWidget {
                                               ),
                                         ),
                                       ),
-                                      Text('Stock: ${car.stock}')
+                                      Text(
+                                        car.stock <= 0
+                                            ? 'Out of stock'
+                                            : 'Available: ${car.stock}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(
+                                              color: car.stock <= 0
+                                                  ? Colors.red
+                                                  : Colors.black87,
+                                            ),
+                                      )
                                     ],
                                   )
                                 ],
@@ -209,6 +253,7 @@ class UserMainScreen extends ConsumerWidget {
               );
             },
           ),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );

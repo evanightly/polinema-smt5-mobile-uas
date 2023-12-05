@@ -15,14 +15,16 @@ class AdminCarFuelScreen extends ConsumerWidget {
     final carFuels = ref.watch(carFuelsProvider);
     final auth = ref.watch(adminAuthProvider);
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
     Future<void> refresh() async {
       await ref.read(carFuelsProvider.notifier).refresh();
     }
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
-        final dashboardActions =
-            ref.read(adminDashboardActionsProvider.notifier);
+        final dashboardActions = ref.read(
+          adminDashboardActionsProvider.notifier,
+        );
 
         final isLoadingCarFuelData = carFuels.maybeWhen(
           loading: () => true,
@@ -40,42 +42,46 @@ class AdminCarFuelScreen extends ConsumerWidget {
                     ),
                   ),
                 ]
-              : [_AddCarFuel()],
+              : [const _AddCarFuel()],
         );
       },
     );
 
-    return carFuels.when(data: (data) {
-      return Padding(
-        padding: const EdgeInsets.all(4),
-        child: LiquidPullToRefresh(
-          color: Theme.of(context).colorScheme.primary,
-          key: refreshIndicatorKey,
-          onRefresh: refresh,
-          child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (ctx, index) {
-              final item = data[index];
-              return ListTile(
-                title: Text(
-                  item.name,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
-                trailing: auth!.isSuperAdmin
-                    ? _CarFuelActions(item)
-                    : const SizedBox.shrink(),
-              );
-            },
+    return carFuels.when(
+      data: (data) {
+        return Padding(
+          padding: const EdgeInsets.all(4),
+          child: LiquidPullToRefresh(
+            color: Theme.of(context).colorScheme.primary,
+            key: refreshIndicatorKey,
+            onRefresh: refresh,
+            child: ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (ctx, index) {
+                final item = data[index];
+                return ListTile(
+                  title: Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                  trailing: auth!.isSuperAdmin
+                      ? _CarFuelActions(item)
+                      : const SizedBox.shrink(),
+                );
+              },
+            ),
           ),
-        ),
-      );
-    }, error: (error, stack) {
-      return Center(child: Text('Something went wrong $error $stack'));
-    }, loading: () {
-      return const Center(child: CircularProgressIndicator());
-    });
+        );
+      },
+      error: (error, stack) {
+        return Center(child: Text('Something went wrong $error $stack'));
+      },
+      loading: () {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }
 
@@ -149,7 +155,7 @@ class _CarFuelActions extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (carFuel.cars.isEmpty)
+        if (carFuel.cars != null && carFuel.cars!.isEmpty)
           IconButton(
             onPressed: delete,
             icon: const Icon(Icons.delete),
@@ -166,6 +172,7 @@ class _CarFuelActions extends ConsumerWidget {
 }
 
 class _AddCarFuel extends ConsumerWidget {
+  const _AddCarFuel();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void openAddDialog(BuildContext context, Function add) {

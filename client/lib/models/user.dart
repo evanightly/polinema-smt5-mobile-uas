@@ -1,6 +1,6 @@
-import 'dart:io';
+// ignore_for_file: non_constant_identifier_names
 
-import 'package:client/providers/diohttp.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 class User {
@@ -8,10 +8,11 @@ class User {
   final String name;
   final String email;
   final String password;
+  final String? address;
   final String? image;
+  final String? imageUrl;
   final File? uploadImage;
   final String? token;
-  final String? address;
 
   User({
     this.id,
@@ -19,69 +20,62 @@ class User {
     required this.email,
     required this.password,
     this.image,
+    this.imageUrl,
     this.uploadImage,
     this.token,
     this.address,
   });
 
-  String get imageUrl {
-    if (image == null) {
-      return '';
-    }
-
-    if (image!.startsWith('http')) {
-      return image!;
-    } else {
-      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/users/$image';
-    }
-  }
-
   ImageProvider get imageProviderWidget {
-    if (image == 'null') {
-      return const AssetImage('assets/images/person1.jpg');
+    if (image == null) {
+      return const AssetImage('assets/images/person2.jpg');
     }
-    return NetworkImage(imageUrl);
+    return NetworkImage(imageUrl!);
   }
 
   factory User.fromAuthJson(Map<String, dynamic> json) {
-    final id = json['user']['id'].toString();
-    final name = json['user']['name'].toString();
-    final email = json['user']['email'].toString();
-    final password = json['user']['password'].toString();
-    final image = json['user']['image'].toString();
-    final token = json['token'].toString();
-    final address = json['user']['address'].toString();
+    final id = json['user']['id'];
+    final name = json['user']['name'];
+    final email = json['user']['email'];
+    final password = json['user']['password'];
+    final image = json['user']['image'];
+    final imageUrl = json['user']['image_url'];
+    final token = json['token'];
+    final address = json['user']['address'];
 
-    final admin = User(
+    final user = User(
       id: id,
       name: name,
       email: email,
       password: password,
       image: image,
+      imageUrl: imageUrl,
       token: token,
       address: address,
     );
 
-    return admin;
+    return user;
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
-    final id = json['id'].toString();
-    final name = json['name'].toString();
-    final email = json['email'].toString();
-    final password = json['password'].toString();
-    final image = json['image'].toString();
-    final address = json['address'].toString();
+    final id = json['id'];
+    final name = json['name'];
+    final email = json['email'];
+    final password = json['password'];
+    final image = json['image'];
+    final imageUrl = json['image_url'];
+    final address = json['address'];
 
-    final admin = User(
+    final user = User(
       id: id,
       name: name,
       email: email,
       password: password,
       image: image,
+      imageUrl: imageUrl,
       address: address,
     );
 
-    return admin;
+    return user;
   }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CarBrand;
 use App\Http\Requests\StoreCarBrandRequest;
 use App\Http\Requests\UpdateCarBrandRequest;
+use App\Http\Resources\CarBrandResource;
 
 class CarBrandController extends Controller
 {
@@ -13,13 +14,9 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        return CarBrand::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
+        return view('car_brands.index', [
+            'carBrands' => CarBrandResource::collection(CarBrand::all())
+        ]);
     }
 
     /**
@@ -27,7 +24,7 @@ class CarBrandController extends Controller
      */
     public function create()
     {
-        //
+        return view('car_brands.create');
     }
 
     /**
@@ -35,7 +32,8 @@ class CarBrandController extends Controller
      */
     public function store(StoreCarBrandRequest $request)
     {
-        return CarBrand::create($request->validated());
+        $newCarBrand = new CarBrandResource(CarBrand::create($request->validated()));
+        return redirect()->route('car-brands.index')->with('success', "Car brand $newCarBrand->name created successfully");
     }
 
     /**
@@ -51,7 +49,9 @@ class CarBrandController extends Controller
      */
     public function edit(CarBrand $carBrand)
     {
-        //
+        return view('car_brands.edit', [
+            'carBrand' => new CarBrandResource($carBrand)
+        ]);
     }
 
     /**
@@ -59,7 +59,8 @@ class CarBrandController extends Controller
      */
     public function update(UpdateCarBrandRequest $request, CarBrand $carBrand)
     {
-        return $carBrand->update($request->validated());
+        $carBrand->update($request->validated());
+        return redirect()->route('car-brands.index')->with('success', "Car brand updated successfully");
     }
 
     /**
@@ -67,6 +68,7 @@ class CarBrandController extends Controller
      */
     public function destroy(CarBrand $carBrand)
     {
-        return $carBrand->delete();
+        $carBrand->delete();
+        return redirect()->route('car-brands.index')->with('success', "Car brand $carBrand->name deleted successfully");
     }
 }

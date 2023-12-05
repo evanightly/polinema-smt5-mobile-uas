@@ -15,7 +15,7 @@ class AdminDashboardAppBarProfile extends ConsumerWidget {
         icon: Stack(
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(user!.imageUrl),
+              backgroundImage: user!.imageProviderWidget,
               radius: 20,
             ),
             Positioned(

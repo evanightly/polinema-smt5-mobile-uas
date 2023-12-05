@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use App\Http\Resources\AdminResource;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -13,7 +15,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return Admin::all();
+        return view('admins.index', [
+            'admins' => AdminResource::collection(Admin::latest()->get())
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.create');
     }
 
     /**
@@ -29,7 +33,14 @@ class AdminController extends Controller
      */
     public function store(StoreAdminRequest $request)
     {
-        return Admin::create($request->validated());
+        if ($request->validated()) {
+            $path = $request->file('image')->store('images/admins', 'public');
+            $file_name = explode('/', $path)[2];
+            $validated = $request->safe()->merge(['image' => $file_name]);
+
+            $newAdmin = new AdminResource(Admin::create($validated->all()));
+            return redirect()->route('admins.index')->with('success', "$newAdmin->name has been created");
+        }
     }
 
     /**
@@ -45,7 +56,9 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        //
+        return view('admins.edit', [
+            'admin' => new AdminResource($admin)
+        ]);
     }
 
     /**
@@ -53,7 +66,21 @@ class AdminController extends Controller
      */
     public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        return $admin->update($request->validated());
+        if ($request->validated()) {
+
+            $validated = $request->safe();
+            // if file exists, delete it
+            if ($request->hasFile('image')) {
+                File::delete(public_path('storage/images/admins/' . $admin->image));
+
+                $path = $request->file('image')->store('images/admins', 'public');
+                $file_name = explode('/', $path)[2];
+                $validated = $request->safe()->merge(['image' => $file_name]);
+            }
+
+            $newAdmin = new AdminResource(tap($admin)->update($validated->all()));
+            return redirect()->route('admins.index')->with('success', "$newAdmin->name has been updated");
+        }
     }
 
     /**
@@ -61,6 +88,8 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        return $admin->delete();
+        File::delete(public_path('storage/images/admins/' . $admin->image));
+        $admin->delete();
+        return redirect()->route('admins.index')->with('success', "$admin->name has been eliminated");
     }
 }

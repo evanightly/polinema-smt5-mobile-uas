@@ -6,12 +6,12 @@ part of 'user_transactions.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTransactionsHash() => r'9617c722e480768c433b833e87cf4a7de457838a';
+String _$userTransactionsHash() => r'1b565bd63b8d297dbc0ddd5655c4bfc9f66ca3eb';
 
 /// See also [UserTransactions].
 @ProviderFor(UserTransactions)
 final userTransactionsProvider =
-    AsyncNotifierProvider<UserTransactions, List<UserTransaction>>.internal(
+    AsyncNotifierProvider<UserTransactions, List<Transaction>>.internal(
   UserTransactions.new,
   name: r'userTransactionsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final userTransactionsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$UserTransactions = AsyncNotifier<List<UserTransaction>>;
+typedef _$UserTransactions = AsyncNotifier<List<Transaction>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

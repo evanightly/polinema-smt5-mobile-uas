@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/helpers/decimal_formatter.dart';
-import 'package:client/models/car.dart';
-import 'package:client/models/user_transaction.dart';
+import 'package:client/models/transaction.dart';
 import 'package:client/providers/user_transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +15,7 @@ class UserTransactionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     final userTransactions = ref.watch(userTransactionsProvider);
+
     Future<void> onRefresh() async {
       await ref.read(userTransactionsProvider.notifier).refresh();
     }
@@ -39,7 +38,7 @@ class UserTransactionScreen extends ConsumerWidget {
       );
     }
 
-    void showDetailTransaction(UserTransaction transaction) {
+    void showDetailTransaction(Transaction transaction) {
       showDialog(
         context: context,
         builder: (context) => Scaffold(
@@ -63,7 +62,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Transaction Date:'),
-                trailing: Text(transaction.transactionDate),
+                trailing: Text(transaction.formattedCreatedAt ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
@@ -81,7 +80,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Payment Date:'),
-                trailing: Text(transaction.paymentDate ?? ''),
+                trailing: Text(transaction.formattedCreatedAt ?? ''),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
@@ -93,7 +92,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Verified At:'),
-                trailing: Text(transaction.verifiedDate),
+                trailing: Text(transaction.formattedVerifiedAt ?? ''),
               ),
               Padding(
                 padding: const EdgeInsets.all(_leftPadding),
@@ -129,22 +128,21 @@ class UserTransactionScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 32),
-                    if (transaction.paymentProof != null)
-                      CachedNetworkImage(
-                        imageUrl: transaction.imageUrl,
-                        width: double.infinity,
-                        height: 200,
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) {
-                          return const Row(
-                            children: [
-                              Icon(Icons.error),
-                              SizedBox(width: 8),
-                              Text('No payment proof'),
-                            ],
-                          );
-                        },
-                      )
+                    Image(
+                      image: transaction.imageProviderWidget,
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Row(
+                          children: [
+                            Icon(Icons.error),
+                            SizedBox(width: 8),
+                            Text('No payment proof'),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -163,7 +161,16 @@ class UserTransactionScreen extends ConsumerWidget {
                   transaction.detailTransactions!.isNotEmpty)
                 for (var i = 0; i < transaction.detailTransactions!.length; i++)
                   ListTile(
-                    leading: _CarImage(transaction.detailTransactions![i].car),
+                    leading: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(_circularRadius),
+                        bottomLeft: Radius.circular(_circularRadius),
+                      ),
+                      child: Image(
+                        image: transaction
+                            .detailTransactions![i].car.imageProviderWidget,
+                      ),
+                    ),
                     title: Text(transaction.detailTransactions![i].car.name),
                     subtitle: Text(
                       '\$ ${formatNumber(transaction.detailTransactions![i].car.price)}',
@@ -190,7 +197,7 @@ class UserTransactionScreen extends ConsumerWidget {
                   ListTile(
                     onTap: () => showDetailTransaction(data[i]),
                     leading: Text((i + 1).toString()),
-                    title: Text(data[i].transactionDate),
+                    title: Text(data[i].formattedCreatedAt ?? ''),
                     subtitle: statusText(data[i].status.name),
                     trailing: Text('Total: \$ ${formatNumber(data[i].total)}'),
                   ),
@@ -209,30 +216,5 @@ class UserTransactionScreen extends ConsumerWidget {
         );
       },
     );
-  }
-}
-
-class _CarImage extends StatelessWidget {
-  const _CarImage(this.car);
-
-  final Car car;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget image = const SizedBox.shrink();
-
-    if (car.image != null) {
-      image = ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(_circularRadius),
-          bottomLeft: Radius.circular(_circularRadius),
-        ),
-        child: CachedNetworkImage(
-          imageUrl: car.imageUrl,
-        ),
-      );
-    }
-
-    return image;
   }
 }

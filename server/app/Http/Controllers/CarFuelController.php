@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CarFuel;
 use App\Http\Requests\StoreCarFuelRequest;
 use App\Http\Requests\UpdateCarFuelRequest;
+use App\Http\Resources\CarFuelResource;
 
 class CarFuelController extends Controller
 {
@@ -13,13 +14,9 @@ class CarFuelController extends Controller
      */
     public function index()
     {
-        return CarFuel::with([
-            'cars' => [
-                'fuel',
-                'bodyType',
-                'brand'
-            ],
-        ])->get();
+        return view('car_fuels.index', [
+            'carFuels' => CarFuelResource::collection(CarFuel::all())
+        ]);
     }
 
     /**
@@ -27,7 +24,7 @@ class CarFuelController extends Controller
      */
     public function create()
     {
-        //
+        return view('car_fuels.create');
     }
 
     /**
@@ -35,7 +32,8 @@ class CarFuelController extends Controller
      */
     public function store(StoreCarFuelRequest $request)
     {
-        return CarFuel::create($request->validated());
+        $newCarFuel = new CarFuelResource(CarFuel::create($request->validated()));
+        return redirect()->route('car-fuels.index')->with('success', "Car fuel $newCarFuel->name created successfully");
     }
 
     /**
@@ -51,7 +49,9 @@ class CarFuelController extends Controller
      */
     public function edit(CarFuel $carFuel)
     {
-        //
+        return view('car_fuels.edit', [
+            'carFuel' => new CarFuelResource($carFuel)
+        ]);
     }
 
     /**
@@ -59,7 +59,8 @@ class CarFuelController extends Controller
      */
     public function update(UpdateCarFuelRequest $request, CarFuel $carFuel)
     {
-        return $carFuel->update($request->validated());
+        $carFuel->update($request->validated());
+        return redirect()->route('car-fuels.index')->with('success', "Car fuel updated successfully");
     }
 
     /**
@@ -67,6 +68,7 @@ class CarFuelController extends Controller
      */
     public function destroy(CarFuel $carFuel)
     {
-        return $carFuel->delete();
+        $carFuel->delete();
+        return redirect()->route('car-fuels.index')->with('success', "Car fuel $carFuel->name deleted successfully");
     }
 }

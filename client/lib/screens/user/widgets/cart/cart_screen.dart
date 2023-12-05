@@ -1,5 +1,5 @@
 import 'package:client/components/user_cart_item.dart';
-import 'package:client/providers/user_cart.dart';
+import 'package:client/providers/user_carts.dart';
 import 'package:client/screens/user/widgets/cart/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +14,12 @@ class CartScreen extends ConsumerStatefulWidget {
 class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    final carts = ref.watch(userCartProvider);
+    final userCarts = ref.watch(userCartsProvider);
+
+    if (userCarts.hasError || userCarts.value == null) {
+      return const IconButton(onPressed: null, icon: Icon(Icons.shopping_cart));
+    }
+
     void openCartScreen() {
       void checkout() {
         Navigator.pop(context);
@@ -41,13 +46,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               ),
               child: Row(
                 children: [
-                  Text(
-                    'Total: \$${carts?.formattedTotal}',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  if (userCarts.valueOrNull != null)
+                    Text(
+                      'Total: \$${userCarts.asData!.value!.formattedCartTotal}',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: checkout,
+                    onPressed: userCarts.value!.carts.isEmpty ? null : checkout,
                     child: const Text('Checkout'),
                   ),
                 ],
@@ -58,12 +64,11 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               child: ListView(
                 children: [
                   // loop carts detail transactions
-                  if (carts != null &&
-                      carts.detailTransactions != null &&
-                      carts.detailTransactions!.isNotEmpty)
-                    for (final cart in carts.detailTransactions!)
+                  if (userCarts.value!.carts.isNotEmpty)
+                    for (final cart in userCarts.value!.carts)
                       UserCartItem(
-                        detailTransaction: cart,
+                        cartItem: cart,
+                        ref: ref,
                         key: ValueKey(cart.id),
                       ),
                 ],
@@ -76,12 +81,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
     return IconButton(
       onPressed: openCartScreen,
-      icon: Badge(
-        label: carts == null || carts.detailTransactions == null
-            ? null
-            : Text(carts.detailTransactions!.length.toString()),
-        child: const Icon(Icons.shopping_cart),
-      ),
+      icon: userCarts.value!.carts.isNotEmpty
+          ? Badge(
+              label: Text(userCarts.value!.carts.length.toString()),
+              child: const Icon(Icons.shopping_cart),
+            )
+          : const Icon(Icons.shopping_cart),
     );
   }
 }

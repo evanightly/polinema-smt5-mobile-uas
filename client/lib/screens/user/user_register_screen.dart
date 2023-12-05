@@ -79,9 +79,9 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
         return 'Password is required';
       }
 
-      if (value.length < 6) {
-        return 'Password must be at least 6 characters';
-      }
+      // if (value.length < 6) {
+      //   return 'Password must be at least 6 characters';
+      // }
 
       return null;
     }

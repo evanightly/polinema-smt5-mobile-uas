@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Car;
 use App\Models\DetailTransaction;
 
@@ -17,7 +18,9 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return Transaction::with(['user', 'verifiedBy'])->get();
+        return view('transactions.index', [
+            'transactions' => TransactionResource::collection(Transaction::with(['user', 'verifiedBy'])->get())
+        ]);
     }
 
     /**
@@ -134,7 +137,9 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        //
+        return view('transactions.edit', [
+            'transaction' => new TransactionResource($transaction)
+        ]);
     }
 
     /**
@@ -142,30 +147,8 @@ class TransactionController extends Controller
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-        // ONLY FOR USER TRANSACTION
-        return'op';
-        try {
-            dump($request->payment_method);
-            // get all request body data
-            // return($request->all());
-            if ($request->hasFile('payment_proof')) {
-                $image = $request->file('payment_proof')->store('images/payment_proof', 'public');
-                $image_name = explode('/', $image)[2];
-
-                return $transaction->update([
-                    'payment_proof' => $image_name,
-                    'payment_method' => $request->payment_method,
-                    'payment_date' => date('Y-m-d H:i:s'),
-                    'delivery_address' => $request->delivery_address,
-                    'status' => 'Pending'
-                ]);
-            }
-            return response()->json([
-                'message' => 'Image not found'
-            ], 400);
-        } catch (\Throwable $th) {
-            dump($th);
-        }
+        $transaction->update($request->validated());
+        return redirect()->route('transactions.edit', $transaction->id)->with('success', 'Transaction updated.');
     }
 
     /**

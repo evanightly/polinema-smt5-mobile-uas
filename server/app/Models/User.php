@@ -54,4 +54,33 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'user_id', 'id');
+    }
+
+    public function getJoinedAtAttribute()
+    {
+        return $this->created_at->format('d M Y');
+    }
+
+    public function getImageUrlAttribute()
+    {
+        // check if image starts with http
+        if (strpos($this->image, 'http') === 0) {
+            return $this->image;
+        }
+        return asset('storage/images/users/' . $this->image);
+    }
+
+    public function getCartTotalAttribute()
+    {
+        return $this->carts->sum('subtotal');
+    }
+
+    public function getFormattedCartTotalAttribute()
+    {
+        return number_format($this->cartTotal, 0, ',', '.');
+    }
 }

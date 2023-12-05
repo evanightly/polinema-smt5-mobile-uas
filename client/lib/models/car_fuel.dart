@@ -1,23 +1,25 @@
 import 'package:client/models/car.dart';
 
 class CarFuel {
-  final String? id;
+  final int? id;
   final String name;
-  final List<Car> cars;
+  final List<Car>? cars;
 
-  CarFuel({this.id, required this.name, this.cars = const []});
+  CarFuel({this.id, required this.name, this.cars});
 
   factory CarFuel.fromJson(Map<String, dynamic> json) {
+    final List<Car> parsedCars = json['cars'] != null
+        ? (json['cars'] as List<dynamic>).map(
+            (car) {
+              return Car.fromJson(car);
+            },
+          ).toList()
+        : [];
+
     return CarFuel(
-      id: json['id'].toString(),
-      name: json['name'].toString(),
-      cars: json['cars'] != null
-          ? (json['cars'] as List<dynamic>).map(
-              (car) {
-                return Car.fromJson(car);
-              },
-            ).toList()
-          : [],
+      id: json['id'],
+      name: json['name'],
+      cars: parsedCars,
     );
   }
 

@@ -1,9 +1,9 @@
+import 'package:client/components/loading_indicator.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/providers/admin_dashboard_actions.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'admin_auth.g.dart';
@@ -12,38 +12,30 @@ part 'admin_auth.g.dart';
 class AdminAuth extends _$AdminAuth {
   void loginAdmin(BuildContext context, String email, String password) async {
     try {
-      EasyLoading.show(
-        indicator: const CircularProgressIndicator(),
-        status: 'Loading...',
-      );
+      LoadingIndicator.show();
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post(
-        '/admin/login',
-        data: {
-          'email': email,
-          'password': password,
-        },
+        '/admins/login',
+        data: {'email': email, 'password': password},
       );
 
-      final data = response.data as Map<String, dynamic>;
-      final admin = Admin.fromAuthJson(data['data']);
+      final admin = Admin.fromAuthJson(response.data);
 
       state = admin;
       ref.read(adminDashboardActionsProvider.notifier).setActions([]);
 
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/admin');
-        EasyLoading.dismiss();
+        LoadingIndicator.dismiss();
       }
     } on DioException catch (d) {
       if (d.type == DioExceptionType.connectionTimeout) {
-        EasyLoading.showError(
+        LoadingIndicator.showError(
           'Server timeout, probably wrong ip address supplied',
-          duration: const Duration(seconds: 5),
         );
       }
     } catch (e) {
-      EasyLoading.showError('Failed with error, admin not found');
+      LoadingIndicator.showError('Failed with error, admin not found');
     }
   }
 
@@ -51,23 +43,19 @@ class AdminAuth extends _$AdminAuth {
     // state = null;
     // ref.read(adminDashboardActionsProvider.notifier).empty();
     // log('Logout');
+    LoadingIndicator.show();
 
-    EasyLoading.show(
-      indicator: const CircularProgressIndicator(),
-      status: 'Loading...',
-    );
-
-    await ref.read(dioHttpProvider.notifier).http.post('/admin/logout');
+    await ref.read(dioHttpProvider.notifier).http.post('/admins/logout');
 
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/');
-      EasyLoading.dismiss();
+      LoadingIndicator.dismiss();
     }
   }
 
   void redirectIfNotLogged(BuildContext context) {
     if (state == null) {
-      Navigator.pushReplacementNamed(context, '/admin/login');
+      Navigator.pushReplacementNamed(context, '/admins/login');
     }
   }
 

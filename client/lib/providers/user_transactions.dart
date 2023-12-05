@@ -1,13 +1,13 @@
-import 'dart:developer';
+// ignore_for_file: non_constant_identifier_names
 
-import 'package:client/models/car.dart';
-import 'package:client/models/user_transaction.dart';
-import 'package:client/providers/cars.dart';
+import 'dart:io';
+import 'package:client/components/loading_indicator.dart';
+import 'package:client/models/transaction.dart';
+import 'package:client/models/user.dart';
 import 'package:client/providers/diohttp.dart';
 import 'package:client/providers/user_auth.dart';
-import 'package:client/providers/user_cart.dart';
+import 'package:client/providers/user_carts.dart';
 import 'package:dio/dio.dart';
-import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,81 +16,95 @@ part 'user_transactions.g.dart';
 @Riverpod(keepAlive: true)
 class UserTransactions extends _$UserTransactions {
   @override
-  Future<List<UserTransaction>> build() async {
-    return await get();
-  }
+  Future<List<Transaction>> build() async => await get();
 
-  Future<List<UserTransaction>> get() async {
+  Future<List<Transaction>> get() async {
     try {
       final user = ref.read(userAuthProvider);
       final dio = ref.read(dioHttpProvider.notifier);
-      // print('Token');
-      // print(dio.http.options.headers);
-      // print('URL');
-      // print('${dio.http.options.baseUrl}/users/${user!.id}}');
-      final response = await dio.http.get('/users/${user!.id}');
+      final response = await dio.http.get('/users/${user!.id}/transactions');
       final data = response.data as dynamic;
       final transactions = data['transactions'] as List<dynamic>;
 
-      final userTransactions = transactions.map(
-        (transaction) {
-          return UserTransaction.fromJson(transaction);
-        },
-      ).toList();
-      return userTransactions;
+      return transactions.map((t) => Transaction.fromJson(t)).toList();
     } catch (e) {
       return [];
     }
   }
 
+  Future<void> post(
+    BuildContext context,
+    User loggedUser,
+    String deliveryAddress,
+    PaymentMethod paymentMethod,
+    File paymentProof,
+  ) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+
+    try {
+      LoadingIndicator.show();
+
+      FormData formData = FormData.fromMap({
+        'user_id': loggedUser.id,
+        'delivery_address': deliveryAddress,
+        'payment_method': paymentMethod.name,
+        'payment_proof': await MultipartFile.fromFile(paymentProof.path),
+      });
+
+      final response = await dio.http.post('/transactions', data: formData);
+
+      if (response.statusCode == 201) {
+        await ref.read(userCartsProvider.notifier).refresh();
+        await ref.read(userTransactionsProvider.notifier).refresh();
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+      }
+
+      LoadingIndicator.dismiss();
+    } on DioException catch (_) {}
+  }
+
+  Future<void> put(BuildContext context, Transaction userTransaction) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+
+    try {
+      LoadingIndicator.show();
+
+      FormData formData = FormData.fromMap({
+        'delivery_address': userTransaction.deliveryAddress,
+        'payment_method': userTransaction.paymentMethod,
+      });
+
+      // If user uploaded a new image, then add it to the form data
+      if (userTransaction.uploadPaymentProof != null) {
+        formData = FormData.fromMap({
+          'delivery_address': userTransaction.deliveryAddress,
+          'payment_method': userTransaction.paymentMethod,
+          'payment_proof': await MultipartFile.fromFile(
+            userTransaction.uploadPaymentProof!.path,
+          ),
+        });
+      }
+
+      final response = await dio.http.post(
+        '/transactions/${userTransaction.id}?_method=PUT',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        ref.read(userTransactionsProvider.notifier).refresh();
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+      }
+
+      LoadingIndicator.dismiss();
+    } on DioException catch (_) {}
+  }
+
   Future<void> refresh() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
-  }
-
-  Future<void> add(BuildContext context, Car car) async {
-    try {
-      final user = ref.read(userAuthProvider);
-      final dio = ref.read(dioHttpProvider.notifier);
-      final cars = ref.read(carsProvider.notifier);
-      final response = await dio.http.post(
-        '/transactions',
-        data: {'user_id': user!.id, 'car': car.toJson()},
-      );
-
-      log(response.data.toString());
-
-      if (response.statusCode == 200) {
-        await ref.read(carsProvider.notifier).refresh();
-        await ref.read(userTransactionsProvider.notifier).refresh();
-        ref.read(userCartProvider.notifier).refresh();
-
-        if (context.mounted) {
-          ElegantNotification.success(
-            title: const Text("Success"),
-            description: Text(response.data['message']),
-            background: Theme.of(context).colorScheme.background,
-          ).show(context);
-        }
-
-        await cars.refresh();
-      }
-      final data = response.data as dynamic;
-      final newTransaction = UserTransaction.fromJson(data);
-      state.whenData((transactions) {
-        transactions.add(newTransaction);
-        state = AsyncValue.data(transactions);
-      });
-
-      return;
-    } on DioException catch (e) {
-      if (context.mounted) {
-        ElegantNotification.error(
-          title: const Text("Error"),
-          description: Text(e.response?.data['message']),
-          background: Theme.of(context).colorScheme.background,
-        ).show(context);
-      }
-    }
   }
 }

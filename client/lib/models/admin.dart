@@ -1,4 +1,7 @@
-import 'package:client/providers/diohttp.dart';
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class Admin {
@@ -7,7 +10,8 @@ class Admin {
   final String email;
   final String password;
   final bool isSuperAdmin;
-  final String? image;
+  final String? imageUrl;
+  final File? uploadImage;
   final String? token;
 
   const Admin({
@@ -16,37 +20,26 @@ class Admin {
     required this.email,
     required this.password,
     required this.isSuperAdmin,
-    this.image,
+    this.imageUrl,
+    this.uploadImage,
     this.token,
   });
 
-  String get imageUrl {
-    if (image == null) {
-      return '';
-    }
-
-    if (image!.startsWith('http')) {
-      return image!;
-    } else {
-      return 'http://$ipv4/polinema-smt5-mobile-uas/server/public/storage/images/admins/$image';
-    }
-  }
-
   ImageProvider get imageProviderWidget {
-    if (image == 'null') {
+    if (imageUrl == 'null') {
       return const AssetImage('assets/images/person1.jpg');
     }
-    return NetworkImage(imageUrl);
+    return NetworkImage(imageUrl!);
   }
 
   factory Admin.fromAuthJson(Map<String, dynamic> json) {
-    final id = json['user']['id'].toString();
-    final name = json['user']['name'].toString();
-    final email = json['user']['email'].toString();
-    final password = json['user']['password'].toString();
-    final isSuperAdmin = json['user']['isSuperAdmin'] == 1 ? true : false;
-    final image = json['user']['image'].toString();
-    final token = json['token'].toString();
+    final id = json['admin']['id'];
+    final name = json['admin']['name'];
+    final email = json['admin']['email'];
+    final password = json['admin']['password'];
+    final isSuperAdmin = json['admin']['is_super_admin'] == 1 ? true : false;
+    final imageUrl = json['admin']['image_url'];
+    final token = json['token'];
 
     final admin = Admin(
       id: id,
@@ -54,21 +47,20 @@ class Admin {
       email: email,
       password: password,
       isSuperAdmin: isSuperAdmin,
-      image: image,
+      imageUrl: imageUrl,
       token: token,
     );
 
     return admin;
   }
 
-  // fromJson
   factory Admin.fromJson(Map<String, dynamic> json) {
-    final id = json['id'].toString();
-    final name = json['name'].toString();
-    final email = json['email'].toString();
-    final password = json['password'].toString();
-    final isSuperAdmin = json['isSuperAdmin'] == 1 ? true : false;
-    final image = json['image'].toString();
+    final id = json['id'];
+    final name = json['name'];
+    final email = json['email'];
+    final password = json['password'];
+    final isSuperAdmin = json['is_super_admin'] == 1 ? true : false;
+    final imageUrl = json['image_url'];
 
     final admin = Admin(
       id: id,
@@ -76,7 +68,7 @@ class Admin {
       email: email,
       password: password,
       isSuperAdmin: isSuperAdmin,
-      image: image,
+      imageUrl: imageUrl,
     );
 
     return admin;
@@ -88,8 +80,8 @@ class Admin {
       'name': name,
       'email': email,
       'password': password,
-      'isSuperAdmin': isSuperAdmin,
-      'image': image,
+      'is_super_admin': isSuperAdmin,
+      'image_url': imageUrl,
     };
   }
 }

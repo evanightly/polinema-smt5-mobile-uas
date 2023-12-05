@@ -1,22 +1,31 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:client/models/car.dart';
+import 'package:client/providers/cars.dart';
+import 'package:elegant_notification/elegant_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<bool> deleteCar(BuildContext context) async {
-  return await showDialog(
-    barrierDismissible: false,
+Future<void> deleteCar(BuildContext context, WidgetRef ref, Car car) async {
+  AwesomeDialog(
     context: context,
-    builder: (context) {
-      void destroy() => Navigator.pop(context, true);
+    dialogType: DialogType.warning,
+    animType: AnimType.rightSlide,
+    title: 'Are you sure?',
+    desc:
+        'You are about to delete car ${car.name}\n\nWarning: this operation will delete all data related to this car',
+    btnCancelOnPress: () {},
+    btnOkOnPress: () async {
+      ref.read(carsProvider.notifier)
+        ..delete(car.id!)
+        ..refresh();
 
-      void cancel() => Navigator.pop(context, false);
-
-      return AlertDialog(
-        title: const Text('Delete Data'),
-        content: const Text('Are You Sure?'),
-        actions: [
-          TextButton(onPressed: destroy, child: const Text('Yes')),
-          TextButton(onPressed: cancel, child: const Text('Cancel')),
-        ],
-      );
+      if (context.mounted) {
+        ElegantNotification.success(
+          title: const Text("Success"),
+          description: Text("${car.name} deleted!"),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
+      }
     },
-  );
+  ).show();
 }

@@ -15,10 +15,15 @@ class Transaction extends Model
         'payment_proof',
         'payment_date',
         'total',
-        'status', // ['On Going', 'Pending', 'Rejected', 'Verified', 'Finished']
+        'status', // ['Pending', 'Rejected', 'Verified', 'Finished']
         'verified_by', // Admin
         'verified_at',
         'delivery_address',
+    ];
+
+    protected $casts = [
+        'payment_date' => 'datetime',
+        'verified_at' => 'datetime',
     ];
 
     // User has many transaction of car
@@ -34,7 +39,36 @@ class Transaction extends Model
 
     public function detailTransactions()
     {
-        return $this->hasMany(DetailTransaction::class);
+        return $this->hasMany(DetailTransaction::class, 'transaction_id', 'id');
+    }
+
+    public function getPaymentProofUrlAttribute()
+    {
+        // check if image starts with http
+        if (strpos($this->payment_proof, 'http') === 0) {
+            return $this->payment_proof;
+        }
+        return asset('storage/images/payment_proofs/' . $this->payment_proof);
+    }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->format('d F Y');
+    }
+
+    public function getFormattedVerifiedAtAttribute()
+    {
+        return $this->verified_at ? $this->verified_at->format('d F Y') : '';
+    }
+
+    public function getFormattedTotalAttribute()
+    {
+        return number_format($this->total, 0, ',', '.');
+    }
+
+    public function getFormattedPaymentDateAttribute()
+    {
+        return $this->payment_date ? $this->payment_date->format('d F Y') : '';
     }
 
     // public function getPaymentProofAttribute($value)

@@ -23,15 +23,14 @@ class StoreTransactionRequest extends FormRequest
     {
 
         return [
-            'user_id' => ['exists:users,id'],
-            'payment_method' => ['in:Cash,CreditCard,DebitCard'],
-            'payment_proof' => ['image', 'max:2048'],
-            'payment_date' => ['date'],
-            'total' => ['numeric'],
-            'status' => ['in:On Going,Pending,Rejected,Verified,Finished'],
-            'verified_by' => ['exists:admins,id'],
-            'verified_at' => ['date'],
-            'deliver_address' => ['string'],
+            'user_id' => 'required|exists:users,id',
+            'payment_method' => 'required|in:Cash,CreditCard,DebitCard',
+            'payment_proof' => 'image|max:2048',
+            /**
+             * Total is not required because it will be calculated from the cart
+             * 'total' => 'required|numeric|min:0',
+             */
+            'delivery_address' => 'required|string|max:255',
         ];
     }
 }

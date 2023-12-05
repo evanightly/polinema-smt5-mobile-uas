@@ -34,12 +34,14 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 7. Jalankan perintah `composer install`
 8. Jalankan perintah `php artisan key:generate`
 9. Jalankan perintah `php artisan storage:link`
+8. Jalankan perintah `php artisan sweetalert:publish`
 10. Jalankan perintah `php artisan serve`
 
 <!-- /// -->
+`cd server && npm run dev`
 `cd server && php artisan serve`
-`cd client && dart run build_runner watch -d`
 `cd server && php artisan dump-server`
+`cd client && dart run build_runner watch -d`
 `cd client && flutter run`
 
 ## Note
@@ -74,16 +76,25 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
     - Waiting for confirmation
     - Complete
     - Cancelled
+    
+## Bugs
+- Navbar light mode button not sync properly
+- Cart 
+    - Quantity field doubled when added then closed - Fixed
+    - Null check if qty input empty, I disabled it for now
+    - Cart total not synced after changing car qty
+- Register User
+  - User already created, but not redirecting
 
 ## Progress
 - Admin
   - login ✔
   - Admin Management
-    - Create
+    - Create ✔
     - Read ✔
-    - Update
-    - Delete
-  - User Management ✔
+    - Update ✔
+    - Delete ✔
+  - User Management
     - Create ✔
     - Read ✔
     - Update ✔
@@ -120,14 +131,14 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
   - Dashboard
     - Home
       - List Barang ✔
-      - Filter Barang + SPK
+      - Filter Barang + SPK ✔
     - Cart
-    - Car Showcase (based on brand)
     - Transaction List ❓ (read [Note](#note) above)
-
 
 - Settings ✔
   - Dark Mode ✔
+- Website Profile
+  - Update Profile
 - Profile
   - Update Profile
 

@@ -148,7 +148,7 @@ class _CarBrandActions extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (carBrand.cars.isEmpty)
+        if (carBrand.cars != null && carBrand.cars!.isEmpty)
           IconButton(
             onPressed: delete,
             icon: const Icon(Icons.delete),

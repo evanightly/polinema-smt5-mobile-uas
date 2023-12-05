@@ -1,9 +1,12 @@
 import 'package:client/components/user_dashboard_appbar_profile.dart';
+import 'package:client/providers/car_body_types.dart';
+import 'package:client/providers/car_brands.dart';
 import 'package:client/providers/user_auth.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:client/screens/user/sub_screens/user_main_screen.dart';
 import 'package:client/screens/user/sub_screens/user_transaction_screen.dart';
 import 'package:client/screens/user/widgets/cart/cart_screen.dart';
+import 'package:client/screens/user/widgets/user_main/car_filter_screen.dart';
 import 'package:client/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,10 +24,7 @@ class DashboardBottomMenu {
   final SalomonBottomBarItem menu;
   final Widget? page;
 
-  const DashboardBottomMenu({
-    required this.menu,
-    this.page,
-  });
+  const DashboardBottomMenu({required this.menu, this.page});
 }
 
 class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
@@ -69,12 +69,16 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userAuthProvider);
+    final carBrands = ref.watch(carBrandsProvider);
+    final carBodyTypes = ref.watch(carBodyTypesProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ambatucar', style: TextStyle(fontSize: 20.0)),
         automaticallyImplyLeading: false,
         actions: [
           // show cart and user profile
+          if (carBrands.hasValue && carBodyTypes.hasValue)
+            const CarFilterScreen(),
           if (user != null) const CartScreen(),
           const UserDashboardAppBarProfile()
         ],

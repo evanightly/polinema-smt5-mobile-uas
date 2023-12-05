@@ -5,6 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use App\Http\Resources\CarBodyTypeResource;
+use App\Http\Resources\CarBrandResource;
+use App\Http\Resources\CarFuelResource;
+use App\Http\Resources\CarResource;
+use App\Models\CarBodyType;
+use App\Models\CarBrand;
+use App\Models\CarFuel;
+use Illuminate\Support\Facades\File;
 
 class CarController extends Controller
 {
@@ -13,18 +21,9 @@ class CarController extends Controller
      */
     public function index()
     {
-        // Display all available cars
-        return Car::with([
-            'brand' => function ($brand) {
-                $brand->select('id', 'name');
-            },
-            'fuel' => function ($fuel) {
-                $fuel->select('id', 'name');
-            },
-            'bodyType' => function ($bodyType) {
-                $bodyType->select('id', 'name');
-            }
-        ])->latest()->get();
+        return view('cars.index', [
+            'cars' => CarResource::collection(Car::latest()->paginate(10))
+        ]);
     }
 
     /**
@@ -32,7 +31,11 @@ class CarController extends Controller
      */
     public function create()
     {
-        //
+        return view('cars.create', [
+            'brands' => CarBrandResource::collection(CarBrand::all()),
+            'body_types' => CarBodyTypeResource::collection(CarBodyType::all()),
+            'fuels' => CarFuelResource::collection(CarFuel::all()),
+        ]);
     }
 
     /**
@@ -40,31 +43,14 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
-        if (!$request->hasFile('image')) {
-            return response()->json([
-                'message' => 'Image not found'
-            ], 400);
+        if ($request->validated()) {
+            $path = $request->file('image')->store('images/cars', 'public');
+            $file_name = explode('/', $path)[2];
+            $validated = $request->safe()->merge(['image' => $file_name]);
+
+            $newCar = new CarResource(Car::create($validated->all()));
+            return redirect()->route('cars.index')->with('success', "$newCar->name has been created");
         }
-        $image = $request->file('image')->store('images/cars', 'public');
-        $image_name = explode('/', $image)[2];
-
-        $car = Car::create([
-            'name' => $request->name,
-            'brand_id' => $request->brand_id,
-            'body_type_id' => $request->body_type_id,
-            'year' => $request->year,
-            'km_min' => $request->km_min,
-            'km_max' => $request->km_max,
-            'fuel_id' => $request->fuel_id,
-            'price' => $request->price,
-            'image' => $image_name,
-            'description' => $request->description,
-            'condition' => $request->condition,
-            'transmission' => $request->transmission,
-            'status' => $request->status,
-        ]);
-
-        return $car;
     }
 
     /**
@@ -72,7 +58,9 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+        return view('cars.show', [
+            'car' => new CarResource($car)
+        ]);
     }
 
     /**
@@ -80,7 +68,12 @@ class CarController extends Controller
      */
     public function edit(Car $car)
     {
-        //
+        return view('cars.edit', [
+            'car' => new CarResource($car),
+            'brands' => CarBrandResource::collection(CarBrand::all()),
+            'body_types' => CarBodyTypeResource::collection(CarBodyType::all()),
+            'fuels' => CarFuelResource::collection(CarFuel::all()),
+        ]);
     }
 
     /**
@@ -88,50 +81,20 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        try {
-            // check if the request has file
+        if ($request->validated()) {
+
+            $validated = $request->safe();
+            // if file exists, delete it
             if ($request->hasFile('image')) {
+                File::delete(public_path('storage/images/cars/' . $car->image));
 
-
-                // if the image starts with http then don't do anything
-                if (strpos($request->image, 'http') !== false) {
-                    $image_name = $car->image;
-                }
-
-                // check if the image exists
-                else if (file_exists(public_path('storage/images/cars/' . $car->image))) {
-                    // delete the image
-                    unlink(public_path('storage/images/cars/' . $car->image));
-                }
-                // store the new image
-                $image = $request->file('image')->store('images/cars', 'public');
-                $image_name = explode('/', $image)[2];
-            } else {
-                $image_name = $car->image;
+                $path = $request->file('image')->store('images/cars', 'public');
+                $file_name = explode('/', $path)[2];
+                $validated = $request->safe()->merge(['image' => $file_name]);
             }
-            $car->update([
-                'name' => $request->name,
-                'brand_id' => $request->brand_id,
-                'body_type_id' => $request->body_type_id,
-                'year' => $request->year,
-                'km_min' => $request->km_min,
-                'km_max' => $request->km_max,
-                'fuel_id' => $request->fuel_id,
-                'price' => $request->price,
-                'image' => $image_name,
-                'description' => $request->description,
-                'condition' => $request->condition,
-                'transmission' => $request->transmission,
-                'status' => $request->status,
-            ]);
-            return response()->json([
-                'message' => 'Car updated successfully'
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Something went wrong',
-                'error' => $th->getMessage()
-            ], 400);
+
+            $newCar = new CarResource(tap($car)->update($validated->all()));
+            return redirect()->route('cars.index')->with('success', "$newCar->name has been updated");
         }
     }
 
@@ -140,13 +103,8 @@ class CarController extends Controller
      */
     public function destroy(Car $car)
     {
-        // delete car with its image but first check if the image exists
-        if (file_exists(public_path('storage/images/cars/' . $car->image))) {
-            unlink(public_path('storage/images/cars/' . $car->image));
-        }
+        File::delete(public_path('storage/images/cars/' . $car->image));
         $car->delete();
-        return response()->json([
-            'message' => 'Car deleted successfully'
-        ], 200);
+        return redirect()->route('cars.index')->with('success', "$car->name has been deleted");
     }
 }
