@@ -69,13 +69,18 @@
                                 </form>
                             </dialog>
 
-                            <a href="{{ route('admins.edit', [$admin]) }}" class="btn btn-primary">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
+                            {{-- If not superadmin or the current admin is not equal the one who logged in --}}
+                            {{-- get logged user data --}}
+                            @if (Auth::user()->is_super_admin && $admin->id != auth()->user()->id)
+                                <a href="{{ route('admins.edit', [$admin]) }}" class="btn btn-primary">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
 
-                            <button class="btn btn-error" onclick="confirmDeleteModal{{ $loop->index }}.showModal()">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
+                                <button class="btn btn-error" onclick="confirmDeleteModal{{ $loop->index }}.showModal()">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            @endif
+
                         </div>
                     </td>
                 </tr>
