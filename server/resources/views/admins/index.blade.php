@@ -3,7 +3,9 @@
 @section('content-dashboard')
     <div class="flex items-center gap-5">
         <h1 class="text-2xl font-bold">Admins</h1>
-        <a href="{{ route('admins.create') }}" class="btn btn-md btn-primary">Add Admin</a>
+        @if (Auth::user()->is_super_admin)
+            <a href="{{ route('admins.create') }}" class="btn btn-md btn-primary">Add Admin</a>
+        @endif
     </div>
     <table class="table table-zebra">
         <thead>
@@ -42,7 +44,7 @@
 
                             <dialog id="confirmDeleteModal{{ $loop->index }}" class="modal">
                                 <div class="modal-box">
-                                    <h3 class="font-bold text-lg">Are you sure?</h3>
+                                    <h3 class="text-lg font-bold">Are you sure?</h3>
                                     <div class="py-4">
                                         <p>You are about to delete {{ $admin->name }}</p>
                                         <p class="text-bold">

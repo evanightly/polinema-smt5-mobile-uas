@@ -7,6 +7,7 @@ use App\Http\Controllers\CarBrandController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarFuelController;
 use App\Http\Controllers\DetailTransactionController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index']);
+    Route::get('/settings/profile', SettingsController::class . '@profile')->name('settings.profile');
     Route::resource('cars', CarController::class);
     Route::resource('users', UserController::class);
     Route::resource('car-body-types', CarBodyTypeController::class);
