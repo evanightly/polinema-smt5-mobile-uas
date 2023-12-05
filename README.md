@@ -38,11 +38,11 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 10. Jalankan perintah `php artisan serve`
 
 <!-- /// -->
-`cd server && npm run dev`
-`cd server && php artisan serve`
-`cd server && php artisan dump-server`
-`cd client && dart run build_runner watch -d`
-`cd client && flutter run`
+cd server && npm run dev
+cd server && php artisan serve
+cd server && php artisan dump-server
+cd client && dart run build_runner watch -d
+cd client && flutter run
 
 ## Note
 1.  Transaction Entity
