@@ -4,7 +4,7 @@
     <div class="flex items-center gap-5">
         <h1 class="text-2xl font-bold">Transactions</h1>
     </div>
-    <table class="table table-zebra">
+    <table id="main-table" class="table table-zebra">
         <thead>
             <tr>
                 <th>Name</th>
@@ -54,3 +54,9 @@
         </tbody>
     </table>
 @endsection
+
+@push('postscripts')
+    <script>
+        new DataTable('#main-table')
+    </script>
+@endpush

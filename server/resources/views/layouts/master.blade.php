@@ -7,8 +7,10 @@
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}" type="text/css">
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('js/datatables.min.js') }}"></script>
 
     <script>
         const darkTheme = 'customDarkTheme'
@@ -57,7 +59,7 @@
                 title: 'Validation error',
                 html: `<ul class="flex flex-col gap-5 text-white">
                 @foreach ($errors->all() as $error)
-                    <li class="rounded-lg  bg-red-500 py-3 px-2">{{ $error }}</li>
+                    <li class="px-2 py-3 bg-red-500 rounded-lg">{{ $error }}</li>
                 @endforeach
             </ul>`
             });
@@ -72,7 +74,7 @@
     </script>
 
 
-    @yield('postscripts')
+    @stack('postscripts')
 
 </body>
 

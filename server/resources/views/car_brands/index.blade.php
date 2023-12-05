@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold">Car Brands</h1>
         <a href="{{ url('car-brands/create') }}" class="btn btn-md btn-primary">Add Brand</a>
     </div>
-    <table class="table table-zebra">
+    <table  id="main-table" class="table table-zebra">
         <thead>
             <tr>
                 <th>Name</th>
@@ -29,7 +29,7 @@
 
                                 <dialog id="confirmDeleteModal{{ $loop->index }}" class="modal">
                                     <div class="modal-box">
-                                        <h3 class="font-bold text-lg">Are you sure?</h3>
+                                        <h3 class="text-lg font-bold">Are you sure?</h3>
                                         <div class="py-4">
                                             <p>You are about to delete {{ $carBrand->name }}</p>
                                         </div>
@@ -60,3 +60,9 @@
         </tbody>
     </table>
 @endsection
+
+@push('postscripts')
+    <script>
+        new DataTable('#main-table')
+    </script>
+@endpush

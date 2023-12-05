@@ -7,7 +7,7 @@
             <a href="{{ route('admins.create') }}" class="btn btn-md btn-primary">Add Admin</a>
         @endif
     </div>
-    <table class="table table-zebra">
+    <table id="main-table" class="table table-zebra">
         <thead>
             <tr>
                 <th>Name</th>
@@ -90,3 +90,9 @@
         </tbody>
     </table>
 @endsection
+
+@push('postscripts')
+    <script>
+        new DataTable('#main-table')
+    </script>
+@endpush

@@ -3,7 +3,7 @@
 @section('content')
     <div class="drawer lg:drawer-open">
         <input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content flex flex-col items-center gap-5">
+        <div class="flex flex-col items-center gap-5 drawer-content">
 
             <!-- Page content here -->
 
@@ -11,13 +11,13 @@
                 @include('components.admin_dashboard_navbar')
             @endonce
 
-            <div class="container px-8 flex flex-col gap-5">
+            <div class="container flex flex-col gap-5 px-8">
                 @yield('content-dashboard')
             </div>
         </div>
         <div class="drawer-side">
             <label for="dashboard-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
-            <ul id="dashboard-sidebar" class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+            <ul id="dashboard-sidebar" class="min-h-full p-4 menu w-80 bg-base-200 text-base-content">
                 <li>
                     <span class="text-lg font-bold">
                         Ambatucar
@@ -43,7 +43,7 @@
     </div>
 @endsection
 
-@section('postscripts')
+@push('postscripts')
     <script>
         const currentUrl = window.location.pathname;
 
@@ -90,4 +90,4 @@
             }
         });
     </script>
-@endsection
+@endpush

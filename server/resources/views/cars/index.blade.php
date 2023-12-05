@@ -5,7 +5,7 @@
         <h1 class="text-2xl font-bold">Cars</h1>
         <a href="{{ url('cars/create') }}" class="btn btn-md btn-primary">Add Car</a>
     </div>
-    <table class="table table-zebra">
+    <table id="main-table" class="table table-zebra">
         <thead>
             <tr>
                 <th>Image</th>
@@ -19,13 +19,14 @@
                 <th>Condition</th>
                 <th>Transmission</th>
                 <th>Stock</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($cars as $car)
                 <tr>
                     <td>
-                        <div class="flex gap-5 items-center">
+                        <div class="flex items-center gap-5">
                             <div class="avatar">
                                 <div class="w-32 h-20">
                                     <img src="{{ $car->image_url }}" alt="{{ $car->name }}'Photo">
@@ -57,7 +58,7 @@
 
                             <dialog id="confirmDeleteModal{{ $loop->index }}" class="modal">
                                 <div class="modal-box">
-                                    <h3 class="font-bold text-lg">Are you sure?</h3>
+                                    <h3 class="text-lg font-bold">Are you sure?</h3>
                                     <div class="py-4">
                                         <p>You are about to delete {{ $car->name }}</p>
                                         <p class="text-bold">
@@ -129,3 +130,30 @@
         @endif
     </div>
 @endsection
+
+@push('postscripts')
+    <script>
+        $('#main-table').DataTable({
+            // paging is handled by laravel paginate
+            // custom page pagination, like showing 1-10 in pagination buttons
+            "page": 1,
+            "pages": 6,
+            "start": 10,
+            "end": 20,
+            "length": 10,
+            "recordsTotal": 57,
+            "recordsDisplay": 57,
+            "serverSide": false,
+            "bLengthChange": false,
+            "order": [
+                [1, "asc"]
+            ],
+            "columnDefs": [{
+                "targets": [0, 11],
+                "orderable": false
+            }],
+            buttons: ['copy', 'csv', 'excel']
+
+        });
+    </script>
+@endpush
