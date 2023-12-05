@@ -8,14 +8,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
-class UserMainScreen extends ConsumerWidget {
+class UserMainScreen extends ConsumerStatefulWidget {
   const UserMainScreen({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UserMainScreen> createState() => _UserMainScreenState();
+}
+
+class _UserMainScreenState extends ConsumerState<UserMainScreen> {
+  bool _isLoading = false;
+  int _page = 1;
+  final _listViewKey = GlobalKey();
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        setState(() {
+          _page++;
+          _isLoading = true;
+        });
+        print('page: $_page');
+        print('Getting page: $_page');
+        await ref
+            .read(carsProvider.notifier)
+            .getPagination(_page)
+            .then((value) {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      }
+    });
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     final cars = ref.watch(carsProvider);
 
     Future<void> onRefresh() async {
+      setState(() {
+        _page = 1;
+      });
       await ref.read(carsProvider.notifier).refresh();
       await ref.read(userTransactionsProvider.notifier).refresh();
       await ref.read(userCartsProvider.notifier).refresh();
@@ -51,6 +84,8 @@ class UserMainScreen extends ConsumerWidget {
       key: refreshIndicatorKey,
       onRefresh: onRefresh,
       child: ListView(
+        key: _listViewKey,
+        controller: scrollController,
         children: [
           Container(
             height: 140,
@@ -218,6 +253,7 @@ class UserMainScreen extends ConsumerWidget {
               );
             },
           ),
+          if (_isLoading) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );
