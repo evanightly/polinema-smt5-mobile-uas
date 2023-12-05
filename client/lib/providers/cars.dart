@@ -35,12 +35,29 @@ class Cars extends _$Cars {
 
     try {
       final response = await dio.http.get('/cars');
-      final data = response.data as List<dynamic>;
+      final data = response.data['data'] as List<dynamic>;
       final cars = data.map((car) => Car.fromJson(car)).toList();
 
       return cars;
     } catch (e) {
       return [];
+    }
+  }
+
+  Future<void> getPagination(int page) async {
+    final dio = ref.read(dioHttpProvider.notifier);
+
+    try {
+      final response = await dio.http.get('/cars?page=$page');
+      final data = response.data['data'] as List<dynamic>;
+      final cars = data.map((car) => Car.fromJson(car)).toList();
+
+      // after getting data, push it to the state
+      state = AsyncData([...state.asData!.value, ...cars]);
+
+      // state = AsyncData(cars);
+    } catch (_) {
+      state = const AsyncValue.data([]);
     }
   }
 

@@ -17,7 +17,7 @@ class CarController extends Controller
     public function index()
     {
         // Display all available cars
-        return CarResource::collection(Car::with(['brand', 'bodyType', 'fuel'])->latest()->get());
+        return CarResource::collection(Car::with(['brand', 'bodyType', 'fuel'])->latest()->paginate(5));
     }
 
     /**
