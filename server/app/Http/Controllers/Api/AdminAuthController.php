@@ -33,6 +33,21 @@ class AdminAuthController extends Controller
         }
     }
 
+    public function show(Admin $admin)
+    {
+        try {
+            return response()->json([
+                'message' => 'Get admin success',
+                'data' => new AdminResource($admin)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Get admin failed',
+                'error' => $th->getMessage()
+            ], 401);
+        }
+    }
+
     public function logout(Request $request)
     {
         try {

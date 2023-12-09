@@ -39,6 +39,28 @@ class AdminAuth extends _$AdminAuth {
     }
   }
 
+  // Used only for edit profile
+  Future<Admin?> get() async {
+    try {
+      final id = state?.id;
+      final token = state?.token;
+      final dio = ref.read(dioHttpProvider);
+      final response = await dio.get('/admins/$id');
+      final data = response.data as Map<String, dynamic>;
+      data['admin'] = data;
+      data['token'] = token;
+      final admin = Admin.fromAuthJson(data);
+
+      return admin;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future refresh() async {
+    state = await get();
+  }
+
   void logout(BuildContext context) async {
     // state = null;
     // ref.read(adminDashboardActionsProvider.notifier).empty();

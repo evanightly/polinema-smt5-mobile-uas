@@ -36,7 +36,11 @@ class UpdateAdminRequest extends FormRequest
     {
         $this->merge([
             'is_super_admin' => $this->has('is_super_admin') && $this->is_super_admin === 'on' ? true : false,
-            'password' => Hash::make($this->password)
         ]);
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->replace(['password' => Hash::make($this->password)]);
     }
 }

@@ -85,6 +85,10 @@ cd client && flutter run
     - Cart total not synced after changing car qty
 - Register User
   - User already created, but not redirecting
+- Update Profile
+  - Both users
+      - Rerender image when selected
+      - Update userAuth state provider after user updated their profile
 
 ## Progress
 - Admin

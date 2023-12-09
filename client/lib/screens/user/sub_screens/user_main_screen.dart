@@ -30,8 +30,6 @@ class _UserMainScreenState extends ConsumerState<UserMainScreen> {
           _page++;
           _isLoading = true;
         });
-        print('page: $_page');
-        print('Getting page: $_page');
         await ref
             .read(carsProvider.notifier)
             .getPagination(_page)

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:client/components/loading_indicator.dart';
 import 'package:client/models/admin.dart';
 import 'package:client/providers/diohttp.dart';
@@ -21,7 +19,6 @@ dynamic generateAdminMetadata(Admin admin) {
 class Admins extends _$Admins {
   @override
   Future<List<Admin>> build() async {
-    log('Building Admins');
     return await get();
   }
 

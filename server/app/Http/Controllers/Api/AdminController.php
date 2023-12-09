@@ -37,7 +37,7 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        //
+        return new AdminResource($admin);
     }
 
     /**
@@ -45,6 +45,7 @@ class AdminController extends Controller
      */
     public function update(UpdateAdminRequest $request, Admin $admin)
     {
+        dump($request->all());
         if ($request->validated()) {
 
             $validated = $request->safe();

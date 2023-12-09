@@ -68,14 +68,17 @@ class HomeScreen extends StatelessWidget {
                           .copyWith(color: Colors.black.withOpacity(.6)),
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      textAlign: TextAlign.center,
-                      'Find Your Dream Car Today Right Now!',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Find Your Dream Car Today Right Now!',
+                        style:
+                            Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Container(

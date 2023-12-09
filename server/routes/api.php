@@ -32,7 +32,6 @@ Route::post('/users/register', [UserAuthController::class, 'register']);
 Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('/admins/logout', [AdminAuthController::class, 'logout']);
     Route::post('/users/logout', [UserAuthController::class, 'logout']);
-    Route::post('/users/{user}', [UserAuthController::class, 'show']);
 
 
     Route::get('/users/{user}/transactions', [UserController::class, 'transactions']);
