@@ -39,13 +39,13 @@ class UserController extends Controller
     public function show(User $user)
     {
         return new UserResource($user->load([
-            'transaction' => [
-                'detailTransaction' => [
+            'transactions' => [
+                'detailTransactions' => [
                     'car' => ['brand', 'bodyType', 'fuel']
                 ],
             ],
 
-            'cart' => [
+            'carts' => [
                 'car' => ['brand', 'bodyType', 'fuel']
             ]
         ]));

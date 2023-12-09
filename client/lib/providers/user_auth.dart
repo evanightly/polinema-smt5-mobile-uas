@@ -72,6 +72,28 @@ class UserAuth extends _$UserAuth {
     }
   }
 
+  // Used only for edit profile
+  Future<User?> get() async {
+    try {
+      final id = state?.id;
+      final token = state?.token;
+      final dio = ref.read(dioHttpProvider);
+      final response = await dio.get('/users/$id');
+      final data = response.data as Map<String, dynamic>;
+      data['user'] = data;
+      data['token'] = token;
+      final user = User.fromAuthJson(data);
+
+      return user;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future refresh() async {
+    state = await get();
+  }
+
   void logout(BuildContext context) async {
     LoadingIndicator.show();
 

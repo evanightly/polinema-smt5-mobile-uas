@@ -33,6 +33,21 @@ class UserAuthController extends Controller
         }
     }
 
+    public function show(User $user)
+    {
+        try {
+            return response()->json([
+                'message' => 'Get user success',
+                'data' => new UserResource($user)
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Get user failed',
+                'error' => $th->getMessage()
+            ], 401);
+        }
+    }
+
     public function register(ApiUserAuthRegisterRequest $request)
     {
         try {
