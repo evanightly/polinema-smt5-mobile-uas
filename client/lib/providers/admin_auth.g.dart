@@ -6,11 +6,11 @@ part of 'admin_auth.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adminAuthHash() => r'3d08548284980cae7115634ee99faa09fc0ab176';
+String _$adminAuthHash() => r'bf48a4a1328ab210353a4fdde275282833144dc9';
 
 /// See also [AdminAuth].
 @ProviderFor(AdminAuth)
-final adminAuthProvider = NotifierProvider<AdminAuth, Admin?>.internal(
+final adminAuthProvider = AsyncNotifierProvider<AdminAuth, Admin?>.internal(
   AdminAuth.new,
   name: r'adminAuthProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final adminAuthProvider = NotifierProvider<AdminAuth, Admin?>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$AdminAuth = Notifier<Admin?>;
+typedef _$AdminAuth = AsyncNotifier<Admin?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

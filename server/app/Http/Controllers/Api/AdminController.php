@@ -45,7 +45,6 @@ class AdminController extends Controller
      */
     public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        dump($request->all());
         if ($request->validated()) {
 
             $validated = $request->safe();

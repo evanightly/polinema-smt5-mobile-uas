@@ -22,7 +22,9 @@ class DeleteAdmin extends ConsumerWidget {
         btnCancelOnPress: () {},
         btnOkOnPress: () async {
           try {
-            ref.read(adminsProvider.notifier).delete(admin);
+            await ref.read(adminsProvider.notifier).delete(admin);
+            await ref.read(adminsProvider.notifier).refresh();
+
             if (context.mounted) {
               ElegantNotification.success(
                 title: const Text("delete"),

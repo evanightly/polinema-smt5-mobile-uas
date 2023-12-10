@@ -39,7 +39,7 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
 
     _name = widget.user.name;
     _email = widget.user.email;
-    _password = widget.user.password;
+    _password = '';
     _address = widget.user.address ?? '';
 
     if (widget.user.imageUrl != null) {
@@ -59,7 +59,7 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
 
   @override
   Widget build(BuildContext context) {
-    void update() {
+    void update() async {
       final isValid = _formKey.currentState!.validate();
       if (!isValid) {
         return;
@@ -74,15 +74,18 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
         uploadImage: _file,
       );
 
-      ref.read(usersProvider.notifier).put(newUser);
+      await ref.read(usersProvider.notifier).put(newUser);
+      await ref.read(usersProvider.notifier).refresh();
 
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
 
-      ElegantNotification.success(
-        title: const Text("Updated"),
-        description: Text("$_name has been updated"),
-        background: Theme.of(context).colorScheme.background,
-      ).show(context);
+        ElegantNotification.success(
+          title: const Text("Updated"),
+          description: Text("$_name has been updated"),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
+      }
     }
 
     String? nameValidator(String? value) {
@@ -100,9 +103,9 @@ class _UpdateUserState extends ConsumerState<UpdateUser> {
     }
 
     String? passwordValidator(String? value) {
-      if (value!.trim().isEmpty) {
-        return 'Password cannot be empty';
-      }
+      // if (value!.trim().isEmpty) {
+      //   return 'Password cannot be empty';
+      // }
       return null;
     }
 

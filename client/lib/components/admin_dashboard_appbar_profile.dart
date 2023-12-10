@@ -8,14 +8,14 @@ class AdminDashboardAppBarProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    dynamic user = ref.watch(adminAuthProvider);
+    final admin = ref.watch(adminAuthProvider).valueOrNull;
     return Padding(
       padding: const EdgeInsets.only(right: 10.0),
       child: AdminAnchorMenu(
         icon: Stack(
           children: [
             CircleAvatar(
-              backgroundImage: user!.imageProviderWidget,
+              backgroundImage: admin!.imageProviderWidget,
               radius: 20,
             ),
             Positioned(

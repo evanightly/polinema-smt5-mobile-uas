@@ -20,7 +20,7 @@ class UserTransactions extends _$UserTransactions {
 
   Future<List<Transaction>> get() async {
     try {
-      final user = ref.read(userAuthProvider);
+      final user = ref.read(userAuthProvider).valueOrNull;
       final dio = ref.read(dioHttpProvider.notifier);
       final response = await dio.http.get('/users/${user!.id}/transactions');
       final data = response.data as dynamic;

@@ -78,8 +78,8 @@ class DioHttp extends _$DioHttp {
 
   Dio get http {
     Dio dio;
-    final isAdminLoggedIn = ref.read(adminAuthProvider);
-    final isUserLoggedIn = ref.read(userAuthProvider);
+    final isAdminLoggedIn = ref.read(adminAuthProvider).valueOrNull;
+    final isUserLoggedIn = ref.read(userAuthProvider).valueOrNull;
 
     if (isAdminLoggedIn != null) {
       options.headers = {

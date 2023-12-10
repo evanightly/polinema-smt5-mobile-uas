@@ -15,7 +15,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
-  late final _loggedUser = ref.watch(userAuthProvider);
+  late final _loggedUser = ref.watch(userAuthProvider).valueOrNull;
   late String _address = _loggedUser?.address ?? '';
   PaymentMethod _paymentMethod = PaymentMethod.Cash;
   Widget _selectedImage = const Center(child: Text('Upload Payment Proof'));

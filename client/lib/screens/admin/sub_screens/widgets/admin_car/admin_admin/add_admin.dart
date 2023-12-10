@@ -28,7 +28,7 @@ class _AddAdminState extends ConsumerState<AddAdmin> {
   @override
   Widget build(BuildContext context) {
     void showAddAdminDialog() {
-      void add() {
+      void add() async {
         final isValid = _formKey.currentState!.validate();
         if (!isValid || _file?.path.isEmpty != false) {
           return ElegantNotification.error(
@@ -48,15 +48,18 @@ class _AddAdminState extends ConsumerState<AddAdmin> {
           isSuperAdmin: _is_super_admin,
         );
 
-        ref.read(adminsProvider.notifier).add(newAdmin);
+        await ref.read(adminsProvider.notifier).add(newAdmin);
+        await ref.read(adminsProvider.notifier).refresh();
 
-        Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
 
-        ElegantNotification.success(
-          title: const Text("Registered"),
-          description: Text("$_name has been registered"),
-          background: Theme.of(context).colorScheme.background,
-        ).show(context);
+          ElegantNotification.success(
+            title: const Text("Registered"),
+            description: Text("$_name has been registered"),
+            background: Theme.of(context).colorScheme.background,
+          ).show(context);
+        }
       }
 
       String? nameValidator(String? value) {

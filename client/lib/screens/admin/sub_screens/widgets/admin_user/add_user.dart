@@ -26,7 +26,7 @@ class _AddUserState extends ConsumerState<AddUser> {
   @override
   Widget build(BuildContext context) {
     void showAddUserDialog() {
-      void add() {
+      void add() async {
         final isValid = _formKey.currentState!.validate();
         if (!isValid || _file?.path.isEmpty != false) {
           return ElegantNotification.error(
@@ -46,15 +46,18 @@ class _AddUserState extends ConsumerState<AddUser> {
           uploadImage: _file,
         );
 
-        ref.read(usersProvider.notifier).add(newUser);
+        await ref.read(usersProvider.notifier).add(newUser);
+        await ref.read(usersProvider.notifier).refresh();
 
-        Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
 
-        ElegantNotification.success(
-          title: const Text("Registered"),
-          description: Text("$_name has been registered"),
-          background: Theme.of(context).colorScheme.background,
-        ).show(context);
+          ElegantNotification.success(
+            title: const Text("Registered"),
+            description: Text("$_name has been registered"),
+            background: Theme.of(context).colorScheme.background,
+          ).show(context);
+        }
       }
 
       String? nameValidator(String? value) {

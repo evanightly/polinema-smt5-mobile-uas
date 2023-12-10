@@ -13,7 +13,7 @@ class AdminCarBrandScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final carBrands = ref.watch(carBrandsProvider);
-    final auth = ref.watch(adminAuthProvider);
+    final auth = ref.watch(adminAuthProvider).value;
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
     Future<void> refresh() async {
       await ref.read(carBrandsProvider.notifier).refresh();

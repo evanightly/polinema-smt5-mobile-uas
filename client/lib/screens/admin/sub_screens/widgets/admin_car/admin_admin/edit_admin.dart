@@ -40,7 +40,7 @@ class _UpdateAdminState extends ConsumerState<UpdateAdmin> {
 
     _name = widget.admin.name;
     _email = widget.admin.email;
-    _password = widget.admin.password;
+    _password = '';
     _is_super_admin = widget.admin.isSuperAdmin;
 
     if (widget.admin.imageUrl != null) {
@@ -60,7 +60,7 @@ class _UpdateAdminState extends ConsumerState<UpdateAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    void update() {
+    void update() async {
       final isValid = _formKey.currentState!.validate();
       if (!isValid) {
         return;
@@ -75,15 +75,18 @@ class _UpdateAdminState extends ConsumerState<UpdateAdmin> {
         isSuperAdmin: _is_super_admin,
       );
 
-      ref.read(adminsProvider.notifier).put(newAdmin);
+      await ref.read(adminsProvider.notifier).put(newAdmin);
+      await ref.read(adminsProvider.notifier).refresh();
 
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
 
-      ElegantNotification.success(
-        title: const Text("Updated"),
-        description: Text("$_name has been updated"),
-        background: Theme.of(context).colorScheme.background,
-      ).show(context);
+        ElegantNotification.success(
+          title: const Text("Updated"),
+          description: Text("$_name has been updated"),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
+      }
     }
 
     String? nameValidator(String? value) {
@@ -101,9 +104,9 @@ class _UpdateAdminState extends ConsumerState<UpdateAdmin> {
     }
 
     String? passwordValidator(String? value) {
-      if (value!.trim().isEmpty) {
-        return 'Password cannot be empty';
-      }
+      // if (value!.trim().isEmpty) {
+      //   return 'Password cannot be empty';
+      // }
       return null;
     }
 

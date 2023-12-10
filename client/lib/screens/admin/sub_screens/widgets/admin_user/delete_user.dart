@@ -22,7 +22,9 @@ class DeleteUser extends ConsumerWidget {
         btnCancelOnPress: () {},
         btnOkOnPress: () async {
           try {
-            ref.read(usersProvider.notifier).delete(user);
+            await ref.read(usersProvider.notifier).delete(user);
+            await ref.read(usersProvider.notifier).refresh();
+
             if (context.mounted) {
               ElegantNotification.success(
                 title: const Text("delete"),

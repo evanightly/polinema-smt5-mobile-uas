@@ -8,36 +8,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends ConsumerWidget {
   const UserProfileScreen({this.disableBackButton = false, super.key});
 
   final bool disableBackButton;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loggedUser = ref.watch(userAuthProvider);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: !disableBackButton,
         actions: const [_EditProfile()],
       ),
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          const _ProfileAvatar(),
-          const SizedBox(height: 24),
-          const SizedBox(height: 15),
-          const _ProfileName(),
-          const SizedBox(height: 6),
-          const _ProfileEmail(),
-          const SizedBox(height: 6),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            height: 1,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(.2),
-          ),
-          const SizedBox(height: 6),
-          const _ProfileAddress()
-        ],
+      body: SizedBox(
+        width: double.infinity,
+        child: Flex(
+          direction: Axis.vertical,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _ProfileAvatar(loggedUser.value),
+            const SizedBox(height: 24),
+            const SizedBox(height: 15),
+            _ProfileName(loggedUser.value),
+            const SizedBox(height: 6),
+            _ProfileEmail(loggedUser.value),
+            const SizedBox(height: 6),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              height: 1,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(.2),
+            ),
+            const SizedBox(height: 6),
+            _ProfileAddress(loggedUser.value)
+          ],
+        ),
       ),
     );
   }
@@ -51,8 +56,7 @@ class _EditProfile extends ConsumerStatefulWidget {
 }
 
 class _EditProfileState extends ConsumerState<_EditProfile> {
-  void openEditDialog(
-      BuildContext context, User loggedUser, StateSetter setState) {
+  void openEditDialog(BuildContext context, User loggedUser) {
     late String name;
     late String email;
     late String password;
@@ -66,7 +70,7 @@ class _EditProfileState extends ConsumerState<_EditProfile> {
       builder: (context) {
         name = loggedUser.name;
         email = loggedUser.email;
-        password = loggedUser.password;
+        password = '';
         address = loggedUser.address ?? '';
 
         if (loggedUser.imageUrl != null) {
@@ -98,7 +102,7 @@ class _EditProfileState extends ConsumerState<_EditProfile> {
             uploadImage: file,
           );
 
-          ref.read(usersProvider.notifier).put(newUser);
+          await ref.read(usersProvider.notifier).put(newUser);
           await ref.read(userAuthProvider.notifier).refresh();
 
           if (mounted) {
@@ -127,9 +131,9 @@ class _EditProfileState extends ConsumerState<_EditProfile> {
         }
 
         String? passwordValidator(String? value) {
-          if (value!.trim().isEmpty) {
-            return 'Password cannot be empty';
-          }
+          // if (value!.trim().isEmpty) {
+          //   return 'Password cannot be empty';
+          // }
           return null;
         }
 
@@ -218,71 +222,75 @@ class _EditProfileState extends ConsumerState<_EditProfile> {
           }
         }
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Edit User: ${loggedUser.name}'),
-            actions: [
-              IconButton(onPressed: update, icon: const Icon(Icons.check))
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
-            child: Form(
-              key: formKey,
-              child: Flex(
-                direction: Axis.vertical,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(height: 60, width: 60, child: selectedImage),
-                      const SizedBox(width: 24),
-                      ElevatedButton(
-                        onPressed: selectImage,
-                        child: const Text('Change Image'),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: name,
-                    autocorrect: false,
-                    decoration: const InputDecoration(hintText: 'Name'),
-                    validator: nameValidator,
-                    onChanged: setName,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: email,
-                    autocorrect: false,
-                    keyboardType: TextInputType.emailAddress,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(hintText: 'Email'),
-                    validator: emailValidator,
-                    onChanged: setEmail,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: address,
-                    autocorrect: false,
-                    decoration: const InputDecoration(hintText: 'Address'),
-                    onChanged: setAddress,
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    initialValue: password,
-                    autocorrect: false,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(hintText: 'Password'),
-                    validator: passwordValidator,
-                    onChanged: setPassword,
-                  ),
+        return StatefulBuilder(
+          builder: (ctx, setState) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Edit User: ${loggedUser.name}'),
+                actions: [
+                  IconButton(onPressed: update, icon: const Icon(Icons.check))
                 ],
               ),
-            ),
-          ),
+              body: Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
+                child: Form(
+                  key: formKey,
+                  child: Flex(
+                    direction: Axis.vertical,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(height: 60, width: 60, child: selectedImage),
+                          const SizedBox(width: 24),
+                          ElevatedButton(
+                            onPressed: selectImage,
+                            child: const Text('Change Image'),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        initialValue: name,
+                        autocorrect: false,
+                        decoration: const InputDecoration(hintText: 'Name'),
+                        validator: nameValidator,
+                        onChanged: setName,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        initialValue: email,
+                        autocorrect: false,
+                        keyboardType: TextInputType.emailAddress,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: const InputDecoration(hintText: 'Email'),
+                        validator: emailValidator,
+                        onChanged: setEmail,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        initialValue: address,
+                        autocorrect: false,
+                        decoration: const InputDecoration(hintText: 'Address'),
+                        onChanged: setAddress,
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        initialValue: password,
+                        autocorrect: false,
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: const InputDecoration(hintText: 'Password'),
+                        validator: passwordValidator,
+                        onChanged: setPassword,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -290,71 +298,84 @@ class _EditProfileState extends ConsumerState<_EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final loggedUser = ref.watch(userAuthProvider);
+    final loggedUser = ref.watch(userAuthProvider).valueOrNull;
 
     return IconButton(
-      onPressed: () => openEditDialog(context, loggedUser!, setState),
+      onPressed: () => openEditDialog(context, loggedUser!),
       icon: const Icon(Icons.edit),
     );
   }
 }
 
 class _ProfileAvatar extends ConsumerWidget {
-  const _ProfileAvatar();
+  const _ProfileAvatar(this.loggedUser);
+  final User? loggedUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loggedUser = ref.watch(userAuthProvider);
-    return SizedBox(
-        width: double.infinity,
-        height: 150,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: loggedUser!.imageProviderWidget,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ));
+    Widget content = const SizedBox.shrink();
+
+    if (loggedUser!.imageUrl != null) {
+      content = CircleAvatar(
+        radius: 60,
+        backgroundImage: loggedUser!.imageProviderWidget,
+      );
+    }
+
+    return content;
   }
 }
 
 class _ProfileName extends ConsumerWidget {
-  const _ProfileName();
+  const _ProfileName(this.loggedUser);
+  final User? loggedUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final name = ref.watch(userAuthProvider)!.name;
-    return Text(name, style: Theme.of(context).textTheme.headlineMedium);
+    Widget content = const SizedBox.shrink();
+
+    if (loggedUser != null) {
+      final name = loggedUser!.name;
+      content = Text(name, style: Theme.of(context).textTheme.headlineMedium);
+    }
+
+    return content;
   }
 }
 
 class _ProfileEmail extends ConsumerWidget {
-  const _ProfileEmail();
+  const _ProfileEmail(this.loggedUser);
+  final User? loggedUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final email = ref.watch(userAuthProvider)!.email;
-    return Text(email, style: Theme.of(context).textTheme.bodyMedium);
+    Widget content = const SizedBox.shrink();
+
+    if (loggedUser != null) {
+      final email = loggedUser!.email;
+      content = Text(email, style: Theme.of(context).textTheme.bodyMedium);
+    }
+
+    return content;
   }
 }
 
 class _ProfileAddress extends ConsumerWidget {
-  const _ProfileAddress();
+  const _ProfileAddress(this.loggedUser);
+  final User? loggedUser;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final address = ref.watch(userAuthProvider)!.address;
     Widget content = const SizedBox.shrink();
 
-    if (address != null) {
+    if (loggedUser != null && loggedUser?.address != null) {
       content = Text(
-        address,
+        loggedUser!.address!,
         style: Theme.of(context).textTheme.bodyMedium,
         textAlign: TextAlign.center,
       );
     }
+
     return content;
   }
 }

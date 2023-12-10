@@ -25,14 +25,17 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
             'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 
-    protected function passedValidation(): void
+    protected function prepareForValidation(): void
     {
-        $this->replace(['password' => Hash::make($this->password)]);
+        dump($this->user->password);
+        $this->merge([
+            'password' => $this->has('password') && $this->password != null ? Hash::make($this->password) : $this->user->password
+        ]);
     }
 }

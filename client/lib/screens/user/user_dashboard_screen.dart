@@ -68,7 +68,7 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userAuthProvider);
+    final user = ref.watch(userAuthProvider).valueOrNull;
     final carBrands = ref.watch(carBrandsProvider);
     final carBodyTypes = ref.watch(carBodyTypesProvider);
     return Scaffold(

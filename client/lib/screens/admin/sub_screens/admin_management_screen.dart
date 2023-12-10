@@ -14,7 +14,7 @@ class AdminManagementScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final admins = ref.watch(adminsProvider);
-    final auth = ref.watch(adminAuthProvider);
+    final auth = ref.watch(adminAuthProvider).valueOrNull;
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
     Future<void> refresh() async {
@@ -76,7 +76,9 @@ class AdminManagementScreen extends ConsumerWidget {
                               : Theme.of(context).colorScheme.secondary,
                         ),
                   ),
-                  trailing: auth!.isSuperAdmin && auth.id != admin.id
+                  trailing: auth!.isSuperAdmin &&
+                          auth.id != admin.id &&
+                          !admin.isSuperAdmin
                       ? Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

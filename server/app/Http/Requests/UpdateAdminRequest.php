@@ -24,9 +24,9 @@ class UpdateAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 'min:3'],
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', Rule::unique('admins')->ignore($this->admin)],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => ['nullable', 'string'],
             'image' => ['image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'is_super_admin' => ['nullable'], // checkbox value is either null or 'on'
         ];
@@ -36,11 +36,7 @@ class UpdateAdminRequest extends FormRequest
     {
         $this->merge([
             'is_super_admin' => $this->has('is_super_admin') && $this->is_super_admin === 'on' ? true : false,
+            'password' => $this->has('password') && $this->password != null ? Hash::make($this->password) : $this->admin->password
         ]);
-    }
-
-    protected function passedValidation(): void
-    {
-        $this->replace(['password' => Hash::make($this->password)]);
     }
 }

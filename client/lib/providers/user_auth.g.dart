@@ -6,11 +6,11 @@ part of 'user_auth.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userAuthHash() => r'7c31d0ed5946ecf2648505eeb6b23e948fa05370';
+String _$userAuthHash() => r'578a00fefa98fbe362a88e7bb8b425cabec5d181';
 
 /// See also [UserAuth].
 @ProviderFor(UserAuth)
-final userAuthProvider = NotifierProvider<UserAuth, User?>.internal(
+final userAuthProvider = AsyncNotifierProvider<UserAuth, User?>.internal(
   UserAuth.new,
   name: r'userAuthProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final userAuthProvider = NotifierProvider<UserAuth, User?>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$UserAuth = Notifier<User?>;
+typedef _$UserAuth = AsyncNotifier<User?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

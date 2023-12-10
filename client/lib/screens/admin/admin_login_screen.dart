@@ -31,14 +31,11 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginScreen> {
     }
 
     void login() {
-      if (!_formKey.currentState!.validate()) {
-        return;
+      if (_formKey.currentState!.validate()) {
+        ref
+            .read(adminAuthProvider.notifier)
+            .loginAdmin(context, _email, _password);
       }
-      _formKey.currentState!.save();
-
-      ref
-          .read(adminAuthProvider.notifier)
-          .loginAdmin(context, _email, _password);
     }
 
     return Scaffold(

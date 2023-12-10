@@ -35,7 +35,7 @@ class Admins extends _$Admins {
     state = await AsyncValue.guard(() => get());
   }
 
-  void add(Admin admin) async {
+  Future<void> add(Admin admin) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
@@ -48,15 +48,13 @@ class Admins extends _$Admins {
 
       await dio.http.post('/admins', data: formData);
 
-      refresh();
-
       LoadingIndicator.dismiss();
     } catch (_) {
       // LoadingIndicator.showError('Failed to add admin');
     }
   }
 
-  void put(Admin admin) async {
+  Future<void> put(Admin admin) async {
     final dio = ref.read(dioHttpProvider.notifier);
     try {
       LoadingIndicator.show();
@@ -73,23 +71,19 @@ class Admins extends _$Admins {
 
       await dio.http.post('/admins/${admin.id}?_method=PUT', data: formData);
 
-      refresh();
-
       LoadingIndicator.dismiss();
     } catch (_) {
-      // LoadingIndicator.showError('Failed to update admin');
+      LoadingIndicator.showError('Failed to update admin');
     }
   }
 
-  void delete(Admin admin) async {
+  Future<void> delete(Admin admin) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
       LoadingIndicator.show();
 
       await dio.http.delete('/admins/${admin.id}');
-
-      refresh();
 
       LoadingIndicator.dismiss();
     } catch (_) {

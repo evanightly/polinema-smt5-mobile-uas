@@ -67,10 +67,6 @@ class _UserRegisterScreenState extends ConsumerState<UserRegisterScreen> {
         return 'Username is required';
       }
 
-      if (value.length < 3) {
-        return 'Username must be at least 3 characters';
-      }
-
       return null;
     }
 

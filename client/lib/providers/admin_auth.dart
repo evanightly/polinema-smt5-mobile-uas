@@ -13,6 +13,8 @@ class AdminAuth extends _$AdminAuth {
   void loginAdmin(BuildContext context, String email, String password) async {
     try {
       LoadingIndicator.show();
+      state = const AsyncLoading();
+
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post(
         '/admins/login',
@@ -20,8 +22,9 @@ class AdminAuth extends _$AdminAuth {
       );
 
       final admin = Admin.fromAuthJson(response.data);
+      state = AsyncValue.data(admin);
 
-      state = admin;
+      // Clear admin dashboard appbar actions
       ref.read(adminDashboardActionsProvider.notifier).setActions([]);
 
       if (context.mounted) {
@@ -30,38 +33,39 @@ class AdminAuth extends _$AdminAuth {
       }
     } on DioException catch (d) {
       if (d.type == DioExceptionType.connectionTimeout) {
-        LoadingIndicator.showError(
-          'Server timeout, probably wrong ip address supplied',
-        );
+        if (context.mounted) {
+          LoadingIndicator.showError(
+            'Server timeout, probably wrong ip address supplied',
+          );
+        }
+      } else {
+        if (context.mounted) {
+          LoadingIndicator.showError('Failed with error, wrong credentials');
+        }
       }
-    } catch (e) {
-      LoadingIndicator.showError('Failed with error, admin not found');
     }
   }
 
   // Used only for edit profile
   Future<Admin?> get() async {
-    try {
-      final id = state?.id;
-      final token = state?.token;
-      final dio = ref.read(dioHttpProvider);
-      final response = await dio.get('/admins/$id');
-      final data = response.data as Map<String, dynamic>;
-      data['admin'] = data;
-      data['token'] = token;
-      final admin = Admin.fromAuthJson(data);
+    final id = state.value?.id;
+    final token = state.value?.token;
+    final dio = ref.read(dioHttpProvider);
+    final response = await dio.get('/admins/$id');
+    final data = response.data as Map<String, dynamic>;
+    data['admin'] = data;
+    data['token'] = token;
+    final admin = Admin.fromAuthJson(data);
 
-      return admin;
-    } catch (e) {
-      return null;
-    }
+    return admin;
   }
 
-  Future refresh() async {
-    state = await get();
+  Future<void> refresh() async {
+    state = const AsyncValue.loading();
+    state = AsyncValue.data(await get());
   }
 
-  void logout(BuildContext context) async {
+  Future<void> logout(BuildContext context) async {
     // state = null;
     // ref.read(adminDashboardActionsProvider.notifier).empty();
     // log('Logout');
@@ -75,14 +79,14 @@ class AdminAuth extends _$AdminAuth {
     }
   }
 
-  void redirectIfNotLogged(BuildContext context) {
-    if (state == null) {
+  FutureOr<void> redirectIfNotLogged(BuildContext context) {
+    if (state.value == null) {
       Navigator.pushReplacementNamed(context, '/admins/login');
     }
   }
 
   @override
-  Admin? build() {
+  FutureOr<Admin?> build() {
     return null;
   }
 }

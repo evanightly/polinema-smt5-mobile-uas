@@ -123,7 +123,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loggedUser = ref.read(adminAuthProvider);
+    final loggedUser = ref.read(adminAuthProvider).valueOrNull;
     final dashboardActions = ref.watch(adminDashboardActionsProvider);
 
     Widget content = const SizedBox.shrink();

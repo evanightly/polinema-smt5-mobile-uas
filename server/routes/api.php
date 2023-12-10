@@ -33,7 +33,6 @@ Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
     Route::post('/admins/logout', [AdminAuthController::class, 'logout']);
     Route::post('/users/logout', [UserAuthController::class, 'logout']);
 
-
     Route::get('/users/{user}/transactions', [UserController::class, 'transactions']);
     Route::get('/users/{user}/carts', [UserController::class, 'carts']);
     Route::post('/cars/search', [CarController::class, 'search']);

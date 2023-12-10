@@ -1,5 +1,4 @@
 import 'package:client/components/user_anchor_menu.dart';
-import 'package:client/models/user.dart';
 import 'package:client/providers/user_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +8,7 @@ class UserDashboardAppBarProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    User loggedUser = ref.watch(userAuthProvider)!;
+    final loggedUser = ref.watch(userAuthProvider).valueOrNull;
 
     Widget content = const SizedBox.shrink();
 
@@ -19,7 +18,7 @@ class UserDashboardAppBarProfile extends ConsumerWidget {
         icon: Stack(
           children: [
             CircleAvatar(
-              backgroundImage: loggedUser.imageProviderWidget,
+              backgroundImage: loggedUser!.imageProviderWidget,
               radius: 14,
             ),
             Positioned(

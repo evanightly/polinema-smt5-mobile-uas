@@ -32,12 +32,12 @@ class Users extends _$Users {
     return users;
   }
 
-  refresh() async {
+  Future<void> refresh() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => get());
   }
 
-  void add(User user) async {
+  Future<void> add(User user) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
@@ -50,15 +50,13 @@ class Users extends _$Users {
 
       await dio.http.post('/users', data: formData);
 
-      refresh();
-
       LoadingIndicator.dismiss();
     } catch (_) {
-      // LoadingIndicator.showError('Failed to add user');
+      LoadingIndicator.showError('Failed to add user');
     }
   }
 
-  void put(User user) async {
+  Future<void> put(User user) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
@@ -76,15 +74,13 @@ class Users extends _$Users {
 
       await dio.http.post('/users/${user.id}?_method=PUT', data: formData);
 
-      refresh();
-
       LoadingIndicator.dismiss();
     } catch (_) {
-      // LoadingIndicator.showError('Failed to update user');
+      LoadingIndicator.showError('Failed to update user');
     }
   }
 
-  void delete(User user) async {
+  Future<void> delete(User user) async {
     final dio = ref.read(dioHttpProvider.notifier);
 
     try {
@@ -92,11 +88,9 @@ class Users extends _$Users {
 
       await dio.http.delete('/users/${user.id}');
 
-      refresh();
-
       LoadingIndicator.dismiss();
     } catch (_) {
-      // LoadingIndicator.showError('Failed to delete user');
+      LoadingIndicator.showError('Failed to delete user');
     }
   }
 }

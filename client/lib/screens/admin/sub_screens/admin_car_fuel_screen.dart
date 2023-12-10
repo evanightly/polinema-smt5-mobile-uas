@@ -13,7 +13,7 @@ class AdminCarFuelScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final carFuels = ref.watch(carFuelsProvider);
-    final auth = ref.watch(adminAuthProvider);
+    final auth = ref.watch(adminAuthProvider).valueOrNull;
     final refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
     Future<void> refresh() async {

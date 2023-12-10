@@ -1,8 +1,8 @@
 @extends('layouts.admin_dashboard')
 
 @section('content-dashboard')
-    <div class="bg-base-200 rounded-lg p-5">
-        <h2 class="text-2xl font-bold mb-5">Edit User - {{ $user->name }}</h2>
+    <div class="p-5 rounded-lg bg-base-200">
+        <h2 class="mb-5 text-2xl font-bold">Edit User - {{ $user->name }}</h2>
         <form action="{{ route('users.update', [$user]) }}" method="post" class="flex flex-col gap-5"
             enctype="multipart/form-data">
             @csrf
@@ -13,15 +13,14 @@
                     value="{{ $user->name }}" />
             </div>
             <div class="flex flex-1 gap-12">
-                <div class="form-control flex-1">
+                <div class="flex-1 form-control">
                     <label for="email" class="label">Email</label>
                     <input id="email" type="email" placeholder="Email" name="email" class="input" required
                         value="{{ $user->email }}" />
                 </div>
-                <div class="form-control flex-1">
+                <div class="flex-1 form-control">
                     <label for="password" class="label">Password</label>
-                    <input id="password" type="password" placeholder="Password" name="password" class="input" required
-                        value="{{ $user->password }}" />
+                    <input id="password" type="password" placeholder="Password" name="password" class="input" />
                 </div>
             </div>
             <div class="form-control">

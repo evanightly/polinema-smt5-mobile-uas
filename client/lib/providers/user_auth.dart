@@ -12,20 +12,16 @@ class UserAuth extends _$UserAuth {
   void loginUser(BuildContext context, String email, String password) async {
     try {
       LoadingIndicator.show();
+      state = const AsyncValue.loading();
+
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post(
         '/users/login',
-        data: {
-          'email': email,
-          'password': password,
-        },
+        data: {'email': email, 'password': password},
       );
 
-      final data = response.data as Map<String, dynamic>;
-
-      final user = User.fromAuthJson(data);
-
-      state = user;
+      final user = User.fromAuthJson(response.data);
+      state = AsyncValue.data(user);
 
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/user');
@@ -46,10 +42,11 @@ class UserAuth extends _$UserAuth {
     }
   }
 
-  void registerUser(
+  Future<void> registerUser(
       BuildContext context, String name, String email, String password) async {
     try {
       LoadingIndicator.show();
+      state = const AsyncValue.loading();
 
       final dio = ref.read(dioHttpProvider);
       final response = await dio.post('/users/register', data: {
@@ -57,10 +54,11 @@ class UserAuth extends _$UserAuth {
         'email': email,
         'password': password,
       });
+
       final data = response.data as Map<String, dynamic>;
       final user = User.fromAuthJson(data['data']);
 
-      state = user;
+      state = AsyncValue.data(user);
 
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/user');
@@ -75,8 +73,8 @@ class UserAuth extends _$UserAuth {
   // Used only for edit profile
   Future<User?> get() async {
     try {
-      final id = state?.id;
-      final token = state?.token;
+      final id = state.value?.id;
+      final token = state.value?.token;
       final dio = ref.read(dioHttpProvider);
       final response = await dio.get('/users/$id');
       final data = response.data as Map<String, dynamic>;
@@ -91,10 +89,11 @@ class UserAuth extends _$UserAuth {
   }
 
   Future refresh() async {
-    state = await get();
+    state = const AsyncValue.loading();
+    state = AsyncValue.data(await get());
   }
 
-  void logout(BuildContext context) async {
+  Future<void> logout(BuildContext context) async {
     LoadingIndicator.show();
 
     await ref.read(dioHttpProvider.notifier).http.post('/users/logout');
@@ -105,14 +104,14 @@ class UserAuth extends _$UserAuth {
     }
   }
 
-  void redirectIfNotLogged(BuildContext context) {
-    if (state == null) {
+  FutureOr<void> redirectIfNotLogged(BuildContext context) {
+    if (state.value == null) {
       Navigator.pushReplacementNamed(context, '/users/login');
     }
   }
 
   @override
-  User? build() {
+  FutureOr<User?> build() {
     return null;
   }
 }
