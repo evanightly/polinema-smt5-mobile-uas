@@ -82,13 +82,13 @@ cd client && flutter run
 - Cart 
     - Quantity field doubled when added then closed - Fixed
     - Null check if qty input empty, I disabled it for now
-    - Cart total not synced after changing car qty
+    - Cart total not synced after changing car qty - Fixed
 - Register User
-  - User already created, but not redirecting
+  - User already created, but not redirecting - Fixed
 - Update Profile
   - Both users
-      - Rerender image when selected
-      - Update userAuth state provider after user updated their profile
+      - Rerender image when selected - Fixed
+      - Update userAuth state provider after user updated their profile - Fixed
 
 ## Progress
 - Admin
@@ -123,10 +123,10 @@ cd client && flutter run
     - Read ✔
     - Update ✔
     - Delete ✔
-  - Transactions ❓ (read [Note](#note) above)
-    - Read
-      - Verify Transaction Proofs
-      - Accept Transaction
+  - Transactions
+    - Read ✔
+      - Verify Transaction Proofs ✔
+      - Accept Transaction ✔
     - Delete
 
 - User
@@ -136,15 +136,15 @@ cd client && flutter run
     - Home
       - List Barang ✔
       - Filter Barang + SPK ✔
-    - Cart
-    - Transaction List ❓ (read [Note](#note) above)
+    - Cart ✔
+    - Transaction List ✔
 
-- Settings ✔
+- Settings 
   - Dark Mode ✔
 - Website Profile
-  - Update Profile
+  - Update Profile ✔
 - Profile
-  - Update Profile
+  - Update Profile ✔
 
 ## Anggota Kelompok
 

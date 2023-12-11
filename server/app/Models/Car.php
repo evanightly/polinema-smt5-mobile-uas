@@ -42,6 +42,11 @@ class Car extends Model
         return $this->hasOne(CarFuel::class, 'id', 'fuel_id');
     }
 
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->price, 0, ',', '.');
+    }
+
     public function getImageUrlAttribute()
     {
         // check if image starts with http

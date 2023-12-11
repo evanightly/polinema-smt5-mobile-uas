@@ -27,6 +27,7 @@ class Car {
   CarCondition condition;
   CarTransmission transmission;
   int stock;
+  String? formattedPrice;
 
   Car({
     this.id,
@@ -43,6 +44,7 @@ class Car {
     required this.condition,
     required this.transmission,
     required this.stock,
+    this.formattedPrice,
   });
 
   ImageProvider get imageProviderWidget {
@@ -67,6 +69,7 @@ class Car {
         CarTransmission.values.byName(json['transmission'].toString());
     final condition = CarCondition.values.byName(json['condition']);
     final stock = int.parse(json['stock'].toString());
+    final formattedPrice = json['formatted_price'].toString();
 
     return Car(
       id: id,
@@ -82,6 +85,7 @@ class Car {
       condition: condition,
       transmission: transmission,
       stock: stock,
+      formattedPrice: formattedPrice,
     );
   }
 

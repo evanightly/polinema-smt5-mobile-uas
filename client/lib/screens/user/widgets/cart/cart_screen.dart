@@ -14,12 +14,6 @@ class CartScreen extends ConsumerStatefulWidget {
 class _CartScreenState extends ConsumerState<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    final userCarts = ref.watch(userCartsProvider);
-
-    if (userCarts.hasError || userCarts.value == null) {
-      return const IconButton(onPressed: null, icon: Icon(Icons.shopping_cart));
-    }
-
     void openCartScreen() {
       void checkout() {
         Navigator.pop(context);
@@ -31,53 +25,66 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Cart'),
-            ),
-            bottomNavigationBar: Container(
-              height: 80,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Theme.of(context)
-                    .colorScheme
-                    .primaryContainer
-                    .withOpacity(.5),
-              ),
-              child: Row(
-                children: [
-                  if (userCarts.valueOrNull != null)
-                    Text(
-                      'Total: \$${userCarts.asData!.value!.formattedCartTotal}',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: userCarts.value!.carts.isEmpty ? null : checkout,
-                    child: const Text('Checkout'),
+          return Consumer(
+            builder: (context, ref, _) {
+              final userCarts = ref.watch(userCartsProvider);
+
+              if (userCarts.hasError || userCarts.value == null) {
+                return const IconButton(
+                    onPressed: null, icon: Icon(Icons.shopping_cart));
+              }
+
+              return Scaffold(
+                appBar: AppBar(
+                  title: const Text('Cart'),
+                ),
+                bottomNavigationBar: Container(
+                  height: 80,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(.5),
                   ),
-                ],
-              ),
-            ),
-            body: Container(
-              padding: const EdgeInsets.all(12),
-              child: ListView(
-                children: [
-                  // loop carts detail transactions
-                  if (userCarts.value!.carts.isNotEmpty)
-                    for (final cart in userCarts.value!.carts)
-                      UserCartItem(
-                        cartItem: cart,
-                        ref: ref,
-                        key: ValueKey(cart.id),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Total: \$${userCarts.value!.formattedCartTotal}',
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                ],
-              ),
-            ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed:
+                            userCarts.value!.carts.isEmpty ? null : checkout,
+                        child: const Text('Checkout'),
+                      ),
+                    ],
+                  ),
+                ),
+                body: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: ListView(
+                    children: [
+                      // loop carts detail transactions
+                      if (userCarts.value!.carts.isNotEmpty)
+                        for (final cart in userCarts.value!.carts)
+                          UserCartItem(
+                            cartItem: cart,
+                            ref: ref,
+                            key: ValueKey(cart.id),
+                          ),
+                    ],
+                  ),
+                ),
+              );
+            },
           );
         },
       );
     }
+
+    final userCarts = ref.watch(userCartsProvider);
 
     return IconButton(
       onPressed: openCartScreen,

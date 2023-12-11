@@ -32,6 +32,7 @@ class CarResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
+            'formatted_price' => $this->formatted_price,
             'car_brand' => new CarBrandResource($this->whenLoaded('brand')),
             'car_body_type' => new CarBodyTypeResource($this->whenLoaded('bodyType')),
             'car_fuel' => new CarFuelResource($this->whenLoaded('fuel')),
