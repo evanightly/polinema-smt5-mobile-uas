@@ -81,7 +81,7 @@ cd client && flutter run
 - Navbar light mode button not sync properly
 - Cart 
     - Quantity field doubled when added then closed - Fixed
-    - Null check if qty input empty, I disabled it for now
+    - Null check if qty input empty, needs event bubbling, I disabled it for now
     - Cart total not synced after changing car qty - Fixed
 - Register User
   - User already created, but not redirecting - Fixed
