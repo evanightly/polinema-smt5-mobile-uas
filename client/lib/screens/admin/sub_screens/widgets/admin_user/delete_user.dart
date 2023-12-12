@@ -20,26 +20,26 @@ class DeleteUser extends ConsumerWidget {
         desc:
             'You are about to delete ${user.name}\n\nWarning: this operation will delete all data related to this user',
         btnCancelOnPress: () {},
-        btnOkOnPress: () async {
+        btnOkOnPress: () {
           try {
-            await ref.read(usersProvider.notifier).delete(user);
-            await ref.read(usersProvider.notifier).refresh();
+            void delete() async {
+              await ref.read(usersProvider.notifier).delete(user);
+              await ref.read(usersProvider.notifier).refresh();
+            }
 
-            if (context.mounted) {
-              ElegantNotification.success(
-                title: const Text("delete"),
-                description: Text("${user.name} has been deleted"),
-                background: Theme.of(context).colorScheme.background,
-              ).show(context);
-            }
+            delete();
+
+            ElegantNotification.success(
+              title: const Text("delete"),
+              description: Text("${user.name} has been deleted"),
+              background: Theme.of(context).colorScheme.background,
+            ).show(context);
           } catch (e) {
-            if (context.mounted) {
-              ElegantNotification.error(
-                title: const Text("Failed"),
-                description: Text("Failed to delete ${user.name}"),
-                background: Theme.of(context).colorScheme.background,
-              ).show(context);
-            }
+            ElegantNotification.error(
+              title: const Text("Failed"),
+              description: Text("Failed to delete ${user.name}"),
+              background: Theme.of(context).colorScheme.background,
+            ).show(context);
           }
         },
       ).show();
