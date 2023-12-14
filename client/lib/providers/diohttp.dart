@@ -40,7 +40,7 @@ class DioHttp extends _$DioHttp {
           // print(response.data);
           // print(response.headers);
 
-          return handler.next(response); // continue
+          return handler.next(response);
         },
         onError: (DioException e, handler) {
           if (e.response?.statusCode == 422) {

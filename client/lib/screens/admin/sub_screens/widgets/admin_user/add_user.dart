@@ -26,38 +26,40 @@ class _AddUserState extends ConsumerState<AddUser> {
   @override
   Widget build(BuildContext context) {
     void showAddUserDialog() {
-      void add() async {
-        final isValid = _formKey.currentState!.validate();
-        if (!isValid || _file?.path.isEmpty != false) {
-          return ElegantNotification.error(
-            title: const Text("Validation Error"),
-            description: const Text(
-              "All fields must be supplied (including image), only address is optional",
-            ),
-            background: Theme.of(context).colorScheme.background,
-          ).show(context);
+      void add() {
+        void post() async {
+          final isValid = _formKey.currentState!.validate();
+          if (!isValid || _file?.path.isEmpty != false) {
+            return ElegantNotification.error(
+              title: const Text("Validation Error"),
+              description: const Text(
+                "All fields must be supplied (including image), only address is optional",
+              ),
+              background: Theme.of(context).colorScheme.background,
+            ).show(context);
+          }
+
+          final newUser = User(
+            name: _name,
+            email: _email,
+            password: _password,
+            address: _address,
+            uploadImage: _file,
+          );
+
+          await ref.read(usersProvider.notifier).add(newUser);
+          await ref.read(usersProvider.notifier).refresh();
         }
 
-        final newUser = User(
-          name: _name,
-          email: _email,
-          password: _password,
-          address: _address,
-          uploadImage: _file,
-        );
+        post();
+        Navigator.pop(
+            context, true); // Add true as the result of the popped widget
 
-        await ref.read(usersProvider.notifier).add(newUser);
-        await ref.read(usersProvider.notifier).refresh();
-
-        if (mounted) {
-          Navigator.pop(context);
-
-          ElegantNotification.success(
-            title: const Text("Registered"),
-            description: Text("$_name has been registered"),
-            background: Theme.of(context).colorScheme.background,
-          ).show(context);
-        }
+        ElegantNotification.success(
+          title: const Text("Registered"),
+          description: Text("$_name has been registered"),
+          background: Theme.of(context).colorScheme.background,
+        ).show(context);
       }
 
       String? nameValidator(String? value) {
