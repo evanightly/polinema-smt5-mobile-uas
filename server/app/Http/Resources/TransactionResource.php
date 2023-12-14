@@ -37,7 +37,7 @@ class TransactionResource extends JsonResource
             'verified_at' => $this->verified_at,
             'detail_transactions' => DetailTransactionResource::collection($this->whenLoaded('detailTransactions')),
             'user' => new UserResource($this->whenLoaded('user')),
-            'verifiedBy' =>  new AdminResource($this->whenLoaded('verifiedBy')),
+            'verified_by' =>  new AdminResource($this->whenLoaded('verifiedBy')),
 
             // custom attributes used in view
             'payment_proof_url' => $this->payment_proof_url,

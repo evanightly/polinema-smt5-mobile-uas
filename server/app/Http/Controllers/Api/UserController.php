@@ -87,7 +87,7 @@ class UserController extends Controller
      */
     public function transactions(User $user)
     {
-        return new UserResource($user->load(['transactions' => ['detailTransactions' => ['car' => ['brand', 'bodyType', 'fuel']]]]));
+        return new UserResource($user->load(['transactions' => ['verifiedBy', 'detailTransactions' => ['car' => ['brand', 'bodyType', 'fuel']]]]));
     }
 
     /**

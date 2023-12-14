@@ -12,15 +12,15 @@ enum Status { Pending, Rejected, Verified, Finished }
 
 class Transaction {
   final int? id;
-  final String userId;
+  final String? userId;
   final PaymentMethod? paymentMethod;
   final String? paymentProof;
   final String? paymentDate;
-  final num total;
-  final Status status;
+  final num? total;
+  final Status? status;
   final Admin? verifiedBy;
   final DateTime? verifiedAt;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final String? deliveryAddress;
   final String? paymentProofUrl;
   final String? formattedCreatedAt;
@@ -32,15 +32,15 @@ class Transaction {
 
   const Transaction({
     this.id,
-    required this.userId,
+    this.userId,
     this.paymentMethod,
     this.paymentProof,
     this.paymentDate,
-    required this.total,
-    required this.status,
+    this.total,
+    this.status,
     this.verifiedBy,
     this.verifiedAt,
-    required this.createdAt,
+    this.createdAt,
     this.deliveryAddress,
     this.paymentProofUrl,
     this.formattedCreatedAt,
@@ -123,7 +123,7 @@ class Transaction {
       'payment_proof': paymentProof,
       'payment_date': paymentDate,
       'total': total,
-      'status': status.name,
+      'status': status!.name,
       'verified_by': verifiedBy?.toJson(),
       'verified_at': verifiedAt.toString(),
       'created_at': createdAt.toString(),

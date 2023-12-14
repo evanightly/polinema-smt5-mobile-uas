@@ -9,6 +9,7 @@ import 'package:client/screens/admin/sub_screens/admin_car_fuel_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_car_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_main_screen.dart';
 import 'package:client/screens/admin/sub_screens/admin_management_screen.dart';
+import 'package:client/screens/admin/sub_screens/admin_transaction_screen.dart';
 import 'package:client/screens/admin/sub_screens/user_management_screen.dart';
 import 'package:client/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
       'Transactions': const DashboardDrawerMenu(
         title: 'Transactions',
         icon: Icons.attach_money,
-        // page: AdminInventoryScreen(),
+        page: AdminTransactionScreen(),
       ),
     },
     DashboardDrawerMenuPosition.bottom: {

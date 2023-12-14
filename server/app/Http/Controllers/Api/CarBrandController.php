@@ -14,7 +14,7 @@ class CarBrandController extends Controller
      */
     public function index()
     {
-        return CarBrandResource::collection(CarBrand::with(['cars' => ['fuel', 'bodyType', 'brand'],])->get());
+        return CarBrandResource::collection(CarBrand::with(['cars' => ['fuel', 'bodyType', 'brand']])->get());
     }
 
     /**

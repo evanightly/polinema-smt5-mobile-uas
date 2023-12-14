@@ -68,7 +68,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Status:'),
-                trailing: statusText(transaction.status.name),
+                trailing: statusText(transaction.status!.name),
               ),
               ListTile(
                 leadingAndTrailingTextStyle:
@@ -113,7 +113,7 @@ class UserTransactionScreen extends ConsumerWidget {
                 leadingAndTrailingTextStyle:
                     Theme.of(context).textTheme.bodyLarge,
                 leading: const Text('Total:'),
-                trailing: Text('\$ ${formatNumber(transaction.total)}'),
+                trailing: Text('\$ ${formatNumber(transaction.total!)}'),
               ),
               Padding(
                 padding: const EdgeInsets.all(_leftPadding),
@@ -198,8 +198,8 @@ class UserTransactionScreen extends ConsumerWidget {
                     onTap: () => showDetailTransaction(data[i]),
                     leading: Text((i + 1).toString()),
                     title: Text(data[i].formattedCreatedAt ?? ''),
-                    subtitle: statusText(data[i].status.name),
-                    trailing: Text('Total: \$ ${formatNumber(data[i].total)}'),
+                    subtitle: statusText(data[i].status!.name),
+                    trailing: Text('Total: \$ ${formatNumber(data[i].total!)}'),
                   ),
             ],
           ),

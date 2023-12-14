@@ -21,7 +21,9 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return TransactionResource::collection(Transaction::all());
+        return TransactionResource::collection(Transaction::with(
+            ['verifiedBy', 'user', 'detailTransactions' => ['car' => ['fuel', 'bodyType', 'brand']]]
+        )->get());
     }
 
     /**
@@ -91,8 +93,15 @@ class TransactionController extends Controller
                     'delivery_address' => $request->delivery_address,
                     'status' => 'Pending'
                 ]);
+
+                /**
+                 * Used for admin to verify transaction
+                 * WARNING: MIGHT BE BUGGY
+                 */
+            } else {
+                return new TransactionResource(tap($transaction)->update($request->validated()));
             }
-            return response()->json(['message' => 'Image not found'], 400);
+            // return response()->json(['message' => 'Image not found'], 400);
         } catch (\Throwable $th) {
             dump($th);
         }

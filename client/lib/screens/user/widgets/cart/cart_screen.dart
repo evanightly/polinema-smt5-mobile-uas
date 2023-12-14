@@ -86,14 +86,20 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
     final userCarts = ref.watch(userCartsProvider);
 
-    return IconButton(
-      onPressed: openCartScreen,
-      icon: userCarts.value!.carts.isNotEmpty
-          ? Badge(
-              label: Text(userCarts.value!.carts.length.toString()),
-              child: const Icon(Icons.shopping_cart),
-            )
-          : const Icon(Icons.shopping_cart),
-    );
+    Widget content = const SizedBox.shrink();
+
+    if (userCarts.value != null) {
+      content = IconButton(
+        onPressed: openCartScreen,
+        icon: userCarts.value!.carts.isNotEmpty
+            ? Badge(
+                label: Text(userCarts.value!.carts.length.toString()),
+                child: const Icon(Icons.shopping_cart),
+              )
+            : const Icon(Icons.shopping_cart),
+      );
+    }
+
+    return content;
   }
 }
