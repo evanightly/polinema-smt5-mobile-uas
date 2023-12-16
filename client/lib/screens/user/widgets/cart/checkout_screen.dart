@@ -36,11 +36,15 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     }
 
     void changeAddress(String value) {
-      _address = value;
+      setState(() {
+        _address = value;
+      });
     }
 
     void changePaymentMethod(PaymentMethod? value) {
-      _paymentMethod = value!;
+      setState(() {
+        _paymentMethod = value!;
+      });
     }
 
     String? validateAddress(String? value) {
@@ -156,6 +160,34 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 }).toList(),
                 onChanged: changePaymentMethod,
                 validator: validatePaymentMethod,
+              ),
+              const SizedBox(height: 12),
+              const Text('Payment Instructions'),
+              const SizedBox(height: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (_paymentMethod == PaymentMethod.Cash)
+                    const Text(
+                      'Please come to our office to discuss about payment at: Jl. Letjend S. Parman No.111a, Purwantoro, Kec. Blimbing, Kota Malang, Jawa Timur 65126',
+                    ),
+                  if (_paymentMethod == PaymentMethod.CreditCard)
+                    const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 12),
+                        Text('Please transfer to our bank account at:'),
+                        SizedBox(height: 12),
+                        Text('Bank: BCA'),
+                        Text('Account Number: 3124122133'),
+                        Text('Account Name: WheelWizards'),
+                      ],
+                    ),
+                  if (_paymentMethod == PaymentMethod.DebitCard)
+                    const Text(
+                      'Please come to our office to discuss about payment at: Jl. Letjend S. Parman No.111a, Purwantoro, Kec. Blimbing, Kota Malang, Jawa Timur 65126',
+                    ),
+                ],
               ),
               const SizedBox(height: 12),
               const Text('Payment Proof'),
