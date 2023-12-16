@@ -34,9 +34,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <p>{{ $car->name }}</p>
-                    </td>
+                    <td>{{ $car->name }}</td>
                     <td>{{ $car->brand->name }}</td>
                     <td>{{ $car->bodyType->name }}</td>
                     <td>{{ $car->year }}</td>
@@ -97,63 +95,87 @@
     </table>
 
     {{-- get each pagination element, so i can style it individually --}}
-    <div class="flex gap-2">
-        {{-- Previous Page Link --}}
-        @if ($cars->onFirstPage())
-            <span class="btn btn-disabled">
-                <i class="fa-solid fa-chevron-left"></i>
-            </span>
-        @else
-            <a href="{{ $cars->previousPageUrl() }}" class="btn btn-primary">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-        @endif
-
-        {{-- Pagination Elements --}}
-        {{-- @foreach ($cars->getUrlRange(1, $cars->lastPage()) as $page => $url)
-            @if ($page == $cars->currentPage())
-                <span class="btn btn-primary">{{ $page }}</span>
-            @else
-                <a href="{{ $url }}" class="btn btn-primary">{{ $page }}</a>
+    <div class="flex gap-2 ml-auto">
+        @foreach ($meta['links'] as $link)
+            @if ($link['url'] !== null)
+                <a href="{{ $link['url'] }}"
+                    class="btn btn-sm {{ $link['active'] ? 'btn-primary' : 'btn-outline' }}">{!! $link['label'] !!}</a>
             @endif
-        @endforeach --}}
-
-        {{-- Next Page Link --}}
-        @if ($cars->hasMorePages())
-            <a href="{{ $cars->nextPageUrl() }}" class="btn btn-primary">
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
-        @else
-            <span class="btn btn-disabled">
-                <i class="fa-solid fa-chevron-right"></i>
-            </span>
-        @endif
+        @endforeach
     </div>
 @endsection
 
 @push('postscripts')
     <script>
         $('#main-table').DataTable({
-            // paging is handled by laravel paginate
-            // custom page pagination, like showing 1-10 in pagination buttons
-            "page": 1,
-            "pages": 6,
-            "start": 10,
-            "end": 20,
-            "length": 10,
-            "recordsTotal": 57,
-            "recordsDisplay": 57,
-            "serverSide": false,
-            "bLengthChange": false,
-            "order": [
-                [1, "asc"]
-            ],
-            "columnDefs": [{
-                "targets": [0, 11],
-                "orderable": false
-            }],
-            buttons: ['copy', 'csv', 'excel']
-
+            info: false,
+            searching: false,
+            serverSide: false,
+            paging: false,
         });
+
+        // works only for getting data, not pagination
+
+        // $('#main-table').DataTable({
+        //     searching: false,
+        //     serverSide: true,
+        //     paging: true,
+        //     ajax: {
+        //         url: '{{ route('api.cars.index') }}',
+        //         headers: {
+        //             Authorization: "Bearer {{ session('token') }}"
+        //         },
+        //         // data: {"token": "{{ csrf_token() }}",},
+        //         dataSrc: function(json) {
+        //             //Make your callback here.
+        //             console.log(json)
+        //             return json.data;
+        //         }
+        //     },
+
+        //     columns: [{
+        //             data: 'image',
+        //             render: (data, type) => {
+        //                 return `
+    //             <div class="flex items-center gap-5">
+    //                 <div class="avatar">
+    //                     <div class="w-32 h-20">
+    //                         <img src="${data}">
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //             `
+        //             }
+        //         }, {
+        //             data: 'name',
+        //         }, {
+        //             data: 'car_brand.name'
+        //         },
+        //         {
+        //             data: 'car_body_type.name'
+        //         },
+        //         {
+        //             data: 'year'
+        //         },
+        //         {
+        //             data: 'mileage'
+        //         },
+        //         {
+        //             data: 'car_fuel.name'
+        //         },
+        //         {
+        //             data: 'price'
+        //         },
+        //         {
+        //             data: 'condition'
+        //         },
+        //         {
+        //             data: 'transmission'
+        //         },
+        //         {
+        //             data: 'stock'
+        //         }
+        //     ]
+        // });
     </script>
 @endpush

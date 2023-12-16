@@ -11,7 +11,7 @@
                 @include('components.admin_dashboard_navbar')
             @endonce
 
-            <div class="container flex flex-col gap-5 px-8">
+            <div class="container flex flex-col gap-5 px-8 pb-12">
                 @yield('content-dashboard')
             </div>
         </div>

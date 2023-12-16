@@ -64,6 +64,11 @@
 
 @push('postscripts')
     <script>
-        new DataTable('#main-table')
+        new DataTable('#main-table', {
+            info: false,
+            searching: false,
+            serverSide: false,
+            paging: false,
+        })
     </script>
 @endpush

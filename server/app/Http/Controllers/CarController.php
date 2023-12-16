@@ -21,8 +21,11 @@ class CarController extends Controller
      */
     public function index()
     {
+        $collection = CarResource::collection(Car::latest()->paginate(10));
+        $meta = $collection->response()->getData(true)['meta'];
         return view('cars.index', [
-            'cars' => CarResource::collection(Car::latest()->paginate(10))
+            'cars' => $collection,
+            'meta' => $meta
         ]);
     }
 

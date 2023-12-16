@@ -36,7 +36,18 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        Fortify::authenticateUsing(function (Request $request) {
+            $admin = Admin::where('email', $request->email)->first();
+            if (
+                $admin &&
+                Hash::check($request->password, $admin->password)
+            ) {
+                // Token is used for API authentication, eg. datatable
+                $token = $admin->createToken('admin-token')->plainTextToken;
+                session(['token' => $token]);
+                return $admin;
+            }
+        });
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -52,6 +63,5 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::loginView(fn () => view('auth.login'));
-
     }
 }
