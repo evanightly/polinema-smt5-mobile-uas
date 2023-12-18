@@ -15,11 +15,38 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 }
 
 class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
+  final _addressKey = GlobalKey<FormFieldState>();
   late final _loggedUser = ref.watch(userAuthProvider).valueOrNull;
   late String _address = _loggedUser?.address ?? '';
   PaymentMethod _paymentMethod = PaymentMethod.Cash;
   Widget _selectedImage = const Center(child: Text('Upload Payment Proof'));
   late File? _file;
+
+  void _changeAddress(String value) {
+    setState(() {
+      _address = value;
+    });
+  }
+
+  void _changePaymentMethod(PaymentMethod? value) {
+    setState(() {
+      _paymentMethod = value!;
+    });
+  }
+
+  String? _validateAddress(String? value) {
+    if (value!.trim().isEmpty) {
+      return 'Address is required';
+    }
+    return null;
+  }
+
+  String? _validatePaymentMethod(PaymentMethod? value) {
+    if (value == null) {
+      return 'Payment Method is required';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,32 +60,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       await ref
           .read(userTransactionsProvider.notifier)
           .post(context, _loggedUser!, _address, _paymentMethod, _file!);
-    }
-
-    void changeAddress(String value) {
-      setState(() {
-        _address = value;
-      });
-    }
-
-    void changePaymentMethod(PaymentMethod? value) {
-      setState(() {
-        _paymentMethod = value!;
-      });
-    }
-
-    String? validateAddress(String? value) {
-      if (value!.trim().isEmpty) {
-        return 'Address is required';
-      }
-      return null;
-    }
-
-    String? validatePaymentMethod(PaymentMethod? value) {
-      if (value == null) {
-        return 'Payment Method is required';
-      }
-      return null;
     }
 
     void selectImage() async {
@@ -137,12 +138,13 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               const Text('Address'),
               const SizedBox(height: 12),
               TextFormField(
+                key: _addressKey,
                 initialValue: _address,
                 decoration: const InputDecoration(
                   labelText: 'Address',
                 ),
-                onChanged: changeAddress,
-                validator: validateAddress,
+                onChanged: _changeAddress,
+                validator: _validateAddress,
               ),
               const SizedBox(height: 12),
               const Text('Payment Method'),
@@ -158,8 +160,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     child: Text(method.toString().split('.').last),
                   );
                 }).toList(),
-                onChanged: changePaymentMethod,
-                validator: validatePaymentMethod,
+                onChanged: _changePaymentMethod,
+                validator: _validatePaymentMethod,
               ),
               const SizedBox(height: 12),
               const Text('Payment Instructions'),

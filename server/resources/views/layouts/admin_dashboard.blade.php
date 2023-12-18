@@ -20,7 +20,7 @@
             <ul id="dashboard-sidebar" class="min-h-full p-4 menu w-80 bg-base-200 text-base-content">
                 <li>
                     <span class="text-lg font-bold">
-                        Ambatucar
+                        WheelWizards
                     </span>
                 </li>
                 <li><a href="/"><i class="fa-solid fa-house"></i>Dashboard</a></li>

@@ -73,7 +73,7 @@ class _UserDashboardScreenState extends ConsumerState<UserDashboardScreen> {
     final carBodyTypes = ref.watch(carBodyTypesProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ambatucar', style: TextStyle(fontSize: 20.0)),
+        title: const Text('WheelWizards', style: TextStyle(fontSize: 20.0)),
         automaticallyImplyLeading: false,
         actions: [
           // show cart and user profile

@@ -30,7 +30,7 @@
     @yield('prescripts')
 
 
-    <title>Ambatucar</title>
+    <title>WheelWizards</title>
 </head>
 
 <body>
