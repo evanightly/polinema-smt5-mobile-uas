@@ -42,7 +42,7 @@ class AdminManagementScreen extends ConsumerWidget {
                     ),
                   ),
                 ]
-              : [const AddAdmin()],
+              : [if (auth!.isSuperAdmin) const AddAdmin()],
         );
       },
     );

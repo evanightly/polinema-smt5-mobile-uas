@@ -1,7 +1,7 @@
 @extends('layouts.admin_dashboard')
 
 @section('content-dashboard')
-    <div class="bg-base-200 rounded-lg p-5">
+    <div class="p-5 rounded-lg bg-base-200">
         <div class="flex flex-col gap-1">
             <p class="text-lg">Buyer: {{ $transaction->user->name }}</p>
             <p class="text-lg">Verified By: {{ $transaction->verifiedBy->name ?? '' }}</p>
@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <table class="table rounded-lg bg-base-100 my-5">
+        <table class="table my-5 rounded-lg bg-base-100">
             <thead>
                 <tr>
                     <th>Car</th>
@@ -34,7 +34,7 @@
                 @forelse ($transaction->detailTransactions as $dt)
                     <tr>
                         <td>
-                            <div class="flex gap-3 items-center">
+                            <div class="flex items-center gap-3">
                                 <img src="{{ $dt->car->imageUrl }}" alt="{{ $dt->car->name }} thumbnail" class="h-16">
                                 <p>{{ $dt->car->name }}</p>
                             </div>
@@ -79,8 +79,8 @@
                         <input type="hidden" name="status" value="Finished">
                         <button type="submit" class="btn btn-success">Mark As Finish</button>
                     @else
-                        <input type="submit" class="btn btn-success" name="status" value="Verified" />
-                        <input type="submit" class="btn btn-error" name="status" value="Rejected" />
+                        <button type="submit" class="btn btn-success" name="status" value="Verified">Verify</button>
+                        <button type="submit" class="btn btn-error" name="status" value="Rejected">Reject</button>
                     @endif
                 </form>
             </div>

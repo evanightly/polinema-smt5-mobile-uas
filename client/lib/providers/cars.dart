@@ -101,6 +101,8 @@ class Cars extends _$Cars {
           ...generateCarMetadata(car),
           'image': await MultipartFile.fromFile(car.uploadImage!.path),
         });
+      } else {
+        formData = FormData.fromMap(generateCarMetadata(car));
       }
 
       await dio.http.post('/cars/${car.id}?_method=PUT', data: formData);

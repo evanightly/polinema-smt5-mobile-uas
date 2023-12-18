@@ -130,7 +130,7 @@ class _UpdateCarState extends ConsumerState<UpdateCar> {
 
     void edit() {
       final isValid = _formKey.currentState!.validate();
-      if (!isValid || _file == null) {
+      if (!isValid) {
         return;
       }
 

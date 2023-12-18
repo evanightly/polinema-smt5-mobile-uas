@@ -53,6 +53,17 @@ class AdminTransactionScreen extends ConsumerWidget {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
+                  shape: ShapeBorder.lerp(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(_circularRadius),
+                    ),
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(_circularRadius),
+                    ),
+                    1,
+                  ),
+                  surfaceTintColor: Theme.of(context).colorScheme.surface,
+                  // backgroundColor: Theme.of(context).colorScheme.surface,
                   title: const Text('Change Status'),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -60,31 +71,74 @@ class AdminTransactionScreen extends ConsumerWidget {
                       if (transaction.status != Status.Finished &&
                           transaction.status != Status.Rejected) ...[
                         if (transaction.status == Status.Verified) ...[
-                          ListTile(
-                            title: const Text('Finished'),
-                            onTap: () async {
-                              await transactions.put(
-                                  ctx, transaction, Status.Finished);
-                              redirectToTransactionList();
-                            },
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(_circularRadius),
+                              color: Colors.green[50],
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.green[50],
+                              title: const Row(
+                                children: [
+                                  Icon(Icons.thumb_up, color: Colors.green),
+                                  SizedBox(width: 16),
+                                  Text('Finish')
+                                ],
+                              ),
+                              onTap: () async {
+                                await transactions.put(
+                                    ctx, transaction, Status.Finished);
+                                redirectToTransactionList();
+                              },
+                            ),
                           ),
                         ] else ...[
-                          ListTile(
-                            title: const Text('Rejected'),
-                            onTap: () async {
-                              await transactions.put(
-                                  ctx, transaction, Status.Rejected);
-                              redirectToTransactionList();
-                            },
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(_circularRadius),
+                              color: Colors.red[50],
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.red[50],
+                              title: const Row(
+                                children: [
+                                  Icon(Icons.close, color: Colors.red),
+                                  SizedBox(width: 16),
+                                  Text('Reject')
+                                ],
+                              ),
+                              onTap: () async {
+                                await transactions.put(
+                                    ctx, transaction, Status.Rejected);
+                                redirectToTransactionList();
+                              },
+                            ),
                           ),
-                          ListTile(
-                            title: const Text('Verified'),
-                            onTap: () async {
-                              await transactions.put(
-                                  ctx, transaction, Status.Verified);
-                              redirectToTransactionList();
-                            },
-                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(_circularRadius),
+                              color: Colors.blue[50],
+                            ),
+                            child: ListTile(
+                              // tileColor: Colors.blue[50],
+                              title: const Row(
+                                children: [
+                                  Icon(Icons.check, color: Colors.blue),
+                                  SizedBox(width: 16),
+                                  Text('Accept')
+                                ],
+                              ),
+                              onTap: () async {
+                                await transactions.put(
+                                    ctx, transaction, Status.Verified);
+                                redirectToTransactionList();
+                              },
+                            ),
+                          )
                         ]
                       ]
                     ],
