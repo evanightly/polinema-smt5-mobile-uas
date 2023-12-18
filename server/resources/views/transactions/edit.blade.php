@@ -79,7 +79,7 @@
                         <input type="hidden" name="status" value="Finished">
                         <button type="submit" class="btn btn-success">Mark As Finish</button>
                     @else
-                        <button type="submit" class="btn btn-success" name="status" value="Verified">Verify</button>
+                        <button type="submit" class="btn btn-success" name="status" value="Verified">Accept</button>
                         <button type="submit" class="btn btn-error" name="status" value="Rejected">Reject</button>
                     @endif
                 </form>
