@@ -23,7 +23,7 @@ class TransactionController extends Controller
     {
         return TransactionResource::collection(Transaction::with(
             ['verifiedBy', 'user', 'detailTransactions' => ['car' => ['fuel', 'bodyType', 'brand']]]
-        )->get());
+        )->latest()->get());
     }
 
     /**
@@ -79,7 +79,7 @@ class TransactionController extends Controller
     {
         // ONLY FOR USER TRANSACTION
         try {
-            dump($request->payment_method);
+            // dump($request->payment_method);
             // get all request body data
             // return($request->all());
             if ($request->hasFile('payment_proof')) {
@@ -103,7 +103,7 @@ class TransactionController extends Controller
             }
             // return response()->json(['message' => 'Image not found'], 400);
         } catch (\Throwable $th) {
-            dump($th);
+            // dump($th);
         }
     }
 

@@ -31,12 +31,25 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
               if (userCarts.hasError || userCarts.value == null) {
                 return const IconButton(
-                    onPressed: null, icon: Icon(Icons.shopping_cart));
+                  onPressed: null,
+                  icon: Icon(Icons.shopping_cart),
+                );
               }
 
               return Scaffold(
                 appBar: AppBar(
                   title: const Text('Cart'),
+                ),
+                body: Container(
+                  padding: const EdgeInsets.all(12),
+                  child: ListView(
+                    children: [
+                      // loop carts detail transactions
+                      if (userCarts.value!.carts.isNotEmpty)
+                        for (final cart in userCarts.value!.carts)
+                          UserCartItem(cartItem: cart, key: ValueKey(cart.id)),
+                    ],
+                  ),
                 ),
                 bottomNavigationBar: Container(
                   height: 80,
@@ -59,21 +72,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                             userCarts.value!.carts.isEmpty ? null : checkout,
                         child: const Text('Checkout'),
                       ),
-                    ],
-                  ),
-                ),
-                body: Container(
-                  padding: const EdgeInsets.all(12),
-                  child: ListView(
-                    children: [
-                      // loop carts detail transactions
-                      if (userCarts.value!.carts.isNotEmpty)
-                        for (final cart in userCarts.value!.carts)
-                          UserCartItem(
-                            cartItem: cart,
-                            ref: ref,
-                            key: ValueKey(cart.id),
-                          ),
                     ],
                   ),
                 ),

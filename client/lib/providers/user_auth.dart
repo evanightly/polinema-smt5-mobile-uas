@@ -94,13 +94,10 @@ class UserAuth extends _$UserAuth {
   }
 
   Future<void> logout(BuildContext context) async {
-    LoadingIndicator.show();
-
     await ref.read(dioHttpProvider.notifier).http.post('/users/logout');
 
     if (context.mounted) {
-      Navigator.pushReplacementNamed(context, '/');
-      LoadingIndicator.dismiss();
+      await Navigator.pushReplacementNamed(context, '/');
     }
   }
 

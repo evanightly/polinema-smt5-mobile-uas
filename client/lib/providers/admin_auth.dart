@@ -66,16 +66,10 @@ class AdminAuth extends _$AdminAuth {
   }
 
   Future<void> logout(BuildContext context) async {
-    // state = null;
-    // ref.read(adminDashboardActionsProvider.notifier).empty();
-    // log('Logout');
-    LoadingIndicator.show();
-
     await ref.read(dioHttpProvider.notifier).http.post('/admins/logout');
 
     if (context.mounted) {
-      Navigator.pushReplacementNamed(context, '/');
-      LoadingIndicator.dismiss();
+      await Navigator.pushReplacementNamed(context, '/');
     }
   }
 
