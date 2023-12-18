@@ -44,6 +44,9 @@ cd server && php artisan dump-server
 cd client && dart run build_runner watch -d
 cd client && flutter run
 
+## Hard Note
+1. Jika anda akan beralih dari akun user ke akun admin, atau sebaliknya, maka setelah logout anda sebaiknya melakukan close aplikasi/reset aplikasi terlebih dahulu
+
 ## Note
 1.  Transaction Entity
     <br>
