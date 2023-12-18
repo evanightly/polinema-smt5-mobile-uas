@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
+    <link rel="icon" href="{{ asset('img/logo.jpeg') }}" type="image/jpeg">
+
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}" type="text/css">
