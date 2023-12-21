@@ -47,6 +47,55 @@ cd client && flutter run
 ## Hard Note
 1. Jika anda akan beralih dari akun user ke akun admin, atau sebaliknya, maka setelah logout anda sebaiknya melakukan close aplikasi/reset aplikasi terlebih dahulu
 
+
+## Anggota Kelompok
+
+1. [Diva Gracia](https://github.com/diva-gsc)
+2. [Galur Arasy L](https://github.com/evanightly)
+3. [M. Ariesta](https://github.com/EvosMan)
+4. [Rama Wijaya](https://github.com/ramawijaya1)
+5. [Selly Amelia](https://github.com/sellyamelia)
+
+## Pembagian Tugas
+
+- Mobile
+  - Login (Selly)
+  - Admin
+    - Admin Management (Arya)
+    - User Management (Diva)
+    - Car Management
+      - Car (Rama)
+      - Car fuel (Rama)
+      - Car brand (Rama)
+      - Car body type (Rama)
+    - Transactions (Verify Transactions) (Galur)
+    - Settings (Dark mode) (Galur)
+    - Profile (Galur)
+  - User
+    - Register  (Galur)
+    - Login  (Galur)
+    - Dashboard (Add item to cart) (Galur)
+    - Filter/SPK (Galur)
+    - Cart (Galur)
+    - Checkout (Galur)
+    - Transaction Details/History (Galur)
+    - Profile (Galur)
+    - Settings (Galur)
+
+- Website
+  - Login (Selly)
+  - Admin
+    - Admin Management (Arya)
+    - User Management (Diva)
+    - Car Management
+      - Car (Rama)
+      - Car fuel (Rama)
+      - Car brand (Rama)
+      - Car body type (Rama)
+    - Transactions (Verify Transactions) (Galur)
+    - Settings (Dark mode) (Galur)
+    - Profile (Galur)
+    
 ## Note
 1.  Transaction Entity
     <br>
@@ -149,51 +198,3 @@ cd client && flutter run
   - Update Profile ✔
 - Profile
   - Update Profile ✔
-
-## Anggota Kelompok
-
-1. [Diva Gracia](https://github.com/diva-gsc)
-2. [Galur Arasy L](https://github.com/evanightly)
-3. [M. Ariesta](https://github.com/EvosMan)
-4. [Rama Wijaya](https://github.com/ramawijaya1)
-5. [Selly Amelia](https://github.com/sellyamelia)
-
-## Pembagian Tugas
-
-- Mobile
-  - Login (Selly)
-  - Admin
-    - Admin Management (Arya)
-    - User Management (Diva)
-    - Car Management
-      - Car (Rama)
-      - Car fuel (Rama)
-      - Car brand (Rama)
-      - Car body type (Rama)
-    - Transactions (Verify Transactions) (Galur)
-    - Settings (Dark mode) (Galur)
-    - Profile (Galur)
-  - User
-    - Register  (Galur)
-    - Login  (Galur)
-    - Dashboard (Add item to cart) (Galur)
-    - Filter/SPK (Galur)
-    - Cart (Galur)
-    - Checkout (Galur)
-    - Transaction Details/History (Galur)
-    - Profile (Galur)
-    - Settings (Galur)
-
-- Website
-  - Login (Selly)
-  - Admin
-    - Admin Management (Arya)
-    - User Management (Diva)
-    - Car Management
-      - Car (Rama)
-      - Car fuel (Rama)
-      - Car brand (Rama)
-      - Car body type (Rama)
-    - Transactions (Verify Transactions) (Galur)
-    - Settings (Dark mode) (Galur)
-    - Profile (Galur)
