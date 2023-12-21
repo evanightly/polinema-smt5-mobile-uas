@@ -297,7 +297,7 @@ class CarController extends Controller
             $car_ids = get_car_id($calculated_preferable_solution, $cars);
             $sorted_rank = sortByPreferableSolution($car_ids);
             $car_resources = getCarResources($sorted_rank);
-            // dump($sorted_rank);
+            dump($sorted_rank);
             return $car_resources;
 
             // $cars = CarResource::collection(

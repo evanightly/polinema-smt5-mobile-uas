@@ -224,7 +224,8 @@ class _AddCarState extends ConsumerState<AddCar> {
                             },
                           ),
                           items: [
-                            for (final brand in carBrands.asData!.value) brand
+                            if (carBrands.value != null)
+                              for (final brand in carBrands.asData!.value) brand
                           ],
                           validator: (value) {
                             return value == null
@@ -289,8 +290,9 @@ class _AddCarState extends ConsumerState<AddCar> {
                             },
                           ),
                           items: [
-                            for (final bodyType in carBodyTypes.asData!.value)
-                              bodyType
+                            if (carBodyTypes.value != null)
+                              for (final bodyType in carBodyTypes.asData!.value)
+                                bodyType
                           ],
                           validator: (value) {
                             return value == null
@@ -389,7 +391,8 @@ class _AddCarState extends ConsumerState<AddCar> {
                             },
                           ),
                           items: [
-                            for (final fuel in carFuels.asData!.value) fuel
+                            if (carFuels.value != null)
+                              for (final fuel in carFuels.asData!.value) fuel
                           ],
                           validator: (value) {
                             return value == null

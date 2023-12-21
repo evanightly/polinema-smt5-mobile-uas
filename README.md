@@ -160,27 +160,40 @@ cd client && flutter run
 
 ## Pembagian Tugas
 
-- Register + Login + Logout (Selly)
-
-- Dashboard
-  - User
-    - Filter Barang/SPK (Galur)
-    - Transaksi Barang (Galur)
-
+- Mobile
+  - Login (Selly)
   - Admin
-    - Admin Management
-      - Create (Super Admin) (Ariesta)
-      - Read + Delete (Ariesta)
-      - Update (Super Admin) (Diva)
-  
-    - Inventory
-      - Create (Rama) : ID, Nama, Jenis, Harga, Tipe
-      - Detail Information (Rama)
-      - Read + Delete (Galur)
-      - Update (Galur)
-  
-    - Settings
-      - DarkMode (Galur)
-  
-    - Profile
-      - Update Profile (Diva)
+    - Admin Management (Arya)
+    - User Management (Diva)
+    - Car Management
+      - Car (Rama)
+      - Car fuel (Rama)
+      - Car brand (Rama)
+      - Car body type (Rama)
+    - Transactions (Verify Transactions) (Galur)
+    - Settings (Dark mode) (Galur)
+    - Profile (Galur)
+  - User
+    - Register  (Galur)
+    - Login  (Galur)
+    - Dashboard (Add item to cart) (Galur)
+    - Filter/SPK (Galur)
+    - Cart (Galur)
+    - Checkout (Galur)
+    - Transaction Details/History (Galur)
+    - Profile (Galur)
+    - Settings (Galur)
+
+- Website
+  - Login (Selly)
+  - Admin
+    - Admin Management (Arya)
+    - User Management (Diva)
+    - Car Management
+      - Car (Rama)
+      - Car fuel (Rama)
+      - Car brand (Rama)
+      - Car body type (Rama)
+    - Transactions (Verify Transactions) (Galur)
+    - Settings (Dark mode) (Galur)
+    - Profile (Galur)
