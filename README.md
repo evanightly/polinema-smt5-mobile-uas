@@ -19,7 +19,7 @@ Sistem ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Mobile. Sis
 ## Direktori
 
 - `client` : Direktori untuk aplikasi client (Flutter)
-- `server` : Direktori untuk aplikasi server (Belum ditentukan)
+- `server` : Direktori untuk aplikasi server (Laravel)
 
 ## Cara Penggunaan
 
